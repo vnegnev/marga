@@ -1,3 +1,5 @@
+#+TITLE: FLOCRA - an experimental flow-based MRI console compatible with the OCRA hardware platform
+
 ** Instruction set
    
 *** General thoughts
@@ -8,13 +10,15 @@
 
     Buffers/blockers of 1-element depth for each output stream
 
+    up to 128 unique 16b output buffers (start with far fewer)
+
 *** Basic types, all 32 bits
 
-    Type A: 7b instruction/target, 24b payload (internal delays, external trigger, config, memory offset, start/stop execution, other settings)
+    Type A: 1b zero, 7b instruction, 24b payload (internal delays, external trigger, config, memory offset, start/stop execution, other settings)
     
-    Type B: 7b instruction/target, 8b time, 16b payload (external buffers and their delays)
+    Type B: 1b one, 7b target, 8b time, 16b payload (external buffers and their delays)
 
-    - Pipelined dataflow; extra latency but this is compensated in the timeouts/ready flags coming back to FSM
+    - Pipelined dataflow for the external buffers; extra latency but this is compensated in the timeouts/ready flags coming back to FSM
       
     - One instruction per cycle
 
@@ -22,9 +26,9 @@
 
     - Type B: exclusive external-buffer data/timing
 
-    External buffers can themselves internally have some FIFO depth, in case bursts are desired - e.g. for occasional really rapid TX or RX sequences (thought the RX will probably just have a separate FSM for timing itself)
+    External buffers can themselves internally have some FIFO depth (and timers), in case bursts are desired - e.g. for occasional really rapid TX or RX sequences (though the RX will probably just have a separate FSM for timing itself).
 
-    Each external buffer can flag an error if too much data is requested of it, and this will make its way up a chain of ORs
+    Each external buffer can flag an error if too much data is pushed to it, and this will make its way up a chain of ORs to a central error register
 
 *** Different output buffers 
 
@@ -47,3 +51,23 @@
     - Errors (latch each input bit until reset occurs)
 
     - Status (no latch, just allow for read-out)
+
+** Plan
+
+   Write the output buffer core, with empty/full status outputs as well as data strobe
+
+   When the FIFO has data written to it, it should increment the input ptr and flag the data as valid.
+   Having been flagged, data should start a countdown (as short as 1 cycle).
+   Having counted down, data should increment its address and, if that's already the input ptr, return to idle. If it's not, then repeat until the addresses are equalised.
+
+   Write the main FSM and instruction BRAM: use the empty
+
+   Start by writing the main instruction BRAM, the output FSM (with PC logic)
+
+   
+** Instruction set quirks
+
+   Don't write to a buffer in two successive clock cycles if you can
+   avoid it - the FULL flag only goes high a clock cycle after a
+   buffer is written to. Still fine to record FULL events when writes
+   occurred though (for exception recording).

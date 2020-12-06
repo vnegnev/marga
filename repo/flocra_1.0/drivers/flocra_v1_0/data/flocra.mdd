@@ -1,0 +1,10 @@
+
+
+OPTION psf_version = 2.1;
+
+BEGIN DRIVER flocra
+	OPTION supported_peripherals = (flocra);
+	OPTION copyfiles = all;
+	OPTION VERSION = 1.0;
+	OPTION NAME = flocra;
+END DRIVER
