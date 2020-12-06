@@ -1,0 +1,49 @@
+** Instruction set
+   
+*** General thoughts
+    
+    Single device: 32 ADC inputs (0b each, just 'acquire') -> 5b information, 32 RF outputs (16b each) -> 21b information, 32 grad outputs (24b each) -> 29b each.
+
+    Also want a time delay built into the instruction, at least sufficient to provide simultaneous updates on every channel if they're written in a row (i.e. 32 + 32 + 32 = 7 bits)
+
+    Buffers/blockers of 1-element depth for each output stream
+
+*** Basic types, all 32 bits
+
+    Type A: 7b instruction/target, 24b payload (internal delays, external trigger, config, memory offset, start/stop execution, other settings)
+    
+    Type B: 7b instruction/target, 8b time, 16b payload (external buffers and their delays)
+
+    - Pipelined dataflow; extra latency but this is compensated in the timeouts/ready flags coming back to FSM
+      
+    - One instruction per cycle
+
+    - Type A: exclusive main FSM timing, containing everything needed
+
+    - Type B: exclusive external-buffer data/timing
+
+    External buffers can themselves internally have some FIFO depth, in case bursts are desired - e.g. for occasional really rapid TX or RX sequences (thought the RX will probably just have a separate FSM for timing itself)
+
+    Each external buffer can flag an error if too much data is requested of it, and this will make its way up a chain of ORs
+
+*** Different output buffers 
+
+    - TX buffer inputs: 16b data, 8b time, 1b valid, outputs: 16b data, 1b valid (maybe unused), 1b error. [Initially, 4 TX buffers, whose outputs will just go to the existing complex multipliers.]
+
+    - Grad buffer inputs: 16b data, 8b time (MSB interpreted as hi/lo), 1b valid.
+
+    - General buffer inputs: like TX
+
+*** Write registers
+
+    - 24b of memory space
+
+*** Read-only registers
+
+    - Current address (24b memory space)
+
+    - Cycles since start of execution
+
+    - Errors (latch each input bit until reset occurs)
+
+    - Status (no latch, just allow for read-out)
