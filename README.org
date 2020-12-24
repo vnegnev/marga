@@ -10,7 +10,9 @@
 
     Buffers/blockers of 1-element depth for each output stream
 
-    up to 128 unique 16b output buffers (start with far fewer)
+    up to 128 unique 16b output buffers (start with far fewer).
+
+    For now, just 24 unique 16b output buffers; 16 are real-time with flow control/error checking, 8 are for intermediate configuration and setting changes.
 
 *** Basic types, all 32 bits
 
@@ -71,3 +73,8 @@
    avoid it - the FULL flag only goes high a clock cycle after a
    buffer is written to. Still fine to record FULL events when writes
    occurred though (for exception recording).
+
+   Error handling: any error line strobed by a buffer will be latched
+   into the error register, bits 31-16. If a FIFO is full when it is
+   written to, this will be caught, the error latched into the error
+   register bit 31, and the current buffer index saved to bits 30:24.

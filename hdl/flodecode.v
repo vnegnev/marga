@@ -34,7 +34,7 @@ module flodecode #
   (
    parameter integer C_S_AXI_DATA_WIDTH = 32,
    parameter integer C_S_AXI_ADDR_WIDTH = 19,   
-   parameter BUFS = 16 // max 128; probably needs pipelining with that many
+   parameter BUFS = 24 // max 128; probably needs pipelining with that many
    )
    (
     // // Users to add ports here
@@ -140,8 +140,8 @@ module flodecode #
    //-- Signals for user logic register space example
    //------------------------------------------------
    //-- Number of Slave Registers 8
-   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg0 = {32'd0}; // R/W: bit 0 = run/stop, bit 1 =
-   wire 				      run_fsm = slv_reg0[0];
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg0 = {32'd0}; // R/W: bit 0 = run/stop, bit 1 = immediate stop, 
+   wire 				      run_fsm = slv_reg0[0], stop_fsm = slv_reg0[1];
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg1 = {32'd0}; // R/W, 
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg2 = {32'd0}; // R/W, direct output control
    wire [6:0] 				      direct_valid = slv_reg2[22:16]; // output buffer for immediate transfers
@@ -149,7 +149,10 @@ module flodecode #
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg3 = 0; // R/W
 
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg4 = 0; // read-only
-   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg5 = 0; // read-only
+
+   // read-only; bits 7:0 are error flags, bits 15:8 have last full buffer address, 
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg5 = 0;
+   
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg6 = 0; // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg7 = 0;  // read-only
    wire 				      slv_reg_rden;
@@ -312,19 +315,6 @@ module flodecode #
       end // if (slv_reg_wen)
    end // always @ (posedge clk)
 
-   /**** Grad mem read logic ****/
-
-   // wire [15:0] data_interval_max = slv_reg0[15:0];
-   // reg [15:0]  data_interval_cnt = 0;
-   // wire       data_interval_done = data_interval_cnt > data_interval_max;
-   // reg 	      data_interval_done_r = 0, data_interval_done_r2 = 0, data_interval_done_p = 0;
-   // reg [15:0] data_wait_cnt = 0, data_wait_max = 0; // longer waits, in units of data interval
-   // wire       data_wait_done = data_wait_cnt == data_wait_max;
-   // reg 	      data_wait_done_r = 0;
-   // wire       data_int_and_wait_done = data_wait_done_r && data_interval_done_p;
-   // reg [15:0] adc_r = 0;
-   // reg 	      busy_error = 0, busy_error_r = 0, data_lost_error_r = 0; // latter two are latches
-
    localparam STATE_BITS = 4;
    localparam IDLE = STATE_BITS'('d0), PREPARE = STATE_BITS'('d1), RUN = STATE_BITS'('d2), 
      COUNTDOWN = STATE_BITS'('d3), TRIG = STATE_BITS'('d4), TRIG_FOREVER = STATE_BITS'('d5), 
@@ -335,7 +325,8 @@ module flodecode #
    reg [23:0] tmr = 0;
    reg 	      trig_r = 0, trig_r1 = 0, trig_r2 = 0, trig_r3 = 0, trig_r4 = 0;
    reg 	      trig_state_change = 0;
-   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0;
+   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, err_r = 0;
+   reg [BUFS-1:0] buf_full_r = 0, buf_err_r = 0;
    
    always @(posedge clk) begin
       // pipelining
@@ -343,6 +334,8 @@ module flodecode #
       {flo_bram_raddr_r2, flo_bram_raddr_r} <= {flo_bram_raddr_r, flo_bram_raddr};
       status_r <= status_i;
       status_latch_r <= status_latch_i;
+      buf_err_r <= buf_err;
+      buf_full_r <= buf_full;
 
       // triggering -- could be an external input, so need decent synch
       {trig_r4, trig_r3, trig_r2, trig_r} <= {trig_r3, trig_r2, trig_r, trig_i};
@@ -356,23 +349,26 @@ module flodecode #
       flo_bram_rdata <= flo_bram[flo_bram_raddr]; // can pipeline this further
       flo_bram_rdata_r <= flo_bram_rdata; // can pipeline this further
       case (state)
-	default: begin // IDLE state
+	default: begin // IDLE state	   
 	   if (direct_wen) begin
 	      flo_delay <= 0; // don't see a reason to ever use nonzero delay here
 	      flo_valid[direct_buf_idx] <= 1;
-	      flo_data <= slv_reg2[15:0];	      
+	      flo_data <= slv_reg2[15:0];
 	   end
 	   
 	   if (run_fsm) begin
 	      state <= PREPARE;
 	      flo_bram_raddr <= flo_bram_raddr + 1; // next address
+	   end else begin	      
+	      flo_bram_raddr <= 0; // reset PC
 	   end
 	end
 	// catch-all state to ensure the instruction data in the BRAM pipeline is valid
 	// (not yet used, but may be useful for branches etc in the future)	
 	PREPARE: begin
 	   flo_bram_raddr <= flo_bram_raddr + 1;
-	   state <= RUN;
+	   if (stop_fsm) state <= HALT;
+	   else state <= RUN;
 	end
 	RUN: begin
 	   if (flo_bram_rdata_r[31]) begin // data to buffers
@@ -382,9 +378,15 @@ module flodecode #
 	      flo_data <= flo_bram_rdata_r[15:0];
 	      flo_bram_raddr <= flo_bram_raddr + 1; // next address
 
-	      if ( buf_full[buf_idx] ) begin
-		 // TODO: save flo_bram_rdata_r[24-buf_buts-1:24]]
-	      end
+	      // if ( buf_err_r[buf_idx] ) begin // TODO latch logic
+	      // 	 error_r[25] <= 1'd1;
+	      // 	 error_r[15:8] <= {1'd0, buf_idx};
+	      // end
+	      
+	      // if ( buf_full[buf_idx] ) begin
+	      // 	 err_r[7:0] <= {1'd1, {(7-BUF_BITS){1'd0}}, buf_idx};
+	      // end
+	      
 	   end else begin // general-purpose instructions
 	      case (flo_bram_rdata_r[30:24])
 		default: begin
@@ -413,7 +415,6 @@ module flodecode #
 	   end
 	end // case: RUN
 	HALT: begin
-	   flo_bram_raddr <= 0; // reset PC
 	   if (!run_fsm) begin
 	      state <= IDLE;
 	   end	   
@@ -439,15 +440,21 @@ module flodecode #
 	end
       endcase // case (state)
      
-      // monitoring info and ADC data
+      // monitoring/error info
       slv_reg4 <= {{(32-OPT_MEM_ADDR_BITS-STATE_BITS){1'b0}}, flo_bram_raddr_r2, state};
-      slv_reg5 <= 0; // TODO: buffer empty/full/err
+      slv_reg5 <= err_r;
       slv_reg6 <= status_r;
       slv_reg7 <= status_latch_r2;
 
+      // default register values that are cleared on read
+      err_r <= err_r | {buf_err[15:0], buf_full[15:0]};
+      // err_r[31:8] <= err_r[31:8] | buf_err_r;
+      status_latch_r2 <= status_latch_r2 | status_latch_r;
+      // clear internal error reg when read
+      if (slv_reg_rden && (axi_araddr[ADDR_LSB+3:ADDR_LSB] == 3'h5)) err_r <= 0;
       // clear status latch reg when read
       if (slv_reg_rden && (axi_araddr[ADDR_LSB+3:ADDR_LSB] == 3'h7)) status_latch_r2 <= 0;
-      else status_latch_r2 <= status_latch_r2 | status_latch_r;
+      
    end
    
    // Implement write response logic generation

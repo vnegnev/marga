@@ -33,7 +33,7 @@ module flodecode_tb;
    // Width of S_AXI address bus
    parameter integer C_S_AXI_ADDR_WIDTH = 19;
 
-   parameter BUFS = 16;
+   parameter BUFS = 24;
    reg 		     err = 0;
 		     
    /*AUTOREGINPUT*/
@@ -138,83 +138,50 @@ module flodecode_tb;
       #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG_FOREVER, 24'd0});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
-      #90 trig_i = !trig_i;      
+      #90 trig_i = !trig_i;
       #40 wr32(19'h0, 32'h0);
 
-      // Write 16 words with decreasing delay into buffers, so that they simultaneously appear at outputs
-      #150 for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'(k), 8'(BUFS-k), 16'hdea0 + 16'(k)});
+      // Write multiple words with decreasing delay into buffers, so that they simultaneously appear at outputs
+      #150 for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'(k), 8'(BUFS-k), 16'hde00 + 16'(k)});
       wr32(19'h40000 + BUFS*4, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
 
-      // Write 64 words into buffers, so that they appear in a burst at the outputs
-      #(30*BUFS) for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'(k), 8'(BUFS-k + 5*BUFS), 16'h1110 + 16'(k)});
-      for (k = 0; k < BUFS; k = k + 1) wr32(19'h40040 + k*4, {1'b1, 7'(k), 8'd0, 16'h2220 + 16'(k)});
-      for (k = 0; k < BUFS; k = k + 1) wr32(19'h40080 + k*4, {1'b1, 7'(k), 8'd0, 16'h3330 + 16'(k)});
-      for (k = 0; k < BUFS; k = k + 1) wr32(19'h400c0 + k*4, {1'b1, 7'(k), 8'd0, 16'h4440 + 16'(k)});
-      wr32(19'h40100, {1'b0, UUT.INSTR_FINISH, 24'd0});
+      // Write multiple words into buffers, so that they appear in a burst at the outputs
+      #500 for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'(k), 8'(BUFS-k + 70), 16'h1100 + 16'(k)});
+      for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + 1*(BUFS*4) + k*4, {1'b1, 7'(k), 8'd0, 16'h2200 + 16'(k)});
+      for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + 2*(BUFS*4) + k*4, {1'b1, 7'(k), 8'd0, 16'h3300 + 16'(k)});
+      for (k = 0; k < BUFS; k = k + 1) wr32(19'h40000 + 3*(BUFS*4) + k*4, {1'b1, 7'(k), 8'd0, 16'h4400 + 16'(k)});
+      wr32(19'h40000 + 4*(BUFS*4), {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
 
-      // TODO direct writes to buffers 
-      #1100 wr32(19'hz, 1);
-      
-      // // BRAM writes, no delays
-      // for (k = 0; k < 1000; k = k + 1) begin
-      // 	 wr32(16'h8000 + (k << 2), k);
-      // end
+      // Overflow two different buffers
+      #1110 rd32(19'h14, 0); // check error register is initially cleared
+      for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'd0, 8'd9, 16'haaa0 + 16'(k)});
+      for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + (5+k)*4, {1'b1, 7'd15, 8'd9, 16'hbbb0 + 16'(k)});
+      wr32(19'h40000 + 4*10, {1'b0, UUT.INSTR_FINISH, 24'd0});      
+      wr32(19'h0, 32'h1); // start FSM
+      wr32(19'h0, 32'h0); // flag the FSM to stop later
+      // read back error register, make sure the error gets flagged, then cleared
+      #200 rd32(19'h14, {16'h0, 16'h8001});
+      rd32(19'h14, 0);
 
-      // // BRAM writes, delays increasing from 0, 1 ... 7, down again
-      // for (k = 8000; k < 8192; k = k + 1) begin
-      // 	 wr32(16'h8000 + (k << 2), {2'd0, k[2:0], 3'd0, k[23:0]});
-      // end
+      // Overflow a single buffer more severely, and record the error
+      #1100 for (k = 0; k < 6; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'd1, 8'd9, 16'hccc0 + 16'(k)});
+      wr32(19'h40000 + 4*6, {1'b0, UUT.INSTR_FINISH, 24'd0});
+      wr32(19'h0, 32'h1); // start FSM
+      wr32(19'h0, 32'h0); // flag the FSM to stop later
+      // read back error register, make sure the error gets flagged, then cleared
+      #200 rd32(19'h14, {16'd2, 16'd2});
+      rd32(19'h14, 0);
 
-      // // Start outputting data; address 0
-      // #100 data_enb_i = 1;
+      // Direct writes to buffers 
+      #200 wr32(19'h8, {1'd0, 7'd0, 8'd0, 16'hdead});
+      wr32(19'h8, {1'd0, 7'd12, 8'd0, 16'hbeef});
+      wr32(19'h8, {1'd0, 7'd23, 8'd0, 16'hcafe});
 
-      // // Change output rate to be maximally fast (one output per 4 clock cycles), then change back to normal
-      // #29300 wr32(16'd0, {16'd0, 16'd0});
-      // #200 wr32(16'd0, {16'd0, 16'd303});
-
-      // // Change BRAM offset (before previous output is finished)
-      // #5000 offset_i = 10;
-      // #5000 data_enb_i = 0;
-      // #10 data_enb_i = 1;
-
-      // // Simulate a 'busy' blip
-      // #200 serial_busy_i = 1;
-      // #10 serial_busy_i = 0;
-      // #10 rd32(16'd16, {16'd0, 16'd11}); // no error bits
-
-      // // Data error blip
-      // #660 data_lost_i = 1;
-      // #10 data_lost_i = 0;
-      // #10 rd32(16'd16, {16'd1, 16'd11});
-
-      // // Simulate a 'busy' condition that stays for a while, and a data lost error at the same time
-      // #9000 serial_busy_i = 1; data_lost_i = 1;
-      // #3000 serial_busy_i = 0; data_lost_i = 0;
-      // #10 rd32(16'd16, {16'd3, 16'd15});
-
-      // // Simulate a longer 'busy' condition that will compromise the output integrity
-      // #10000 serial_busy_i = 1;
-      // #10000 serial_busy_i = 0;
-      // #10 rd32(16'd16, {16'd2, 16'd21});
-
-      // // Reset core, make sure it resumes correctly
-      // #500 S_AXI_ARESETN = 0;
-      // #10 S_AXI_ARESETN = 1;
-
-      // // TODO: reset behaviour in response to momentary reset isn't entirely clear.
-
-      // // Change to the part of the memory with waits
-      // #15000 S_AXI_ARESETN = 0;
-      // offset_i = 8000;
-      // data_enb_i = 0;
-      // #10 S_AXI_ARESETN = 1;
-      // #10 data_enb_i = 1;
-
-      #200000 if (err) begin
+      #5000 if (err) begin
 	 $display("THERE WERE ERRORS");
 	 $stop; // to return a nonzero error code if the testbench is later scripted at a higher level
       end
@@ -261,59 +228,27 @@ module flodecode_tb;
       #10 check_state("IDLE");
 
       // test synchronised outputs via buffers
-      #(40*BUFS + 260) for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'hdea0 + k);
+      #(40*BUFS + 260) for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'hde00 + k);
 
-      #(30*BUFS + 2810) for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h1110 + k);
-      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h2220 + k);
-      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h3330 + k);
-      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h4440 + k);
-      
-      // // test readout and speed logic
-      // #225 check_output(32'habcd0123);
-      
-      // #36230 for (n = 0; n < 9; n = n + 1) begin
-      // 	 check_output(n); #3070;
-      // end
-      // check_output(9); #1690; // speed up in the middle of pause
-      // for (n = 10; n < 15; n = n + 1) begin
-      // 	 check_output(n); #40;
-      // end
-      // check_output(15); #3070; // slow down in the middle of pause
-      // for (n = 16; n < 18; n = n + 1) begin
-      // 	 check_output(n); #3070;
-      // end
-      // check_output(18); #840;      
+      #(40*BUFS + 3210) for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h1100 + k);
+      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h2200 + k);
+      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h3300 + k);
+      #10 for (k = 0; k < BUFS; k = k + 1) check_output(k, 16'h4400 + k);
 
-      // // test address reset and offset
-      // for (n = 10; n < 13; n = n + 1) begin
-      // 	 check_output(n); #3070;
-      // end
+      // check FIFO-full outputs
+      #620 for (k = 0; k < 5; k = k + 1) begin
+	 #50 check_output(0, 'haaa0 + k);
+	 #50 check_output(15, 'hbbb0 + k);
+      end
 
-      // // test busy causing a skipped valid output
-      // check_output(13); 
-      // #3070 if (valid_o == valid_mask) begin
-      // 	 $display("%d ns: valid_o high, expected low due to serial_busy_i", $time);
-      // 	 err <= 1;
-      // end
-      // #3070;
-      // check_output(15); #3070 check_output(16); #3070;
-      // check_output(17); #3070;
-      // for (n = 0; n < 3; n = n + 1) begin
-      // 	 if (valid_o == valid_mask) begin
-      // 	    $display("%d ns: valid_o high, expected low due to serial_busy_i", $time);
-      // 	    err <= 1;
-      // 	 end
-      // 	 #3070;
-      // end
-      // for (n = 21; n < 25; n = n + 1) begin
-      // 	 check_output(n); #3070;
-      // end
-      // check_output(25); #2600; // uneven delay just from timing of the reconfiguration
-      // // test larger intervals
-      // for (n = 0; n < 16; n = n + 1) begin
-      // 	 check_output({2'd0, n[2:0], 3'd0, 24'd8000 + n[23:0]});
-      // 	 for (p = 0; p <= n[2:0]; p = p + 1) #3070;
-      // end
+      // Check FIFO-overflown outputs
+      #1220 check_output(1, 'hccc0);
+      #100 check_output(1, 'hccc5);      
+
+      // check direct writes
+      #350 check_output(0, 16'hdead);
+      #30 check_output(12, 16'hbeef);
+      #30 check_output(23, 16'hcafe);
    end // initial begin
 
    // Tasks for AXI bus reads and writes
@@ -428,12 +363,11 @@ module flodecode_tb;
 	       bram_amax = UUT.flo_bram[65535];
 
    wire [15:0] data0_o = data_o[0], data1_o = data_o[1], data2_o = data_o[2], data3_o = data_o[3], 
-	       data4_o = data_o[4], data5_o = data_o[5], data6_o = data_o[6], data7_o = data_o[7],
-	       data8_o = data_o[8], data9_o = data_o[9], data10_o = data_o[10], data11_o = data_o[11],
-	       data12_o = data_o[12], data13_o = data_o[13], data14_o = data_o[14], data15_o = data_o[15];
-
-   
-   // wire [23:0] data_o_lower = data_o[23:0]; // to avoid all 32 bits; just for visual debugging
+	       data4_o = data_o[4], data5_o = data_o[5], data6_o = data_o[6], data7_o = data_o[7], 
+	       data8_o = data_o[8], data9_o = data_o[9], data10_o = data_o[10], data11_o = data_o[11], 
+	       data12_o = data_o[12], data13_o = data_o[13], data14_o = data_o[14], data15_o = data_o[15], 
+	       data16_o = data_o[16], data17_o = data_o[17], data18_o = data_o[18], data19_o = data_o[19], 
+	       data20_o = data_o[20], data21_o = data_o[21], data22_o = data_o[22], data23_o = data_o[23];
 
    reg [79:0]  state_ascii = 0;
    always @(UUT.state) begin
