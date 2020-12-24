@@ -8,8 +8,26 @@
 // Last modified : 17.12.2020
 //-----------------------------------------------------------------------------
 // Description :
-// Top-level flocra core file
 //
+// Top-level flocra core file.
+//
+// Outputs: 
+// - direct SPI lines to the gradient boards
+// - direct SPI/I2C? lines to the attenuator core [TODO]
+// - external trigger output
+// - phase words to three external DDS cores
+// - I/Q data to two external complex multipliers
+// - LO source, decimation factor and reset gating to the two RX channels
+//
+// Inputs:
+// - 2x 32-bit downconverted data streams
+// - ADC line from GPA-FHDO
+// - external trigger input
+// 
+// Internal structure:
+// - flodecoder core, responsible for outputs and their timing
+// - resetting and phase offsetting/incrementing is handled here for the DDSes
+// 
 // -----------------------------------------------------------------------------
 // See LICENSE for GPL licensing information
 // ------------------------------------------------------------------------------
@@ -29,7 +47,6 @@
 module flocra #
   (
    // Users to add parameters here
-   parameter test_param = 0
    // User parameters ends
    )
    (

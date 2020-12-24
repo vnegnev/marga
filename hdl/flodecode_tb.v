@@ -159,12 +159,12 @@ module flodecode_tb;
       // Overflow two different buffers
       #1110 rd32(19'h14, 0); // check error register is initially cleared
       for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'd0, 8'd9, 16'haaa0 + 16'(k)});
-      for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + (5+k)*4, {1'b1, 7'd15, 8'd9, 16'hbbb0 + 16'(k)});
+      for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + (5+k)*4, {1'b1, 7'd23, 8'd9, 16'hbbb0 + 16'(k)});
       wr32(19'h40000 + 4*10, {1'b0, UUT.INSTR_FINISH, 24'd0});      
       wr32(19'h0, 32'h1); // start FSM
       wr32(19'h0, 32'h0); // flag the FSM to stop later
-      // read back error register, make sure the error gets flagged, then cleared
-      #200 rd32(19'h14, {16'h0, 16'h8001});
+      // read full register, make sure the full condition gets flagged, then cleared      
+      #200 rd32(19'h20, 'h800001);
       rd32(19'h14, 0);
 
       // Overflow a single buffer more severely, and record the error
@@ -173,7 +173,7 @@ module flodecode_tb;
       wr32(19'h0, 32'h1); // start FSM
       wr32(19'h0, 32'h0); // flag the FSM to stop later
       // read back error register, make sure the error gets flagged, then cleared
-      #200 rd32(19'h14, {16'd2, 16'd2});
+      #200 rd32(19'h1c, 'h2);
       rd32(19'h14, 0);
 
       // Direct writes to buffers 
@@ -238,7 +238,7 @@ module flodecode_tb;
       // check FIFO-full outputs
       #620 for (k = 0; k < 5; k = k + 1) begin
 	 #50 check_output(0, 'haaa0 + k);
-	 #50 check_output(15, 'hbbb0 + k);
+	 #50 check_output(23, 'hbbb0 + k);
       end
 
       // Check FIFO-overflown outputs
