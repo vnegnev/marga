@@ -45,12 +45,12 @@
 
  `timescale 1ns / 1ns
 
-module flocra #
-  (
-   // Users to add parameters here
-   // User parameters ends
-   parameter test_param = 0
-   )
+module flocra
+  // #(
+  //  // Users to add parameters here
+  //  // User parameters ends
+  //  parameter test_param = 0
+  //  )
    (
     // Outputs to the OCRA1 board (concatenation on the expansion header etc will be handled in Vivado's block diagram)
     output 				  ocra1_clk_o, // SPI clock
@@ -90,27 +90,27 @@ module flocra #
     input 				  trig_i,
 
     // streaming inputs to RX0 FIFO
-    input 				  rx0_axis_wvalid_i,
-    input [31:0] 			  rx0_axis_wdata_i,
-    output 				  rx0_axis_wready_o,
+    input 				  rx0_axis_tvalid_i,
+    input [31:0] 			  rx0_axis_tdata_i,
+    output 				  rx0_axis_tready_o,
 
     // RX0 LO source select
     output [1:0] 			  rx0_dds_source_o,
 
     // streaming inputs to RX1 FIFO    
-    input 				  rx1_axis_wvalid_i,
-    input [31:0] 			  rx1_axis_wdata_i,
-    output 				  rx1_axis_wready_o,
+    input 				  rx1_axis_tvalid_i,
+    input [31:0] 			  rx1_axis_tdata_i,
+    output 				  rx1_axis_tready_o,
 
     // RX1 LO source select
     output [1:0] 			  rx1_dds_source_o,
 
     // streaming outputs to TX multipliers; I/Q 16-bit each
-    output reg [31:0] 			  tx0_axis_wdata_o,
-    output 				  tx0_axis_wvalid_o,
+    output reg [31:0] 			  tx0_axis_tdata_o,
+    output 				  tx0_axis_tvalid_o,
 
-    output reg [31:0] 			  tx1_axis_wdata_o,
-    output 				  tx1_axis_wvalid_o,
+    output reg [31:0] 			  tx1_axis_tdata_o,
+    output 				  tx1_axis_tvalid_o,
    
     // User ports ends
     // Do not modify the ports beyond this line
@@ -205,10 +205,10 @@ module flocra #
    assign rx0_rate_o = rx0_ctrl[9:0], rx1_rate_o = rx1_ctrl[9:0];
 
    // TX data buses
-   assign tx0_axis_wvalid_o = 1, tx1_axis_wvalid_o = 1;
+   assign tx0_axis_tvalid_o = 1, tx1_axis_tvalid_o = 1;
    always @(posedge clk) begin
-      tx0_axis_wdata_o <= {tx0_q, tx0_i};
-      tx1_axis_wdata_o <= {tx1_q, tx1_i};
+      tx0_axis_tdata_o <= {tx0_q, tx0_i};
+      tx1_axis_tdata_o <= {tx1_q, tx1_i};
    end
 
    // DDS phase control (31 bits)
@@ -292,13 +292,13 @@ module flocra #
 	.data_o(fld_data),
 	.stb_o(fld_stb),
 
-	.rx0_data(rx0_axis_wdata_i[23:0]),
-	.rx0_valid(rx0_axis_wvalid_i),
-	.rx0_ready(rx0_axis_wready_o),
+	.rx0_data(rx0_axis_tdata_i[23:0]),
+	.rx0_valid(rx0_axis_tvalid_i),
+	.rx0_ready(rx0_axis_tready_o),
 
-	.rx1_data(rx1_axis_wdata_i[23:0]),
-	.rx1_valid(rx1_axis_wvalid_i),
-	.rx1_ready(rx1_axis_wready_o),
+	.rx1_data(rx1_axis_tdata_i[23:0]),
+	.rx1_valid(rx1_axis_tvalid_i),
+	.rx1_ready(rx1_axis_tready_o),
 
 	.S_AXI_ACLK			(s0_axi_aclk),
 	.S_AXI_ARESETN			(s0_axi_aresetn),
