@@ -10,7 +10,9 @@
 // Description :
 //
 // Low-level testbench for flocra, mainly to help with HDL design
-// rather to exercise all possible functionality.
+// rather to exercise all possible functionality. Only uses 'immediate
+// output' functionality to test the system features; see more
+// advanced testbenches for streaming tests.
 //
 //-----------------------------------------------------------------------------
 // Copyright (c) 2020 by OCRA developers This model is the confidential and
@@ -27,6 +29,7 @@
  `include "flocra.v"
  `include "ocra1_model.v"
  `include "gpa_fhdo_model.v"
+ `include "rx_chain_model.v"
 
  `timescale 1ns/1ns
 
@@ -34,9 +37,9 @@ module flocra_simple_tb;
    localparam C_S0_AXI_ADDR_WIDTH = 19, C_S0_AXI_DATA_WIDTH = 32;
 
    reg err = 0;
+   wire fhdo_sdi_i;
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
-   reg			fhdo_sdi_i;		// To UUT of flocra.v
    reg [31:0]		rx0_axis_tdata_i;	// To UUT of flocra.v
    reg			rx0_axis_tvalid_i;	// To UUT of flocra.v
    reg [31:0]		rx1_axis_tdata_i;	// To UUT of flocra.v
@@ -107,7 +110,42 @@ module flocra_simple_tb;
       $dumpfile("icarus_compile/000_flocra_simple_tb.lxt");
       $dumpvars(0, flocra_simple_tb);
 
+      // rx0_axis_tdata_i = 0;
+      // rx0_axis_tvalid_i = 0;
+      // rx1_axis_tdata_i = 0;
+      // rx1_axis_tvalid_i = 0;
       s0_axi_aclk = 1;
+      s0_axi_araddr = 0;
+      s0_axi_aresetn = 0;
+      s0_axi_arprot = 0;
+      s0_axi_arvalid = 0;
+      s0_axi_awaddr = 0;
+      s0_axi_awprot = 0;
+      s0_axi_awvalid = 0;
+      s0_axi_bready = 0;
+      s0_axi_rready = 0;
+      s0_axi_wdata = 0;
+      s0_axi_wstrb = 0;
+      s0_axi_wvalid = 0;
+      trig_i = 0;
+
+      #10 s0_axi_aresetn = 1;
+
+      // enable ocra1, disable gpa-fhdo, set SPI clock div to 5, reset ocra1
+      #10 wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd5, 1'd0, 1'd1}});
+      wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd1, 6'd5, 1'd0, 1'd1}}); // un-reset ocra1
+
+      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3210}); // LSBs for SPI out, ch0
+      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h00c4}); // MSBs for SPI out, ch0
+
+      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3211}); // LSBs for SPI out, ch1
+      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h02d4}); // MSBs for SPI out, ch1
+
+      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3212}); // LSBs for SPI out, ch2
+      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h04e4}); // MSBs for SPI out, ch2
+
+      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3213}); // LSBs for SPI out, ch3
+      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h07f4}); // MSBs for SPI out, ch3
 
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");
@@ -160,7 +198,7 @@ module flocra_simple_tb;
       end
    endtask // rd32
 
-   ocra1_model #(/*AUTOINSTPARAM*/)
+   ocra1_model
    ocra1(
 	 // Outputs
 	 .voutx				(ocra1_voutx[17:0]),
@@ -176,7 +214,7 @@ module flocra_simple_tb;
 	 .sdoz				(ocra1_sdoz_o),
 	 .sdoz2				(ocra1_sdoz2_o));
 
-   gpa_fhdo_model #(/*AUTOINSTPARAM*/)
+   gpa_fhdo_model
    fhdo(
 	// Outputs
 	.sdi				(fhdo_sdi_i),
@@ -188,6 +226,30 @@ module flocra_simple_tb;
 	.clk				(clk),
 	.csn				(fhdo_ssn_o),
 	.sdo				(fhdo_sdo_o));
+
+   rx_chain_model rx0(
+		      .clk(clk),
+		      .rst_n(rx0_rst_n_o),
+		      .rate_i(rx0_rate_o),
+		      .dds0_i(18'd0),
+		      .dds1_i(18'd0),
+		      .dds2_i(18'd0),
+		      .dds_source_i(rx0_dds_source_o),
+		      .axis_tvalid_o(rx0_axis_tvalid_i),
+		      .axis_tdata_o(rx0_axis_tdata_i)
+		      );
+
+   rx_chain_model rx1(
+		      .clk(clk),
+		      .rst_n(rx1_rst_n_o),
+		      .rate_i(rx1_rate_o),
+		      .dds0_i(18'd0),
+		      .dds1_i(18'd0),
+		      .dds2_i(18'd0),
+		      .dds_source_i(rx1_dds_source_o),
+		      .axis_tvalid_o(rx1_axis_tvalid_i),
+		      .axis_tdata_o(rx1_axis_tdata_i)
+		      );   
    
    flocra #(/*AUTOINSTPARAM*/)
    UUT(/*AUTOINST*/

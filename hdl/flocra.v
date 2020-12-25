@@ -140,7 +140,7 @@ module flocra
     );
 
    // General outputs from flodecode
-   // 0: general-purpose system control bus: TX/RX gates, RX resets, and grad settings
+   // 0: gradient control: grad SPI divisor and board selection settings
    // 1: gradient outputs, MSB (stb also triggers grad cores)
    // 2: gradient outputs, LSB
    // 3: RX 0 settings: decimation and DDS source
@@ -300,6 +300,7 @@ module flocra
 	.rx1_valid(rx1_axis_tvalid_i),
 	.rx1_ready(rx1_axis_tready_o),
 
+	// bus inputs
 	.S_AXI_ACLK			(s0_axi_aclk),
 	.S_AXI_ARESETN			(s0_axi_aresetn),
 	.S_AXI_AWADDR			(s0_axi_awaddr[C_S0_AXI_ADDR_WIDTH-1:0]),
@@ -312,7 +313,17 @@ module flocra
 	.S_AXI_ARADDR			(s0_axi_araddr[C_S0_AXI_ADDR_WIDTH-1:0]),
 	.S_AXI_ARPROT			(s0_axi_arprot[2:0]),
 	.S_AXI_ARVALID			(s0_axi_arvalid),
-	.S_AXI_RREADY			(s0_axi_rready)
+	.S_AXI_RREADY			(s0_axi_rready),
+
+	// bus outputs
+	.S_AXI_AWREADY			(s0_axi_awready),
+	.S_AXI_WREADY			(s0_axi_wready),
+	.S_AXI_BRESP			(s0_axi_bresp[1:0]),
+	.S_AXI_BVALID			(s0_axi_bvalid),
+	.S_AXI_ARREADY			(s0_axi_arready),
+	.S_AXI_RDATA			(s0_axi_rdata[C_S0_AXI_DATA_WIDTH-1:0]),
+	.S_AXI_RRESP			(s0_axi_rresp[1:0]),
+	.S_AXI_RVALID			(s0_axi_rvalid)
 	);
 	
 

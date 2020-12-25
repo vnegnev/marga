@@ -346,16 +346,16 @@ module flodecode #
 	    flo_bram_waddr <= axi_addr[OPT_MEM_ADDR_BITS-1:0]; // BRAM has 16-bit address space by default
 	    flo_bram_wdata <= S_AXI_WDATA;
 	 end else begin // lower range: write to config registers
-	    case (axi_addr[2:0]) // TODO: look at more than lower 3 bits if this is ever expanded
+	    case (axi_addr[3:0]) // TODO: look at more than lower 4 bits if this is ever expanded
 	      // no resets
-	      3'd0: slv_reg0 <= S_AXI_WDATA;
-	      3'd1: slv_reg1 <= S_AXI_WDATA;
-	      3'd2: begin
+	      4'd0: slv_reg0 <= S_AXI_WDATA;
+	      4'd1: slv_reg1 <= S_AXI_WDATA;
+	      4'd2: begin
 		 slv_reg2 <= S_AXI_WDATA;
 		 direct_wen <= 1;
 	      end
-	      3'd3: slv_reg3 <= S_AXI_WDATA;
-	      default;
+	      4'd3: slv_reg3 <= S_AXI_WDATA;
+	      default; // no write
 	    endcase // case (axi_addr[1:0])
 	 end
       end // if (slv_reg_wen)
@@ -587,7 +587,7 @@ module flodecode #
    always @(*) begin
       // Address decoding for reading registers
       // case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
-      case ( axi_araddr[ADDR_LSB+4:ADDR_LSB] )
+      case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
 	4'h0   : reg_data_out = slv_reg0;
 	4'h1   : reg_data_out = slv_reg1;
 	4'h2   : reg_data_out = slv_reg2;
