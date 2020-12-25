@@ -49,22 +49,23 @@ module flocra #
   (
    // Users to add parameters here
    // User parameters ends
+   parameter test_param = 0
    )
    (
     // Outputs to the OCRA1 board (concatenation on the expansion header etc will be handled in Vivado's block diagram)
-    output 				  oc1_clk_o, // SPI clock
-    output 				  oc1_syncn_o, // sync (roughly equivalent to SPI CS)
-    output 				  oc1_ldacn_o, // ldac
-    output 				  oc1_sdox_o, // data out, X DAC
-    output 				  oc1_sdoy_o, // data out, Y DAC
-    output 				  oc1_sdoz_o, // data out, Z DAC
-    output 				  oc1_sdoz2_o, // data out, Z2 DAC
+    output 				  ocra1_clk_o, // SPI clock
+    output 				  ocra1_syncn_o, // sync (roughly equivalent to SPI CS)
+    output 				  ocra1_ldacn_o, // ldac
+    output 				  ocra1_sdox_o, // data out, X DAC
+    output 				  ocra1_sdoy_o, // data out, Y DAC
+    output 				  ocra1_sdoz_o, // data out, Z DAC
+    output 				  ocra1_sdoz2_o, // data out, Z2 DAC
 
     // I/O to the GPA-FHDO board
-    output 				  fhd_clk_o, // SPI clock
-    output 				  fhd_sdo_o, // data out
-    output 				  fhd_ssn_o, // SPI CS
-    input 				  fhd_sdi_i, // data in
+    output 				  fhdo_clk_o, // SPI clock
+    output 				  fhdo_sdo_o, // data out
+    output 				  fhdo_ssn_o, // SPI CS
+    input 				  fhdo_sdi_i, // data in
 
     // Outputs to the attenuator chip on the ocra1
     // TODO
@@ -74,18 +75,42 @@ module flocra #
     output 				  rx_gate_o,
 
     // TX DDS phase control
-    output reg [24:0] 			  dds0_phase, dds1_phase, dds2_phase,
+    output reg [24:0] 			  dds0_phase_o, dds1_phase_o, dds2_phase_o,
+    // output 				  dds0_phase_en, dds1_phase_en, dds2_phase_en;
 
     // RX DDS channel multiplexing
     // TODO HERE
 
     // RX reset, CIC decimation ratio control (from 1 to 1023)
-    output 				  rx0_rst_n, rx1_rst_n, 
+    output 				  rx0_rst_n_o, rx1_rst_n_o,
     output [9:0] 			  rx0_rate_o, rx1_rate_o,
 
     // External trigger output and input
     output 				  trig_o,
     input 				  trig_i,
+
+    // streaming inputs to RX0 FIFO
+    input 				  rx0_axis_wvalid_i,
+    input [31:0] 			  rx0_axis_wdata_i,
+    output 				  rx0_axis_wready_o,
+
+    // RX0 LO source select
+    output [1:0] 			  rx0_dds_source_o,
+
+    // streaming inputs to RX1 FIFO    
+    input 				  rx1_axis_wvalid_i,
+    input [31:0] 			  rx1_axis_wdata_i,
+    output 				  rx1_axis_wready_o,
+
+    // RX1 LO source select
+    output [1:0] 			  rx1_dds_source_o,
+
+    // streaming outputs to TX multipliers; I/Q 16-bit each
+    output reg [31:0] 			  tx0_axis_wdata_o,
+    output 				  tx0_axis_wvalid_o,
+
+    output reg [31:0] 			  tx1_axis_wdata_o,
+    output 				  tx1_axis_wvalid_o,
    
     // User ports ends
     // Do not modify the ports beyond this line
@@ -111,98 +136,187 @@ module flocra #
     output [C_S0_AXI_DATA_WIDTH-1 : 0] 	  s0_axi_rdata,
     output [1 : 0] 			  s0_axi_rresp,
     output 				  s0_axi_rvalid,
-    input 				  s0_axi_rready,
-
+    input 				  s0_axi_rready
     );
+
+   // General outputs from flodecode
+   // 0: general-purpose system control bus: TX/RX gates, RX resets, and grad settings
+   // 1: gradient outputs, MSB (stb also triggers grad cores)
+   // 2: gradient outputs, LSB
+   // 3: RX 0 settings: decimation and DDS source
+   // 4: RX 1 settings: decimation and DDS source
+   // 5: TX 0 i stream
+   // 6: TX 0 q stream
+   // 7: TX 1 i stream
+   // 8: TX 1 q stream
+   // 9: TX LO 0 phase increment, LSBs
+   // 10: TX LO 0 phase increment, MSBs and clear bit
+   // 11: TX LO 1 phase increment, LSBs
+   // 12: TX LO 1 phase increment, MSBs and clear bit
+   // 13: TX LO 2 phase increment, LSBs
+   // 14: TX LO 2 phase increment, MSBs and clear bit   
+   // 15: TX and RX gate control
+   wire [15:0] 				      fld_data[23:0];
+   wire [23:0] 				      fld_stb;
+   wire [31:0] 				      fld_status, fld_status_latch;
+
+   wire [15:0] 				      grad_ctrl = fld_data[0];
+   wire [15:0] 				      grad_data_lsb = fld_data[1];
+   wire [15:0] 				      grad_data_msb = fld_data[2];
+   wire [15:0] 				      rx0_ctrl = fld_data[3];
+   wire [15:0] 				      rx1_ctrl = fld_data[4];
+   wire [15:0] 				      tx0_i = fld_data[5];
+   wire [15:0] 				      tx0_q = fld_data[6];
+   wire [15:0] 				      tx1_i = fld_data[7];
+   wire [15:0] 				      tx1_q = fld_data[8];
+   wire [15:0] 				      lo0_phase_lsb = fld_data[9];
+   wire [15:0] 				      lo0_phase_msb = fld_data[10];
+   wire [15:0] 				      lo1_phase_lsb = fld_data[11];
+   wire [15:0] 				      lo1_phase_msb = fld_data[12];
+   wire [15:0] 				      lo2_phase_lsb = fld_data[13];
+   wire [15:0] 				      lo2_phase_msb = fld_data[14];
+   wire [15:0] 				      gate_ctrl = fld_data[15];
 
    // Parameters of Axi Slave Bus Interface S0_AXI
    localparam integer 			      C_S0_AXI_DATA_WIDTH = 32;
    localparam integer 			      C_S0_AXI_ADDR_WIDTH = 19;
    wire 				      clk = s0_axi_aclk;
 
-   // Interface connections
-   wire [31:0] 				      gpa_data;
-   wire 				      ocra1_data_valid, fhdo_data_valid;
-   wire [5:0] 				      spi_clk_div;
+   // Gradient control lines
+   wire 				      ocra1_en = grad_ctrl[0];
+   wire 				      fhdo_en = grad_ctrl[1];
+   wire [5:0] 				      grad_spi_clk_div = grad_ctrl[7:2];
+   wire 				      ocra1_rst_n = grad_ctrl[8];
+   wire [31:0] 				      grad_data = {grad_data_msb, grad_data_lsb};
+
+   wire 				      ocra1_data_valid = ocra1_en & fld_stb[1];
+   wire 				      fhdo_data_valid = fhdo_en & fld_stb[1];
    wire [15:0] 				      fhdo_adc; // ADC data from GPA-FHDO
+   wire 				      fhdo_busy;
+   wire 				      ocra1_busy, ocra1_data_lost;
+   wire 				      ocra1_error = ocra1_busy & ocra1_data_valid;
+   wire 				      fhdo_err = fhdo_busy & fhdo_data_valid;
+   assign fld_status = {16'd0, fhdo_adc};
+   assign fld_status_latch = {29'd0, fhdo_err, ocra1_error, ocra1_data_lost};
+
+   // RX control lines
+   assign rx0_rst_n_o = rx0_ctrl[12], rx1_rst_n_o = rx1_ctrl[12];
+   assign rx0_dds_source_o = rx0_ctrl[11:10], rx1_dds_source_o = rx1_ctrl[11:10];   
+   assign rx0_rate_o = rx0_ctrl[9:0], rx1_rate_o = rx1_ctrl[9:0];
+
+   // TX data buses
+   assign tx0_axis_wvalid_o = 1, tx1_axis_wvalid_o = 1;
+   always @(posedge clk) begin
+      tx0_axis_wdata_o <= {tx0_q, tx0_i};
+      tx1_axis_wdata_o <= {tx1_q, tx1_i};
+   end
+
+   // DDS phase control (31 bits)
+   // TODO: parameterise all widths etc
+   wire [30:0] dds0_phase_step = {lo0_phase_msb[14:0], lo0_phase_lsb},
+	       dds1_phase_step = {lo1_phase_msb[14:0], lo1_phase_lsb},
+	       dds2_phase_step = {lo2_phase_msb[14:0], lo2_phase_lsb};
+   wire dds0_phase_clear = lo0_phase_msb[15],
+	dds1_phase_clear = lo1_phase_msb[15],
+	dds2_phase_clear = lo2_phase_msb[15];
+   reg 	dds0_phase_clear_r = 0, dds1_phase_clear_r = 0, dds2_phase_clear_r = 0;
+   reg [30:0] dds0_phase_full = 0, dds1_phase_full = 0, dds2_phase_full = 0;
+   assign dds0_phase_o = dds0_phase_full[30:6], 
+     dds1_phase_o = dds1_phase_full[30:6], 
+     dds2_phase_o = dds2_phase_full[30:6];
+
+   always @(posedge clk) begin
+      {dds2_phase_clear_r, dds1_phase_clear_r, dds0_phase_clear_r}
+	<= {dds2_phase_clear, dds1_phase_clear, dds0_phase_clear};
+      
+      if (dds0_phase_clear != dds0_phase_clear_r) dds0_phase_full <= 0;
+      else dds0_phase_full <= {lo0_phase_msb[14:0], lo0_phase_lsb};
+      
+      if (dds1_phase_clear != dds1_phase_clear_r) dds1_phase_full <= 0;
+      else dds1_phase_full <= {lo1_phase_msb[14:0], lo1_phase_lsb};
+      
+      if (dds2_phase_clear != dds2_phase_clear_r) dds2_phase_full <= 0;
+      else dds2_phase_full <= {lo2_phase_msb[14:0], lo2_phase_lsb};
+   end
+
+   // TX and RX gates
+   assign tx_gate_o = gate_ctrl[0], rx_gate_o = gate_ctrl[1];
+   
+   // wire [15:0] 				      
 
    // for the ocra1, data can be written even while it's outputting to
    // SPI - for the fhd, this isn't the case. So don't use the
    // oc1_busy line in grad_bram, since it would mean that false
    // errors would get flagged - just fhd_busy for now.
-   wire 				      fhd_busy;
-   wire 				      oc1_busy, oc1_data_lost;      
    
    ocra1_iface ocra1_if (
 			 // Outputs
-			 .oc1_clk_o	(oc1_clk_o),
-			 .oc1_syncn_o	(oc1_syncn_o),
-			 .oc1_ldacn_o	(oc1_ldacn_o),
-			 .oc1_sdox_o	(oc1_sdox_o),
-			 .oc1_sdoy_o	(oc1_sdoy_o),
-			 .oc1_sdoz_o	(oc1_sdoz_o),
-			 .oc1_sdoz2_o	(oc1_sdoz2_o),
-			 .busy_o       	(oc1_busy),
-			 .data_lost_o   (oc1_data_lost),
+			 .oc1_clk_o	(ocra1_clk_o),
+			 .oc1_syncn_o	(ocra1_syncn_o),
+			 .oc1_ldacn_o	(ocra1_ldacn_o),
+			 .oc1_sdox_o	(ocra1_sdox_o),
+			 .oc1_sdoy_o	(ocra1_sdoy_o),
+			 .oc1_sdoz_o	(ocra1_sdoz_o),
+			 .oc1_sdoz2_o	(ocra1_sdoz2_o),
+			 .busy_o       	(ocra1_busy),
+			 .data_lost_o   (ocra1_data_lost),
 			 // Inputs
 			 .clk		(clk),
-			 .rst_n         (grad_bram_enb_i), // purely for clearing data_lost for initial word
-			 .data_i       	(data),
-			 .valid_i      	(oc1_data_valid),
-			 .spi_clk_div_i	(spi_clk_div));
+			 .rst_n         (ocra1_rst_n), // purely for clearing data_lost for initial word
+			 .data_i       	(grad_data),
+			 .valid_i      	(ocra1_data_valid),
+			 .spi_clk_div_i	(grad_spi_clk_div));
    
    gpa_fhdo_iface gpa_fhdo_if (
 			       // Outputs
-			       .fhd_clk_o	(fhd_clk_o),
-			       .fhd_sdo_o	(fhd_sdo_o),
-			       .fhd_csn_o	(fhd_ssn_o),
-			       .busy_o		(fhd_busy),
-			       .adc_value_o	(fhd_adc),
+			       .fhd_clk_o	(fhdo_clk_o),
+			       .fhd_sdo_o	(fhdo_sdo_o),
+			       .fhd_csn_o	(fhdo_ssn_o),
+			       .busy_o		(fhdo_busy),
+			       .adc_value_o	(fhdo_adc),
 			       // Inputs
 			       .clk		(clk),
-			       .data_i		(data),
-			       .spi_clk_div_i	(spi_clk_div),
-			       .valid_i		(gpa_fhdo_data_valid),
-			       .fhd_sdi_i	(fhd_sdi_i));
+			       .data_i		(grad_data),
+			       .spi_clk_div_i	(grad_spi_clk_div),
+			       .valid_i		(fhdo_data_valid),
+			       .fhd_sdi_i	(fhdo_sdi_i));
 
 
    ///////////////////////// FLODECODE ////////////////////////////
-     wire [15:0] fld_data[23:0];
-   wire [23:0] 	 fld_stb;
    
-       flodecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
+   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
    fld (
 	.trig_i(trig_i),
-	.status_i({16'd0, fhdo_adc}), // spare bits available for external status
-	.status_latch_i({29'd0, fhd_busy, oc1_busy, oc1_data_lost}),
+	.status_i(fld_status), // spare bits available for external status
+	.status_latch_i(fld_status_latch),
 	.data_o(fld_data),
 	.stb_o(fld_stb),
 
-	.rx0_data(s1_axis_wdata)
-	.rx0_valid(s1_axis_wvalid)
-	.rx0_ready(s1_axis_wready),
+	.rx0_data(rx0_axis_wdata_i[23:0]),
+	.rx0_valid(rx0_axis_wvalid_i),
+	.rx0_ready(rx0_axis_wready_o),
 
-	.rx1_data(s2_axis_wdata)
-	.rx1_valid(s2_axis_wvalid)
-	.rx1_ready(s2_axis_wready),
+	.rx1_data(rx1_axis_wdata_i[23:0]),
+	.rx1_valid(rx1_axis_wvalid_i),
+	.rx1_ready(rx1_axis_wready_o),
 
-	.S_AXI_ACLK			(S0_AXI_ACLK),
-	.S_AXI_ARESETN			(S0_AXI_ARESETN),
-	.S_AXI_AWADDR			(S0_AXI_AWADDR[C_S0_AXI_ADDR_WIDTH-1:0]),
-	.S_AXI_AWPROT			(S0_AXI_AWPROT[2:0]),
-	.S_AXI_AWVALID			(S0_AXI_AWVALID),
-	.S_AXI_WDATA			(S0_AXI_WDATA[C_S0_AXI_DATA_WIDTH-1:0]),
-	.S_AXI_WSTRB			(S0_AXI_WSTRB[(C_S0_AXI_DATA_WIDTH/8)-1:0]),
-	.S_AXI_WVALID			(S0_AXI_WVALID),
-	.S_AXI_BREADY			(S0_AXI_BREADY),
-	.S_AXI_ARADDR			(S0_AXI_ARADDR[C_S0_AXI_ADDR_WIDTH-1:0]),
-	.S_AXI_ARPROT			(S0_AXI_ARPROT[2:0]),
-	.S_AXI_ARVALID			(S0_AXI_ARVALID),
-	.S_AXI_RREADY			(S0_AXI_RREADY)
+	.S_AXI_ACLK			(s0_axi_aclk),
+	.S_AXI_ARESETN			(s0_axi_aresetn),
+	.S_AXI_AWADDR			(s0_axi_awaddr[C_S0_AXI_ADDR_WIDTH-1:0]),
+	.S_AXI_AWPROT			(s0_axi_awprot[2:0]),
+	.S_AXI_AWVALID			(s0_axi_awvalid),
+	.S_AXI_WDATA			(s0_axi_wdata[C_S0_AXI_DATA_WIDTH-1:0]),
+	.S_AXI_WSTRB			(s0_axi_wstrb[(C_S0_AXI_DATA_WIDTH/8)-1:0]),
+	.S_AXI_WVALID			(s0_axi_wvalid),
+	.S_AXI_BREADY			(s0_axi_bready),
+	.S_AXI_ARADDR			(s0_axi_araddr[C_S0_AXI_ADDR_WIDTH-1:0]),
+	.S_AXI_ARPROT			(s0_axi_arprot[2:0]),
+	.S_AXI_ARVALID			(s0_axi_arvalid),
+	.S_AXI_RREADY			(s0_axi_rready)
 	);
 	
 
 	
 
-endmodule
-`endif //  `ifndef _OCRA_GRAD_CTRL_
+endmodule // flocra
+`endif //  `ifndef _FLOCRA_
