@@ -51,10 +51,10 @@ module flodecode_tb;
    reg [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA;	// To UUT of flodecode.v
    reg [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB;// To UUT of flodecode.v
    reg			S_AXI_WVALID;		// To UUT of flodecode.v
-   reg [31:0]		s0_axis_wdata;		// To UUT of flodecode.v
-   reg			s0_axis_wvalid;		// To UUT of flodecode.v
-   reg [31:0]		s1_axis_wdata;		// To UUT of flodecode.v
-   reg			s1_axis_wvalid;		// To UUT of flodecode.v
+   reg [23:0]		rx0_data;		// To UUT of flodecode.v
+   reg			rx0_valid;		// To UUT of flodecode.v
+   reg [23:0]		rx1_data;		// To UUT of flodecode.v
+   reg			rx1_valid;		// To UUT of flodecode.v
    reg [31:0]		status_i;		// To UUT of flodecode.v
    reg [31:0]		status_latch_i;		// To UUT of flodecode.v
    reg			trig_i;			// To UUT of flodecode.v
@@ -71,8 +71,8 @@ module flodecode_tb;
    wire			S_AXI_RVALID;		// From UUT of flodecode.v
    wire			S_AXI_WREADY;		// From UUT of flodecode.v
    wire [15:0]		data_o [BUFS-1:0];	// From UUT of flodecode.v
-   wire			s0_axis_wready;		// From UUT of flodecode.v
-   wire			s1_axis_wready;		// From UUT of flodecode.v
+   wire			rx0_ready;		// From UUT of flodecode.v
+   wire			rx1_ready;		// From UUT of flodecode.v
    wire [BUFS-1:0]	stb_o;			// From UUT of flodecode.v
    // End of automatics
    
@@ -195,14 +195,14 @@ module flodecode_tb;
       // FIRST TEST: pump a bunch of data into the FIFOs
       // 
       for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) begin
-	 s0_axis_wvalid = 1;
-	 s1_axis_wvalid = k % 2; // half the data rate
-	 s0_axis_wdata <= 100 + k;
-	 s1_axis_wdata <= 200 + k;
+	 rx0_valid = 1;
+	 rx1_valid = k % 2; // half the data rate
+	 rx0_data <= 100 + k;
+	 rx1_data <= 200 + k;
 	 #10;
       end
-      s0_axis_wvalid = 0;
-      s1_axis_wvalid = 0;
+      rx0_valid = 0;
+      rx1_valid = 0;
 
       // check new status, after time has passed for FIFOs to update their fullness
       #30 rd32(19'h24, {16'(RX_FIFO_LENGTH/4), 16'(RX_FIFO_LENGTH/2)});
@@ -217,14 +217,14 @@ module flodecode_tb;
       // NEXT TEST: pump a bunch of data into the FIFOs, overfilling them
       //
       for (k = 0; k < RX_FIFO_LENGTH+10; k = k + 1) begin
-	 s0_axis_wvalid = 1;
-	 s1_axis_wvalid = 1;
-	 s0_axis_wdata <= 300 + k;
-	 s1_axis_wdata <= 400 + k;
+	 rx0_valid = 1;
+	 rx1_valid = 1;
+	 rx0_data <= 300 + k;
+	 rx1_data <= 400 + k;
 	 #10;
       end
-      s0_axis_wvalid = 0;
-      s1_axis_wvalid = 0;
+      rx0_valid = 0;
+      rx1_valid = 0;
 
       // check new status, after time has passed for FIFOs to update their fullness
       #30 rd32(19'h24, {16'(RX_FIFO_LENGTH-1), 16'(RX_FIFO_LENGTH-1)});
@@ -385,8 +385,8 @@ module flodecode_tb;
        // Outputs
        .data_o				(data_o/*[15:0].[BUFS-1:0]*/),
        .stb_o				(stb_o[BUFS-1:0]),
-       .s0_axis_wready			(s0_axis_wready),
-       .s1_axis_wready			(s1_axis_wready),
+       .rx0_ready			(rx0_ready),
+       .rx1_ready			(rx1_ready),
        .S_AXI_AWREADY			(S_AXI_AWREADY),
        .S_AXI_WREADY			(S_AXI_WREADY),
        .S_AXI_BRESP			(S_AXI_BRESP[1:0]),
@@ -399,10 +399,10 @@ module flodecode_tb;
        .trig_i				(trig_i),
        .status_i			(status_i[31:0]),
        .status_latch_i			(status_latch_i[31:0]),
-       .s0_axis_wdata			(s0_axis_wdata[31:0]),
-       .s0_axis_wvalid			(s0_axis_wvalid),
-       .s1_axis_wdata			(s1_axis_wdata[31:0]),
-       .s1_axis_wvalid			(s1_axis_wvalid),
+       .rx0_data			(rx0_data[23:0]),
+       .rx0_valid			(rx0_valid),
+       .rx1_data			(rx1_data[23:0]),
+       .rx1_valid			(rx1_valid),
        .S_AXI_ACLK			(S_AXI_ACLK),
        .S_AXI_ARESETN			(S_AXI_ARESETN),
        .S_AXI_AWADDR			(S_AXI_AWADDR[C_S_AXI_ADDR_WIDTH-1:0]),
