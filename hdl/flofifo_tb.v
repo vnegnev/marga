@@ -62,6 +62,24 @@ module flofifo_tb;
       #70 read_i = 1;
       #10 read_i = 0;
 
+      // Multiple continuous write, multiple continuous read once write is done
+      #10 valid_i = 1;
+      for (k = 0; k < 10; k = k + 1) begin
+	 data_i <= 100 + k; #10;
+      end
+      valid_i = 0;
+      #50 read_i = 1;
+      #90 read_i = 0;
+
+      // Fill up the FIFO
+      #10 valid_i = 1;
+      for (k = 0; k < LENGTH; k = k + 1) begin
+	 data_i <= 200 + k; #10;
+      end
+      valid_i = 0;
+
+      // CONTINUE HERE, ADD CHECKS ETC
+
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");
 	 $stop; // to return a nonzero error code if the testbench is later scripted at a higher level

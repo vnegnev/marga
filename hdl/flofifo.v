@@ -9,6 +9,12 @@
 //-----------------------------------------------------------------------------
 // Description :
 // RX FIFO to be used as part of flocra
+//
+// NOTE: This FIFO relies on external logic to avoid reading out too
+// much data, or it will fail. External logic should closely monitor
+// locs_o, and avoid requesting more data than it contains - otherwise
+// meaningless data will be returned.
+//
 //-----------------------------------------------------------------------------
 // Copyright (c) 2020 by OCRA developers This model is the confidential and
 // proprietary property of OCRA developers and the possession or use of this
@@ -35,8 +41,8 @@ module flofifo #
 
     input read_i, // output data was read, want to read next sample
 
-    output reg [WIDTH-1:0] data_o,
-    output reg valid_o, // data ready to be read
+    output reg [WIDTH-1:0] data_o, // always output mem data from current out address
+    output reg valid_o, // new data is valid (when out address has changed)
 
     output reg [$clog2(LENGTH)-1:0] locs_o,
     output reg empty_o, full_o//, err_empty_o, err_full_o
@@ -81,16 +87,18 @@ module flofifo #
       // samples ready to read out, and the memory only goes dry when
       // the FIFO goes empty! Must work cycle-to-cycle.
       
-      // always read out memory
+      // always read out memory from current address
       out_data_r <= fifo_mem[out_ptr];
       data_o <= out_data_r;
 
-      if (read_i) valid_o <= 0;
-      if (!valid_o && !empty_o) valid_o <= 1;
+      // if (read_i) valid_o <= 0;
+      // if (!valid_o && !empty_o) valid_o <= 1;
 
-      if (read_r && !empty_o) begin
-	 out_ptr <= out_ptr + 1;
-      end
+      if (read_i) out_ptr <= out_ptr + 1;
+
+      // if (read_r && !empty_o) begin
+      // 	 out_ptr <= out_ptr + 1;
+      // end
    end
 
 endmodule // flofifo
