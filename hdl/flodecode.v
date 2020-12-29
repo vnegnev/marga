@@ -361,10 +361,9 @@ module flodecode #
       end // if (slv_reg_wen)
    end // always @ (posedge clk)
 
-   localparam STATE_BITS = 4;
-   localparam IDLE = STATE_BITS'('d0), PREPARE = STATE_BITS'('d1), RUN = STATE_BITS'('d2), 
-     COUNTDOWN = STATE_BITS'('d3), TRIG = STATE_BITS'('d4), TRIG_FOREVER = STATE_BITS'('d5), 
-     HALT = STATE_BITS'('d8);
+   localparam IDLE = 4'd0, PREPARE = 4'd1, RUN = 4'd2,
+     COUNTDOWN = 4'd3, TRIG = 4'd4, TRIG_FOREVER = 4'd5,
+     HALT = 4'd8;
    reg [STATE_BITS-1:0]  state = IDLE;
    wire [BUF_BITS-1:0] buf_idx = flo_bram_rdata_r[24+BUF_BITS-1:24];
    wire [BUF_BITS-1:0] direct_buf_idx = slv_reg2[24+BUF_BITS-1:24];
@@ -482,7 +481,7 @@ module flodecode #
       slv_reg6 <= status_latch_r2;
       slv_reg7 <= err_r;
       slv_reg8 <= full_r;
-      slv_reg9 <= {(16-RX_FIFO_BITS)'(0), fifo1_locs, (16-RX_FIFO_BITS)'(0), fifo0_locs};
+      slv_reg9 <= { {16-RX_FIFO_BITS{0}}, fifo1_locs, {16-RX_FIFO_BITS{0}}, fifo0_locs};
       slv_reg10 <= {8'd0, fifo0_data};
       slv_reg11 <= {8'd0, fifo1_data};      
 

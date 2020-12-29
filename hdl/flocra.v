@@ -178,8 +178,8 @@ module flocra
    wire [15:0] 				      gate_ctrl = fld_data[15];
 
    // Parameters of Axi Slave Bus Interface S0_AXI
-   localparam integer 			      C_S0_AXI_DATA_WIDTH = 32;
-   localparam integer 			      C_S0_AXI_ADDR_WIDTH = 19;
+   parameter integer 			      C_S0_AXI_DATA_WIDTH = 32;
+   parameter integer 			      C_S0_AXI_ADDR_WIDTH = 19;
    wire 				      clk = s0_axi_aclk;
 
    // Gradient control lines
