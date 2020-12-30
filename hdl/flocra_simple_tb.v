@@ -99,8 +99,8 @@ module flocra_simple_tb;
    wire			tx_gate_o;		// From UUT of flocra.v
    // End of automatics
 
-   wire [17:0] 		ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2;
-   wire [17:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;   
+   wire signed [17:0] 		ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2;
+   wire signed [17:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;   
 
    wire 		clk = s0_axi_aclk;
    always #5 s0_axi_aclk = !s0_axi_aclk;
@@ -129,23 +129,69 @@ module flocra_simple_tb;
       s0_axi_wvalid = 0;
       trig_i = 0;
 
-      #10 s0_axi_aresetn = 1;
+      #7 s0_axi_aresetn = 1; // extra 7ns to ensure that TB stimuli occur a bit before the positive clock edges
+      s0_axi_bready = 1; // TODO: make this more fine-grained if bus reads/writes don't work properly in hardware
 
       // enable ocra1, disable gpa-fhdo, set SPI clock div to 5, reset ocra1
       #10 wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd5, 1'd0, 1'd1}});
-      wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd1, 6'd5, 1'd0, 1'd1}}); // un-reset ocra1
+      wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd1, 6'd1, 1'd0, 1'd1}}); // un-reset ocra1
 
-      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3210}); // LSBs for SPI out, ch0
-      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h00c4}); // MSBs for SPI out, ch0
+      // ocra1 control words
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch0
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0020}); // MSBs for SPI out, ch0
 
-      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3211}); // LSBs for SPI out, ch1
-      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h02d4}); // MSBs for SPI out, ch1
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch1
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0220}); // MSBs for SPI out, ch1
 
-      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3212}); // LSBs for SPI out, ch2
-      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h04e4}); // MSBs for SPI out, ch2
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch2
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0420}); // MSBs for SPI out, ch2
 
-      // wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h3213}); // LSBs for SPI out, ch3
-      // wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h07f4}); // MSBs for SPI out, ch3
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch3
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0720}); // MSBs for SPI out, ch3
+
+      check_ocra1(0, 0, 0, 0);
+      check_fhdo(0, 0, 0, 0);
+
+      // ocra1 DAC words
+      #500;
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc}); // LSBs for SPI out, ch0
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h001f}); // MSBs for SPI out, ch0
+
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff8}); // LSBs for SPI out, ch1
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h021f}); // MSBs for SPI out, ch1
+
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff4}); // LSBs for SPI out, ch2
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h041f}); // MSBs for SPI out, ch2
+
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff0}); // LSBs for SPI out, ch3
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h071f}); // MSBs for SPI out, ch3
+      
+      // enable GPA-FHDO
+      wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd2, 1'd1, 1'd0}});
+
+      // GPA-FHDO control word
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0000});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0002});
+
+      // GPA-FHDO DAC words
+      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffe});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0008});
+
+      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffd});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0009});
+
+      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000a});
+
+      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffb});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000b});
+
+      // check gradient core outputs
+      #500 check_ocra1(-1, -2, -3, -4);
+      #500 check_fhdo(65534, 65533, 65532, 65531);
+
+      // RX 0 and RX 1 settings control
+      // #800 wr32(19'8, {1'b0, 7'd3, 8'd0, })
 
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");
@@ -153,6 +199,10 @@ module flocra_simple_tb;
       end
       $finish;
    end // initial begin
+
+   // Timed checks
+   initial begin
+   end
    
    // Tasks for AXI bus reads and writes
    task wr32; //write to bus
@@ -198,6 +248,50 @@ module flocra_simple_tb;
       end
    endtask // rd32
 
+   task check_ocra1;
+      input signed [17:0] vx, vy, vz, vz2;
+      begin
+	 if (vx != ocra1_voutx) begin
+	    $error("ocra1 voutx %d, expected %d", ocra1_voutx, vx);
+	    err <= 1;
+	 end
+	 if (vy != ocra1_vouty) begin
+	    $error("ocra1 vouty %d, expected %d", ocra1_vouty, vy);
+	    err <= 1;
+	 end
+	 if (vz != ocra1_voutz) begin
+	    $error("ocra1 voutz %d, expected %d", ocra1_voutz, vz);
+	    err <= 1;
+	 end
+	 if (vz2 != ocra1_voutz2) begin
+	    $error("ocra1 voutz2 %d, expected %d", ocra1_voutz2, vz2);
+	    err <= 1;
+	 end
+      end
+   endtask // check_ocra1
+
+   task check_fhdo;
+      input signed [17:0] vx, vy, vz, vz2;
+      begin
+	 if (vx != fhdo_voutx) begin
+	    $error("fhdo voutx %d, expected %d", fhdo_voutx, vx);
+	    err <= 1;
+	 end
+	 if (vy != fhdo_vouty) begin
+	    $error("fhdo vouty %d, expected %d", fhdo_vouty, vy);
+	    err <= 1;
+	 end
+	 if (vz != fhdo_voutz) begin
+	    $error("fhdo voutz %d, expected %d", fhdo_voutz, vz);
+	    err <= 1;
+	 end
+	 if (vz2 != fhdo_voutz2) begin
+	    $error("fhdo voutz2 %d, expected %d", fhdo_voutz2, vz2);
+	    err <= 1;
+	 end
+      end
+   endtask   
+
    ocra1_model
    ocra1(
 	 // Outputs
@@ -206,7 +300,7 @@ module flocra_simple_tb;
 	 .voutz				(ocra1_voutz[17:0]),
 	 .voutz2			(ocra1_voutz2[17:0]),
 	 // Inputs
-	 .clk				(clk),
+	 .clk				(ocra1_clk_o),
 	 .syncn				(ocra1_syncn_o),
 	 .ldacn				(ocra1_ldacn_o),
 	 .sdox				(ocra1_sdox_o),
@@ -223,7 +317,7 @@ module flocra_simple_tb;
 	.voutz				(fhdo_voutz[15:0]),
 	.voutz2				(fhdo_voutz2[15:0]),
 	// Inputs
-	.clk				(clk),
+	.clk				(fhdo_clk_o),
 	.csn				(fhdo_ssn_o),
 	.sdo				(fhdo_sdo_o));
 

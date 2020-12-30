@@ -141,8 +141,8 @@ module flocra
 
    // General outputs from flodecode
    // 0: gradient control: grad SPI divisor and board selection settings
-   // 1: gradient outputs, MSB (stb also triggers grad cores)
-   // 2: gradient outputs, LSB
+   // 1: gradient outputs, LSB
+   // 2: gradient outputs, MSB (stb also triggers grad cores)
    // 3: RX 0 settings: decimation and DDS source
    // 4: RX 1 settings: decimation and DDS source
    // 5: TX 0 i stream
@@ -189,15 +189,15 @@ module flocra
    wire 				      ocra1_rst_n = grad_ctrl[8];
    wire [31:0] 				      grad_data = {grad_data_msb, grad_data_lsb};
 
-   wire 				      ocra1_data_valid = ocra1_en & fld_stb[1];
-   wire 				      fhdo_data_valid = fhdo_en & fld_stb[1];
+   wire 				      ocra1_data_valid = ocra1_en & fld_stb[2];
+   wire 				      fhdo_data_valid = fhdo_en & fld_stb[2];
    wire [15:0] 				      fhdo_adc; // ADC data from GPA-FHDO
    wire 				      fhdo_busy;
    wire 				      ocra1_busy, ocra1_data_lost;
-   wire 				      ocra1_error = ocra1_busy & ocra1_data_valid;
+   wire 				      ocra1_err = ocra1_busy & ocra1_data_valid;
    wire 				      fhdo_err = fhdo_busy & fhdo_data_valid;
    assign fld_status = {16'd0, fhdo_adc};
-   assign fld_status_latch = {29'd0, fhdo_err, ocra1_error, ocra1_data_lost};
+   assign fld_status_latch = {29'd0, fhdo_err, ocra1_err, ocra1_data_lost};
 
    // RX control lines
    assign rx0_rst_n_o = rx0_ctrl[12], rx1_rst_n_o = rx1_ctrl[12];
