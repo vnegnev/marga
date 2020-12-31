@@ -78,3 +78,13 @@
    into the error register, bits 31-16. If a FIFO is full when it is
    written to, this will be caught, the error latched into the error
    register bit 31, and the current buffer index saved to bits 30:24.
+
+** Running unit tests with Verilator   
+
+   Need to extend marcos_server with either some ifdef code or some custom classes that implement low-level pointer access.
+
+   Just use the hardware's memory map.
+
+   New functions to make pointer access transparent: =hw_rd()= and =hw_wr()=.
+
+   Make this better later on. May become harder to simulate slave writes, but probably not too bad with a memory-mapped file.

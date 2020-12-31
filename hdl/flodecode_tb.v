@@ -111,7 +111,7 @@ module flodecode_tb;
       #10 wr32(19'h40000, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       // read back state, and make sure it's HALT, then stop the FSM
-      #100 rd32(19'h10, {28'd2, {UUT.HALT}});
+      #100 rd32(19'h10, {4'd0, UUT.HALT, 24'd2});
       wr32(19'h0, 32'h0);
 
       // Wait for 0 cycles then go idle
@@ -190,7 +190,7 @@ module flodecode_tb;
       //// RX FIFO TESTS
 
       // Check initial status
-      rd32(19'h24, 0);
+      rd32(19'h28, 0);
 
       // FIRST TEST: pump a bunch of data into the FIFOs
       // 
@@ -205,14 +205,14 @@ module flodecode_tb;
       rx1_valid = 0;
 
       // check new status, after time has passed for FIFOs to update their fullness
-      #30 rd32(19'h24, {16'(RX_FIFO_LENGTH/4), 16'(RX_FIFO_LENGTH/2)});
+      #30 rd32(19'h28, {16'(RX_FIFO_LENGTH/4), 16'(RX_FIFO_LENGTH/2)});
 
       // read out FIFOs
-      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) rd32(19'h28, 100 + k);
-      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 2) rd32(19'h2c, 201 + k);
+      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) rd32(19'h2c, 100 + k);
+      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 2) rd32(19'h30, 201 + k);
 
       // Check final status (short delay for the data to update)
-      #10 rd32(19'h24, 0);
+      #10 rd32(19'h28, 0);
 
       // NEXT TEST: pump a bunch of data into the FIFOs, overfilling them
       //
@@ -227,14 +227,14 @@ module flodecode_tb;
       rx1_valid = 0;
 
       // check new status, after time has passed for FIFOs to update their fullness
-      #30 rd32(19'h24, {16'(RX_FIFO_LENGTH-1), 16'(RX_FIFO_LENGTH-1)});
+      #30 rd32(19'h28, {16'(RX_FIFO_LENGTH-1), 16'(RX_FIFO_LENGTH-1)});
 
       // read out FIFOs
-      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h28, 300 + k);
-      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h2c, 400 + k);
+      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h2c, 300 + k);
+      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h30, 400 + k);
 
       // Check final status (short delay for the data to update)
-      #10 rd32(19'h24, 0);
+      #10 rd32(19'h28, 0);
 
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");

@@ -74,7 +74,9 @@ module flofifo #
       
       read_r <= read_i;
       empty_o <= ptr_diff_r == 0;
+      /* verilator lint_off WIDTH*/
       full_o <= ptr_diff_r >= LENGTH-4; // a bit of overhead
+      /* verilator lint_on WIDTH*/      
 
       valid_r <= valid_i && !full_o;
 

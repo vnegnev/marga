@@ -170,6 +170,7 @@ module flodecode #
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg9 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg10 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg11 = 0;  // read-only
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg12 = 0;  // read-only
    
    wire 				      slv_reg_rden;
    wire 				      slv_reg_wen;
@@ -269,7 +270,7 @@ module flodecode #
 
    // outputs from flobuffers
    wire [15:0] buf_data[BUFS-1:0];
-   wire [BUFS-1:0] buf_empty, buf_full, buf_err, buf_stb;
+   wire [BUFS-1:0] buf_err, buf_full, buf_empty, buf_stb;
 
    genvar      k;
    generate
@@ -361,6 +362,7 @@ module flodecode #
       end // if (slv_reg_wen)
    end // always @ (posedge clk)
 
+   localparam STATE_BITS = 4;
    localparam IDLE = 4'd0, PREPARE = 4'd1, RUN = 4'd2,
      COUNTDOWN = 4'd3, TRIG = 4'd4, TRIG_FOREVER = 4'd5,
      HALT = 4'd8;
@@ -370,8 +372,8 @@ module flodecode #
    reg [23:0] tmr = 0;
    reg 	      trig_r = 0, trig_r1 = 0, trig_r2 = 0, trig_r3 = 0, trig_r4 = 0;
    reg 	      trig_state_change = 0;
-   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, err_r = 0, full_r = 0;
-   reg [BUFS-1:0] buf_full_r = 0, buf_err_r = 0;
+   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, err_r = 0, bfull_r = 0;
+   reg [BUFS-1:0] buf_full_r = 0, buf_empty_r = 0, buf_err_r = 0;
    
    always @(posedge clk) begin
       // pipelining
@@ -381,6 +383,7 @@ module flodecode #
       status_latch_r <= status_latch_i;
       buf_err_r <= buf_err;
       buf_full_r <= buf_full;
+      buf_empty_r <= buf_empty;      
 
       // triggering -- could be an external input, so need decent synch
       {trig_r4, trig_r3, trig_r2, trig_r} <= {trig_r3, trig_r2, trig_r, trig_i};
@@ -476,30 +479,34 @@ module flodecode #
       endcase // case (state)
      
       // monitoring/error info
-      slv_reg4 <= {{(32-OPT_MEM_ADDR_BITS-STATE_BITS){1'b0}}, flo_bram_raddr_r2, state};
+      // slv_reg4 <= {{(32-OPT_MEM_ADDR_BITS-STATE_BITS){1'b0}}, flo_bram_raddr_r2, state};
+      slv_reg4 <= { {8-STATE_BITS{1'd0}}, state, 
+		    {24-OPT_MEM_ADDR_BITS{1'd0}}, flo_bram_raddr_r2};
       slv_reg5 <= status_r;
       slv_reg6 <= status_latch_r2;
       slv_reg7 <= err_r;
-      slv_reg8 <= full_r;
-      slv_reg9 <= { {16-RX_FIFO_BITS{0}}, fifo1_locs, {16-RX_FIFO_BITS{0}}, fifo0_locs};
-      slv_reg10 <= {8'd0, fifo0_data};
-      slv_reg11 <= {8'd0, fifo1_data};      
+      slv_reg8 <= bfull_r;
+      slv_reg9 <= {8'd0, buf_empty_r};
+      slv_reg10 <= { {16-RX_FIFO_BITS{1'b0}}, fifo1_locs, {16-RX_FIFO_BITS{1'b0}}, fifo0_locs};
+      slv_reg11 <= {8'd0, fifo0_data};
+      slv_reg12 <= {8'd0, fifo1_data};      
 
       // default register values; modified on read
       fifo0_read <= 0;
       fifo1_read <= 0;
       status_latch_r2 <= status_latch_r2 | status_latch_r;
-      err_r <= err_r | buf_err_r;
-      full_r <= full_r | buf_full_r;
+      err_r <= err_r | {8'd0, buf_err_r};
+      bfull_r <= bfull_r | {8'd0, buf_full_r};
+      // bempty_r <= bempty_r | {8'd0, buf_empty_r};
 
       // Do various things when registers are read
       if (slv_reg_rden) begin
 	 case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
 	   4'd6: status_latch_r2 <= 0;
 	   4'd7: err_r <= 0;
-	   4'd8: full_r <= 0;
-	   4'd10: fifo0_read <= 1; // pops next value from FIFO
-	   4'd11: fifo1_read <= 1;
+	   4'd8: bfull_r <= 0;
+	   4'd11: fifo0_read <= 1; // pops next value from FIFO
+	   4'd12: fifo1_read <= 1; // pops next value from FIFO
 	   default; // do nothing
 	 endcase // case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
       end      
@@ -540,7 +547,7 @@ module flodecode #
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_arready <= 1'b0;
-	 axi_araddr  <= 16'd0;
+	 axi_araddr  <= 0;
       end else begin    
 	 if (~axi_arready && S_AXI_ARVALID) begin
 	    // indicates that the slave has acceped the valid read address
@@ -599,6 +606,7 @@ module flodecode #
 	4'h9   : reg_data_out = slv_reg9;
 	4'ha   : reg_data_out = slv_reg10;
 	4'hb   : reg_data_out = slv_reg11;
+	4'hc   : reg_data_out = slv_reg12;
 	default;
       endcase
    end
