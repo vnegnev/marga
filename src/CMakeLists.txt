@@ -29,13 +29,12 @@ set(SERVER_SRC	${SERVER_PATH}/hardware.cpp
 
 add_compile_definitions(VERILATOR_BUILD)
 
-add_executable(flocra_sim flocra_sim_main.cpp ${SERVER_SRC})
-
-target_include_directories(flocra_sim PRIVATE ${SERVER_PATH})
+add_executable(flocra_sim flocra_sim_main.cpp flocra_model.cpp ${SERVER_SRC})
+target_include_directories(flocra_sim PRIVATE ${SERVER_PATH} "./")
 
 # TODO Verilator CFLAGS
 
 verilate(flocra_sim
 	INCLUDE_DIRS "../hdl"
-	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc --trace --trace-depth 1
+	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc --trace --trace-depth 3
 	SOURCES ../hdl/flocra.v)

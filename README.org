@@ -81,10 +81,17 @@
 
 ** Running unit tests with Verilator   
 
-   Need to extend marcos_server with either some ifdef code or some custom classes that implement low-level pointer access.
+   Follow the following (make sure you understand what the commands are doing):
 
-   Just use the hardware's memory map.
+   #+begin_src sh
+   cd ..
+   git clone https://github.com/vnegnev/marcos_server.git -b flocra
+   cd flocra
+   mkdir build
+   cd build
+   cmake ../src
+   make
+   ./flocra_sim
+   #+end_src
 
-   New functions to make pointer access transparent: =hw_rd()= and =hw_wr()=.
-
-   Make this better later on. May become harder to simulate slave writes, but probably not too bad with a memory-mapped file.
+   Then, with the RP address set to =localhost=, run unittests or experiment scripts. You can find the resultant VCD inside the build folder, and a reasonable .sav file in the src folder.

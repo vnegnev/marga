@@ -22,6 +22,9 @@ extern "C" {
 #include "hardware.hpp"
 #include "iface.hpp"
 
+// Verilator model
+#include "flocra_model.hpp"
+
 #include <iostream>
 #include <sstream>
 
@@ -30,6 +33,8 @@ std::string SERVER_VERSION_STR;
 
 hardware *hw;
 iface *ifa;
+
+flocra_model *fm;
 
 int main(int argc, char *argv[]) {
 	std::cout << "MaRCoS server (flocra sim), " << __DATE__ << " " << __TIME__ << std::endl;
@@ -44,9 +49,11 @@ int main(int argc, char *argv[]) {
 
 	hw = new hardware();
 	ifa = new iface();
+	fm = new flocra_model(argc, argv);
 	ifa->run_stream();
 
 	// Cleanup
 	delete hw;
 	delete ifa;
+	delete fm;
 }

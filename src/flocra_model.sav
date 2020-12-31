@@ -1,0 +1,95 @@
+[*]
+[*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
+[*] Thu Dec 31 17:59:05 2020
+[*]
+[dumpfile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/build/flocra_model.vcd"
+[dumpfile_mtime] "Thu Dec 31 17:58:36 2020"
+[dumpfile_size] 79244
+[savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/src/flocra_model.sav"
+[timestart] 24
+[size] 1920 992
+[pos] -1 -1
+*-4.904533 121 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.flocra.
+[sst_width] 230
+[signals_width] 206
+[sst_expanded] 1
+[sst_vpaned_height] 280
+@28
+TOP.s0_axi_aclk
+TOP.s0_axi_aresetn
+@200
+-
+@800200
+-s0_axi
+@22
+TOP.s0_axi_araddr[18:0]
+@28
+TOP.s0_axi_aresetn
+TOP.s0_axi_arprot[2:0]
+@22
+TOP.s0_axi_arready
+@28
+TOP.s0_axi_arvalid
+@22
+TOP.s0_axi_awaddr[18:0]
+@28
+TOP.s0_axi_awprot[2:0]
+TOP.s0_axi_awready
+TOP.s0_axi_awvalid
+TOP.s0_axi_bready
+TOP.s0_axi_bresp[1:0]
+TOP.s0_axi_bvalid
+@22
+TOP.s0_axi_rdata[31:0]
+@28
+TOP.s0_axi_rready
+TOP.s0_axi_rresp[1:0]
+TOP.s0_axi_rvalid
+@22
+TOP.s0_axi_wdata[31:0]
+@28
+TOP.s0_axi_wready
+@22
+TOP.s0_axi_wstrb[3:0]
+@28
+TOP.s0_axi_wvalid
+@1000200
+-s0_axi
+@800200
+-slv_regs
+@22
+TOP.flocra.fld.slv_reg0[31:0]
+TOP.flocra.fld.slv_reg1[31:0]
+TOP.flocra.fld.slv_reg2[31:0]
+TOP.flocra.fld.slv_reg3[31:0]
+TOP.flocra.fld.slv_reg4[31:0]
+TOP.flocra.fld.slv_reg5[31:0]
+TOP.flocra.fld.slv_reg6[31:0]
+TOP.flocra.fld.slv_reg7[31:0]
+TOP.flocra.fld.slv_reg8[31:0]
+TOP.flocra.fld.slv_reg9[31:0]
+TOP.flocra.fld.slv_reg10[31:0]
+TOP.flocra.fld.slv_reg11[31:0]
+TOP.flocra.fld.slv_reg12[31:0]
+@28
+TOP.flocra.fld.slv_reg_rden
+TOP.flocra.fld.slv_reg_wen
+@1000200
+-slv_regs
+@c00022
+TOP.leds_o[7:0]
+@28
+(0)TOP.leds_o[7:0]
+(1)TOP.leds_o[7:0]
+(2)TOP.leds_o[7:0]
+(3)TOP.leds_o[7:0]
+(4)TOP.leds_o[7:0]
+(5)TOP.leds_o[7:0]
+(6)TOP.leds_o[7:0]
+(7)TOP.leds_o[7:0]
+@1401200
+-group_end
+[pattern_trace] 1
+[pattern_trace] 0
