@@ -111,6 +111,9 @@ module flocra
 
     output reg [31:0] 			  tx1_axis_tdata_o,
     output 				  tx1_axis_tvalid_o,
+
+    // LEDs for monitoring/diagnostics
+    output [7:0] 			  leds_o,
    
     // User ports ends
     // Do not modify the ports beyond this line
@@ -155,7 +158,7 @@ module flocra
    // 12: TX LO 1 phase increment, MSBs and clear bit
    // 13: TX LO 2 phase increment, LSBs
    // 14: TX LO 2 phase increment, MSBs and clear bit   
-   // 15: TX and RX gate control, trigger output
+   // 15: TX and RX gate control, trigger output, LEDs
    wire [15:0] 				      fld_data[23:0];
    wire [23:0] 				      fld_stb;
    wire [31:0] 				      fld_status, fld_status_latch;
@@ -175,7 +178,7 @@ module flocra
    wire [15:0] 				      lo1_phase_msb = fld_data[12];
    wire [15:0] 				      lo2_phase_lsb = fld_data[13];
    wire [15:0] 				      lo2_phase_msb = fld_data[14];
-   wire [15:0] 				      gate_ctrl = fld_data[15];
+   wire [15:0] 				      gates_leds = fld_data[15];
 
    // Parameters of Axi Slave Bus Interface S0_AXI
    parameter integer 			      C_S0_AXI_DATA_WIDTH = 32;
@@ -240,7 +243,7 @@ module flocra
    end
 
    // TX and RX gates
-   assign tx_gate_o = gate_ctrl[0], rx_gate_o = gate_ctrl[1], trig_o = gate_ctrl[2];
+   assign tx_gate_o = gates_leds[0], rx_gate_o = gates_leds[1], trig_o = gates_leds[2], leds_o = gates_leds[15:8];
    
    // wire [15:0] 				      
 

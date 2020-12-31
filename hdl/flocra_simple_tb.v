@@ -67,6 +67,7 @@ module flocra_simple_tb;
    wire			fhdo_clk_o;		// From UUT of flocra.v
    wire			fhdo_sdo_o;		// From UUT of flocra.v
    wire			fhdo_ssn_o;		// From UUT of flocra.v
+   wire [7:0]		leds_o;			// From UUT of flocra.v
    wire			ocra1_clk_o;		// From UUT of flocra.v
    wire			ocra1_ldacn_o;		// From UUT of flocra.v
    wire			ocra1_sdox_o;		// From UUT of flocra.v
@@ -192,6 +193,7 @@ module flocra_simple_tb;
 
       // RX 0 and RX 1 settings control
       // #800 wr32(19'8, {1'b0, 7'd3, 8'd0, })
+      // TODO Continue here
 
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");
@@ -345,7 +347,10 @@ module flocra_simple_tb;
 		      .axis_tdata_o(rx1_axis_tdata_i)
 		      );   
    
-   flocra #(/*AUTOINSTPARAM*/)
+   flocra #(/*AUTOINSTPARAM*/
+	    // Parameters
+	    .C_S0_AXI_DATA_WIDTH	(C_S0_AXI_DATA_WIDTH),
+	    .C_S0_AXI_ADDR_WIDTH	(C_S0_AXI_ADDR_WIDTH))
    UUT(/*AUTOINST*/
        // Outputs
        .ocra1_clk_o			(ocra1_clk_o),
@@ -376,6 +381,7 @@ module flocra_simple_tb;
        .tx0_axis_tvalid_o		(tx0_axis_tvalid_o),
        .tx1_axis_tdata_o		(tx1_axis_tdata_o[31:0]),
        .tx1_axis_tvalid_o		(tx1_axis_tvalid_o),
+       .leds_o				(leds_o[7:0]),
        .s0_axi_awready			(s0_axi_awready),
        .s0_axi_wready			(s0_axi_wready),
        .s0_axi_bresp			(s0_axi_bresp[1:0]),
