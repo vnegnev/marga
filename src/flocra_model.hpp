@@ -3,12 +3,12 @@
 
 #include "verilated.h"
 
-class Vflocra;
+class Vflocra_model;
 
 class flocra_model {
 public:
 	const vluint64_t MAX_TIME;
-	Vflocra *vfm;
+	Vflocra_model *vfm;
 	VerilatedVcdC *tfp;
 
 	flocra_model(int argc, char *argv[]);

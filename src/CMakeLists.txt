@@ -37,4 +37,4 @@ target_include_directories(flocra_sim PRIVATE ${SERVER_PATH} "./")
 verilate(flocra_sim
 	INCLUDE_DIRS "../hdl"
 	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc --trace --trace-depth 3
-	SOURCES ../hdl/flocra.v)
+	SOURCES ../hdl/flocra_model.v)

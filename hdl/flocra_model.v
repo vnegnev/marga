@@ -1,0 +1,239 @@
+//-----------------------------------------------------------------------------
+// Title         : flocra_model
+// Project       : flocra
+//-----------------------------------------------------------------------------
+// File          : flocra_model.v
+// Author        :   <vlad@vlad-laptop>
+// Created       : 25.12.2020
+// Last modified : 25.12.2020
+//-----------------------------------------------------------------------------
+// Description :
+//
+// Top-level model of the FPGA code running on the STEMlab, including
+// the flocra core, serialisers and a few dummy models of the TX and
+// RX chain. Entirely RTL-based for use with Verilator.
+//
+//-----------------------------------------------------------------------------
+// Copyright (c) 2020 by OCRA developers This model is the confidential and
+// proprietary property of OCRA developers and the possession or use of this
+// file requires a written license from OCRA developers.
+//------------------------------------------------------------------------------
+// Modification history :
+// 25.12.2020 : created
+//-----------------------------------------------------------------------------
+
+`ifndef _FLOCRA_MODEL_
+ `define _FLOCRA_MODEL_
+
+ `include "flocra.v"
+ `include "ocra1_model.v"
+ `include "gpa_fhdo_model.v"
+ `include "rx_chain_model.v"
+
+ `timescale 1ns/1ns
+
+module flocra_model(/*AUTOARG*/
+   // Outputs
+   tx_gate_o, tx1_axis_tvalid_o, tx1_axis_tdata_o, tx0_axis_tvalid_o,
+   tx0_axis_tdata_o, trig_o, s0_axi_wready, s0_axi_rvalid,
+   s0_axi_rresp, s0_axi_rdata, s0_axi_bvalid, s0_axi_bresp,
+   s0_axi_awready, s0_axi_arready, rx_gate_o, rx1_rst_n_o, rx1_rate_o,
+   rx1_dds_source_o, rx1_axis_tready_o, rx0_rst_n_o, rx0_rate_o,
+   rx0_dds_source_o, rx0_axis_tready_o, ocra1_syncn_o, ocra1_sdoz_o,
+   ocra1_sdoz2_o, ocra1_sdoy_o, ocra1_sdox_o, ocra1_ldacn_o,
+   ocra1_clk_o, leds_o, fhdo_ssn_o, fhdo_sdo_o, fhdo_clk_o,
+   dds2_phase_o, dds1_phase_o, dds0_phase_o, ocra1_voutx, ocra1_vouty,
+   ocra1_voutz, ocra1_voutz2, fhdo_voutx, fhdo_vouty, fhdo_voutz,
+   fhdo_voutz2,
+   // Inputs
+   trig_i, s0_axi_wvalid, s0_axi_wstrb, s0_axi_wdata, s0_axi_rready,
+   s0_axi_bready, s0_axi_awvalid, s0_axi_awprot, s0_axi_awaddr,
+   s0_axi_arvalid, s0_axi_arprot, s0_axi_aresetn, s0_axi_araddr,
+   s0_axi_aclk
+   );
+   localparam C_S0_AXI_ADDR_WIDTH = 19, C_S0_AXI_DATA_WIDTH = 32;
+
+   /*AUTOINPUT*/
+   // Beginning of automatic inputs (from unused autoinst inputs)
+   input		s0_axi_aclk;		// To UUT of flocra.v
+   input [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_araddr;// To UUT of flocra.v
+   input		s0_axi_aresetn;		// To UUT of flocra.v
+   input [2:0]		s0_axi_arprot;		// To UUT of flocra.v
+   input		s0_axi_arvalid;		// To UUT of flocra.v
+   input [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_awaddr;// To UUT of flocra.v
+   input [2:0]		s0_axi_awprot;		// To UUT of flocra.v
+   input		s0_axi_awvalid;		// To UUT of flocra.v
+   input		s0_axi_bready;		// To UUT of flocra.v
+   input		s0_axi_rready;		// To UUT of flocra.v
+   input [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_wdata;// To UUT of flocra.v
+   input [(C_S0_AXI_DATA_WIDTH/8)-1:0] s0_axi_wstrb;// To UUT of flocra.v
+   input		s0_axi_wvalid;		// To UUT of flocra.v
+   input		trig_i;			// To UUT of flocra.v
+   // End of automatics
+   /*AUTOOUTPUT*/
+   // Beginning of automatic outputs (from unused autoinst outputs)
+   output [24:0]	dds0_phase_o;		// From UUT of flocra.v
+   output [24:0]	dds1_phase_o;		// From UUT of flocra.v
+   output [24:0]	dds2_phase_o;		// From UUT of flocra.v
+   output		fhdo_clk_o;		// From UUT of flocra.v
+   output		fhdo_sdo_o;		// From UUT of flocra.v
+   output		fhdo_ssn_o;		// From UUT of flocra.v
+   output [7:0]		leds_o;			// From UUT of flocra.v
+   output		ocra1_clk_o;		// From UUT of flocra.v
+   output		ocra1_ldacn_o;		// From UUT of flocra.v
+   output		ocra1_sdox_o;		// From UUT of flocra.v
+   output		ocra1_sdoy_o;		// From UUT of flocra.v
+   output		ocra1_sdoz2_o;		// From UUT of flocra.v
+   output		ocra1_sdoz_o;		// From UUT of flocra.v
+   output		ocra1_syncn_o;		// From UUT of flocra.v
+   output		rx0_axis_tready_o;	// From UUT of flocra.v
+   output [1:0]		rx0_dds_source_o;	// From UUT of flocra.v
+   output [9:0]		rx0_rate_o;		// From UUT of flocra.v
+   output		rx0_rst_n_o;		// From UUT of flocra.v
+   output		rx1_axis_tready_o;	// From UUT of flocra.v
+   output [1:0]		rx1_dds_source_o;	// From UUT of flocra.v
+   output [9:0]		rx1_rate_o;		// From UUT of flocra.v
+   output		rx1_rst_n_o;		// From UUT of flocra.v
+   output		rx_gate_o;		// From UUT of flocra.v
+   output		s0_axi_arready;		// From UUT of flocra.v
+   output		s0_axi_awready;		// From UUT of flocra.v
+   output [1:0]		s0_axi_bresp;		// From UUT of flocra.v
+   output		s0_axi_bvalid;		// From UUT of flocra.v
+   output [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_rdata;// From UUT of flocra.v
+   output [1:0]		s0_axi_rresp;		// From UUT of flocra.v
+   output		s0_axi_rvalid;		// From UUT of flocra.v
+   output		s0_axi_wready;		// From UUT of flocra.v
+   output		trig_o;			// From UUT of flocra.v
+   output [31:0]	tx0_axis_tdata_o;	// From UUT of flocra.v
+   output		tx0_axis_tvalid_o;	// From UUT of flocra.v
+   output [31:0]	tx1_axis_tdata_o;	// From UUT of flocra.v
+   output		tx1_axis_tvalid_o;	// From UUT of flocra.v
+   output		tx_gate_o;		// From UUT of flocra.v
+   // End of automatics
+
+   output signed [17:0] ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2;
+   output signed [15:0] fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;
+
+   wire 		fhdo_sdi_i;
+   wire 		rx0_axis_tvalid_i, rx1_axis_tvalid_i;
+   wire [31:0] 		rx0_axis_tdata_i, rx1_axis_tdata_i;
+   
+   ocra1_model
+   ocra1(
+	 // Outputs
+	 .voutx				(ocra1_voutx[17:0]),
+	 .vouty				(ocra1_vouty[17:0]),
+	 .voutz				(ocra1_voutz[17:0]),
+	 .voutz2			(ocra1_voutz2[17:0]),
+	 // Inputs
+	 .clk				(ocra1_clk_o),
+	 .syncn				(ocra1_syncn_o),
+	 .ldacn				(ocra1_ldacn_o),
+	 .sdox				(ocra1_sdox_o),
+	 .sdoy				(ocra1_sdoy_o),
+	 .sdoz				(ocra1_sdoz_o),
+	 .sdoz2				(ocra1_sdoz2_o));
+
+   gpa_fhdo_model
+   fhdo(
+	// Outputs
+	.sdi				(fhdo_sdi_i),
+	.voutx				(fhdo_voutx[15:0]),
+	.vouty				(fhdo_vouty[15:0]),
+	.voutz				(fhdo_voutz[15:0]),
+	.voutz2				(fhdo_voutz2[15:0]),
+	// Inputs
+	.clk				(fhdo_clk_o),
+	.csn				(fhdo_ssn_o),
+	.sdo				(fhdo_sdo_o));
+
+   rx_chain_model rx0(
+		      .clk(s0_axi_aclk),
+		      .rst_n(rx0_rst_n_o),
+		      .rate_i(rx0_rate_o),
+		      .dds0_i(18'd0),
+		      .dds1_i(18'd0),
+		      .dds2_i(18'd0),
+		      .dds_source_i(rx0_dds_source_o),
+		      .axis_tvalid_o(rx0_axis_tvalid_i),
+		      .axis_tdata_o(rx0_axis_tdata_i)
+		      );
+
+   rx_chain_model rx1(
+		      .clk(s0_axi_aclk),
+		      .rst_n(rx1_rst_n_o),
+		      .rate_i(rx1_rate_o),
+		      .dds0_i(18'd0),
+		      .dds1_i(18'd0),
+		      .dds2_i(18'd0),
+		      .dds_source_i(rx1_dds_source_o),
+		      .axis_tvalid_o(rx1_axis_tvalid_i),
+		      .axis_tdata_o(rx1_axis_tdata_i)
+		      );   
+   
+   flocra #(/*AUTOINSTPARAM*/
+	    // Parameters
+	    .C_S0_AXI_DATA_WIDTH	(C_S0_AXI_DATA_WIDTH),
+	    .C_S0_AXI_ADDR_WIDTH	(C_S0_AXI_ADDR_WIDTH))
+   UUT(/*AUTOINST*/
+       // Outputs
+       .ocra1_clk_o			(ocra1_clk_o),
+       .ocra1_syncn_o			(ocra1_syncn_o),
+       .ocra1_ldacn_o			(ocra1_ldacn_o),
+       .ocra1_sdox_o			(ocra1_sdox_o),
+       .ocra1_sdoy_o			(ocra1_sdoy_o),
+       .ocra1_sdoz_o			(ocra1_sdoz_o),
+       .ocra1_sdoz2_o			(ocra1_sdoz2_o),
+       .fhdo_clk_o			(fhdo_clk_o),
+       .fhdo_sdo_o			(fhdo_sdo_o),
+       .fhdo_ssn_o			(fhdo_ssn_o),
+       .tx_gate_o			(tx_gate_o),
+       .rx_gate_o			(rx_gate_o),
+       .dds0_phase_o			(dds0_phase_o[24:0]),
+       .dds1_phase_o			(dds1_phase_o[24:0]),
+       .dds2_phase_o			(dds2_phase_o[24:0]),
+       .rx0_rst_n_o			(rx0_rst_n_o),
+       .rx1_rst_n_o			(rx1_rst_n_o),
+       .rx0_rate_o			(rx0_rate_o[9:0]),
+       .rx1_rate_o			(rx1_rate_o[9:0]),
+       .trig_o				(trig_o),
+       .rx0_axis_tready_o		(rx0_axis_tready_o),
+       .rx0_dds_source_o		(rx0_dds_source_o[1:0]),
+       .rx1_axis_tready_o		(rx1_axis_tready_o),
+       .rx1_dds_source_o		(rx1_dds_source_o[1:0]),
+       .tx0_axis_tdata_o		(tx0_axis_tdata_o[31:0]),
+       .tx0_axis_tvalid_o		(tx0_axis_tvalid_o),
+       .tx1_axis_tdata_o		(tx1_axis_tdata_o[31:0]),
+       .tx1_axis_tvalid_o		(tx1_axis_tvalid_o),
+       .leds_o				(leds_o[7:0]),
+       .s0_axi_awready			(s0_axi_awready),
+       .s0_axi_wready			(s0_axi_wready),
+       .s0_axi_bresp			(s0_axi_bresp[1:0]),
+       .s0_axi_bvalid			(s0_axi_bvalid),
+       .s0_axi_arready			(s0_axi_arready),
+       .s0_axi_rdata			(s0_axi_rdata[C_S0_AXI_DATA_WIDTH-1:0]),
+       .s0_axi_rresp			(s0_axi_rresp[1:0]),
+       .s0_axi_rvalid			(s0_axi_rvalid),
+       // Inputs
+       .fhdo_sdi_i			(fhdo_sdi_i),
+       .trig_i				(trig_i),
+       .rx0_axis_tvalid_i		(rx0_axis_tvalid_i),
+       .rx0_axis_tdata_i		(rx0_axis_tdata_i[31:0]),
+       .rx1_axis_tvalid_i		(rx1_axis_tvalid_i),
+       .rx1_axis_tdata_i		(rx1_axis_tdata_i[31:0]),
+       .s0_axi_aclk			(s0_axi_aclk),
+       .s0_axi_aresetn			(s0_axi_aresetn),
+       .s0_axi_awaddr			(s0_axi_awaddr[C_S0_AXI_ADDR_WIDTH-1:0]),
+       .s0_axi_awprot			(s0_axi_awprot[2:0]),
+       .s0_axi_awvalid			(s0_axi_awvalid),
+       .s0_axi_wdata			(s0_axi_wdata[C_S0_AXI_DATA_WIDTH-1:0]),
+       .s0_axi_wstrb			(s0_axi_wstrb[(C_S0_AXI_DATA_WIDTH/8)-1:0]),
+       .s0_axi_wvalid			(s0_axi_wvalid),
+       .s0_axi_bready			(s0_axi_bready),
+       .s0_axi_araddr			(s0_axi_araddr[C_S0_AXI_ADDR_WIDTH-1:0]),
+       .s0_axi_arprot			(s0_axi_arprot[2:0]),
+       .s0_axi_arvalid			(s0_axi_arvalid),
+       .s0_axi_rready			(s0_axi_rready));
+endmodule // flocra_model
+`endif //  `ifndef _FLOCRA_MODEL_
+

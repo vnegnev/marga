@@ -87,7 +87,7 @@ module dac80504_model_tb;
       end      
       #10 csn = 1;
       #10 if (vout0 != 'hbeef) begin
-	 $display("%d ns: Unexpected DAC output, expected %x, saw %x.", $time, 'hbeef, vout0);
+	 $display("%d ns: Unexpected DAC output, expected %x, saw %x.", $time, 16'hbeef, vout0);
 	 err <= 1;
       end
 

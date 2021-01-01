@@ -37,7 +37,7 @@ iface *ifa;
 flocra_model *fm;
 
 int main(int argc, char *argv[]) {
-	std::cout << "MaRCoS server (flocra sim), " << __DATE__ << " " << __TIME__ << std::endl;
+	std::cout << "MaRCoS server + FLOCRA sim model, " << __DATE__ << " " << __TIME__ << std::endl;
 
 	// Global version string creation
 	std::stringstream sv;

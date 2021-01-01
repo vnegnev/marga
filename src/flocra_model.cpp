@@ -1,6 +1,6 @@
 #include "flocra_model.hpp"
 
-#include "Vflocra.h"
+#include "Vflocra_model.h"
 #include "verilated_vcd_c.h"
 
 #include <iostream>
@@ -11,7 +11,7 @@ vluint64_t main_time = 0;
 
 flocra_model::flocra_model(int argc, char *argv[]) : MAX_TIME(50e6) {
 	Verilated::commandArgs(argc, argv);
-	vfm = new Vflocra;
+	vfm = new Vflocra_model;
 
 	Verilated::traceEverOn(true);	
 	tfp = new VerilatedVcdC;
@@ -22,8 +22,6 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_TIME(50e6) {
 	// Init
 	vfm->s0_axi_aclk = 1;
 	vfm->trig_i = 0;
-	
-	vfm->fhdo_sdi_i = 0;
 
 	// AXI slave bus
 	vfm->s0_axi_awaddr = 0;
@@ -39,13 +37,6 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_TIME(50e6) {
 	vfm->s0_axi_arprot = 0;
 	vfm->s0_axi_arvalid = 0;
 	vfm->s0_axi_rready = 0;
-	
-	// AXI stream slaves
-	vfm->rx0_axis_tvalid_i = 0;
-	vfm->rx0_axis_tdata_i = 0;
-	
-	vfm->rx1_axis_tvalid_i = 0;
-	vfm->rx1_axis_tdata_i = 0;
 	
 	// Wait 5 cycles
 	for (int k = 0; k < 10; ++k) tick();
