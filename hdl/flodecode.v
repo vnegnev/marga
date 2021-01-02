@@ -47,14 +47,12 @@ module flodecode #
     output [15:0] 			 data_o[BUFS-1:0],
     output [BUFS-1:0] 			 stb_o,
 
-    // stream interface, FIFO 1
-    // input 				 s0_axis_aclk,
-    input [23:0] 			 rx0_data,
+    // stream interface, FIFOs
+    input [31:0] 			 rx0_data,
     input 				 rx0_valid,
     output 				 rx0_ready,
 
-    // input 				 s1_axis_aclk,
-    input [23:0] 			 rx1_data,
+    input [31:0] 			 rx1_data,
     input 				 rx1_valid,
     output 				 rx1_ready,
 
@@ -294,14 +292,14 @@ module flodecode #
    // generate RX FIFOs
    // wire rx0_valid = s0_axis_wvalid, rx1_valid = s1_axis_wvalid;
    // wire [23:0] rx0_data = s0_axis_wdata[23:0], rx1_data = s1_axis_wdata[23:0];
-   wire [23:0] fifo0_data, fifo1_data;
+   wire [31:0] fifo0_data, fifo1_data;
    reg 	       fifo0_read = 0, fifo1_read = 0;
    wire        fifo0_full, fifo1_full;
    assign rx0_ready = !fifo0_full, rx1_ready = !fifo1_full;
    localparam RX_FIFO_BITS = $clog2(RX_FIFO_LENGTH);
    wire [RX_FIFO_BITS-1:0] fifo0_locs, fifo1_locs;
    
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(24) )
+   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(32) )
    fifo0(.clk(clk),
 	 .data_i(rx0_data),
 	 .valid_i(rx0_valid),
@@ -311,7 +309,7 @@ module flodecode #
 	 .full_o(fifo0_full)
 	 );
 
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(24) )
+   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(32) )
    fifo1(.clk(clk),
 	 .data_i(rx1_data),
 	 .valid_i(rx1_valid),
@@ -488,8 +486,8 @@ module flodecode #
       slv_reg8 <= bfull_r;
       slv_reg9 <= {8'd0, buf_empty_r};
       slv_reg10 <= { {16-RX_FIFO_BITS{1'b0}}, fifo1_locs, {16-RX_FIFO_BITS{1'b0}}, fifo0_locs};
-      slv_reg11 <= {8'd0, fifo0_data};
-      slv_reg12 <= {8'd0, fifo1_data};      
+      slv_reg11 <= fifo0_data;
+      slv_reg12 <= fifo1_data;
 
       // default register values; modified on read
       fifo0_read <= 0;

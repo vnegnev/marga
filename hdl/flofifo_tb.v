@@ -26,7 +26,7 @@
  `timescale 1ns/1ns
 
 module flofifo_tb;
-   parameter LENGTH = 32, WIDTH = 24;
+   parameter LENGTH = 32, WIDTH = 32;
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
    reg			clk;			// To UUT of flofifo.v
@@ -78,7 +78,8 @@ module flofifo_tb;
       end
       valid_i = 0;
 
-      // CONTINUE HERE, ADD CHECKS ETC
+      // TODO: CONTINUE HERE, ADD CHECKS ETC
+      err = 1;
 
       #5000 if (err) begin
 	 $display("THERE WERE ERRORS");

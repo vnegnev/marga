@@ -208,7 +208,7 @@ module flocra
    wire [1:0] rx0_dds_source = rx0_ctrl[13:12], rx1_dds_source = rx1_ctrl[13:12];
    assign rx0_rst_n_o = rx0_ctrl[15], rx1_rst_n_o = rx1_ctrl[15];
    assign rx0_rate_axis_tdata_o = {4'd0, rx0_ctrl[11:0]}, rx1_rate_axis_tdata_o = {4'd0, rx1_ctrl[11:0]};
-   assign rx0_rate_axis_tvalid_o = 1, rx1_rate_axis_tvalid_o = 1; // TODO: could use strobes for better power savings
+   assign rx0_rate_axis_tvalid_o = rx0_ctrl[14], rx1_rate_axis_tvalid_o = rx1_ctrl[14];
 
    // TX data buses
    assign tx0_axis_tvalid_o = 1, tx1_axis_tvalid_o = 1;
@@ -225,7 +225,6 @@ module flocra
    wire dds0_phase_clear = lo0_phase_msb[15],
 	dds1_phase_clear = lo1_phase_msb[15],
 	dds2_phase_clear = lo2_phase_msb[15];
-   reg 	dds0_phase_clear_r = 0, dds1_phase_clear_r = 0, dds2_phase_clear_r = 0;
    reg [30:0] dds0_phase_full = 0, dds1_phase_full = 0, dds2_phase_full = 0;
    assign dds0_phase_axis_tdata_o = dds0_phase_full[30:7],
      dds1_phase_axis_tdata_o = dds1_phase_full[30:7],
@@ -245,30 +244,27 @@ module flocra
 	2'd0: rx0_iq <= dds0_iq;
 	2'd1: rx0_iq <= dds1_iq;
 	2'd2: rx0_iq <= dds2_iq;
-	default: rx0_iq <= 32'hffffffff;
+	default: rx0_iq <= 32'h80008000; // max negative
       endcase // case (rx0_dds_source)
 
       case (rx1_dds_source)
 	2'd0: rx1_iq <= dds0_iq;
 	2'd1: rx1_iq <= dds1_iq;
 	2'd2: rx1_iq <= dds2_iq;
-	default: rx1_iq <= 32'hffffffff;
+	default: rx1_iq <= 32'h80008000; // max negative
       endcase // case (rx0_dds_source)      
    end
 
    assign {dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o} = 3'b111;
 
-   always @(posedge clk) begin
-      {dds2_phase_clear_r, dds1_phase_clear_r, dds0_phase_clear_r}
-	<= {dds2_phase_clear, dds1_phase_clear, dds0_phase_clear};
-      
-      if (dds0_phase_clear != dds0_phase_clear_r) dds0_phase_full <= 0;
+   always @(posedge clk) begin      
+      if (dds0_phase_clear) dds0_phase_full <= 0;
       else dds0_phase_full <= dds0_phase_full + {lo0_phase_msb[14:0], lo0_phase_lsb};
       
-      if (dds1_phase_clear != dds1_phase_clear_r) dds1_phase_full <= 0;
+      if (dds1_phase_clear) dds1_phase_full <= 0;
       else dds1_phase_full <= dds1_phase_full + {lo1_phase_msb[14:0], lo1_phase_lsb};
       
-      if (dds2_phase_clear != dds2_phase_clear_r) dds2_phase_full <= 0;
+      if (dds2_phase_clear) dds2_phase_full <= 0;
       else dds2_phase_full <= dds2_phase_full + {lo2_phase_msb[14:0], lo2_phase_lsb};
    end
 
@@ -317,7 +313,7 @@ module flocra
 
    ///////////////////////// FLODECODE ////////////////////////////
    
-   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
+   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(32768))
    fld (
 	.trig_i(trig_i),
 	.status_i(fld_status), // spare bits available for external status
@@ -325,11 +321,11 @@ module flocra
 	.data_o(fld_data),
 	.stb_o(fld_stb),
 
-	.rx0_data(rx0_axis_tdata_i[23:0]),
+	.rx0_data(rx0_axis_tdata_i[31:0]),
 	.rx0_valid(rx0_axis_tvalid_i),
 	.rx0_ready(rx0_axis_tready_o),
 
-	.rx1_data(rx1_axis_tdata_i[23:0]),
+	.rx1_data(rx1_axis_tdata_i[31:0]),
 	.rx1_valid(rx1_axis_tvalid_i),
 	.rx1_ready(rx1_axis_tready_o),
 
