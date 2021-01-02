@@ -40,6 +40,12 @@ module flocra_simple_tb;
    wire fhdo_sdi_i;
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
+   reg [31:0]		dds0_iq_axis_tdata_i;	// To UUT of flocra.v
+   reg			dds0_iq_axis_tvalid_i;	// To UUT of flocra.v
+   reg [31:0]		dds1_iq_axis_tdata_i;	// To UUT of flocra.v
+   reg			dds1_iq_axis_tvalid_i;	// To UUT of flocra.v
+   reg [31:0]		dds2_iq_axis_tdata_i;	// To UUT of flocra.v
+   reg			dds2_iq_axis_tvalid_i;	// To UUT of flocra.v
    reg [31:0]		rx0_axis_tdata_i;	// To UUT of flocra.v
    reg			rx0_axis_tvalid_i;	// To UUT of flocra.v
    reg [31:0]		rx1_axis_tdata_i;	// To UUT of flocra.v
@@ -61,9 +67,12 @@ module flocra_simple_tb;
    // End of automatics
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire [24:0]		dds0_phase_o;		// From UUT of flocra.v
-   wire [24:0]		dds1_phase_o;		// From UUT of flocra.v
-   wire [24:0]		dds2_phase_o;		// From UUT of flocra.v
+   wire [23:0]		dds0_phase_axis_tdata_o;// From UUT of flocra.v
+   wire			dds0_phase_axis_tvalid_o;// From UUT of flocra.v
+   wire [23:0]		dds1_phase_axis_tdata_o;// From UUT of flocra.v
+   wire			dds1_phase_axis_tvalid_o;// From UUT of flocra.v
+   wire [23:0]		dds2_phase_axis_tdata_o;// From UUT of flocra.v
+   wire			dds2_phase_axis_tvalid_o;// From UUT of flocra.v
    wire			fhdo_clk_o;		// From UUT of flocra.v
    wire			fhdo_sdo_o;		// From UUT of flocra.v
    wire			fhdo_ssn_o;		// From UUT of flocra.v
@@ -76,12 +85,16 @@ module flocra_simple_tb;
    wire			ocra1_sdoz_o;		// From UUT of flocra.v
    wire			ocra1_syncn_o;		// From UUT of flocra.v
    wire			rx0_axis_tready_o;	// From UUT of flocra.v
-   wire [1:0]		rx0_dds_source_o;	// From UUT of flocra.v
-   wire [9:0]		rx0_rate_o;		// From UUT of flocra.v
+   wire [31:0]		rx0_dds_iq_axis_tdata_o;// From UUT of flocra.v
+   wire			rx0_dds_iq_axis_tvalid_o;// From UUT of flocra.v
+   wire [15:0]		rx0_rate_axis_tdata_o;	// From UUT of flocra.v
+   wire			rx0_rate_axis_tvalid_o;	// From UUT of flocra.v
    wire			rx0_rst_n_o;		// From UUT of flocra.v
    wire			rx1_axis_tready_o;	// From UUT of flocra.v
-   wire [1:0]		rx1_dds_source_o;	// From UUT of flocra.v
-   wire [9:0]		rx1_rate_o;		// From UUT of flocra.v
+   wire [31:0]		rx1_dds_iq_axis_tdata_o;// From UUT of flocra.v
+   wire			rx1_dds_iq_axis_tvalid_o;// From UUT of flocra.v
+   wire [15:0]		rx1_rate_axis_tdata_o;	// From UUT of flocra.v
+   wire			rx1_rate_axis_tvalid_o;	// From UUT of flocra.v
    wire			rx1_rst_n_o;		// From UUT of flocra.v
    wire			rx_gate_o;		// From UUT of flocra.v
    wire			s0_axi_arready;		// From UUT of flocra.v
@@ -292,7 +305,7 @@ module flocra_simple_tb;
 	    err <= 1;
 	 end
       end
-   endtask   
+   endtask
 
    ocra1_model
    ocra1(
@@ -324,28 +337,35 @@ module flocra_simple_tb;
 	.sdo				(fhdo_sdo_o));
 
    rx_chain_model rx0(
-		      .clk(clk),
-		      .rst_n(rx0_rst_n_o),
-		      .rate_i(rx0_rate_o),
-		      .dds0_i(18'd0),
-		      .dds1_i(18'd0),
-		      .dds2_i(18'd0),
-		      .dds_source_i(rx0_dds_source_o),
+		      // Outputs
 		      .axis_tvalid_o(rx0_axis_tvalid_i),
-		      .axis_tdata_o(rx0_axis_tdata_i)
+		      .axis_tdata_o(rx0_axis_tdata_i),
+		      // Inputs
+		      .clk(s0_axi_aclk),
+		      .rst_n(rx0_rst_n_o),	      
+		      .rate_axis_tdata_i(rx0_rate_axis_tdata_o),
+		      .rate_axis_tvalid_i(rx0_rate_axis_tvalid_o),
+
+		      .dds_iq_axis_tdata_i(rx0_dds_iq_axis_tdata_o),
+		      .dds_iq_axis_tvalid_i(rx0_dds_iq_axis_tvalid_o),
+
+		      .axis_tready_i(rx0_axis_tready_o)
 		      );
 
-   rx_chain_model rx1(
-		      .clk(clk),
-		      .rst_n(rx1_rst_n_o),
-		      .rate_i(rx1_rate_o),
-		      .dds0_i(18'd0),
-		      .dds1_i(18'd0),
-		      .dds2_i(18'd0),
-		      .dds_source_i(rx1_dds_source_o),
+   rx_chain_model rx1(// Outputs
 		      .axis_tvalid_o(rx1_axis_tvalid_i),
-		      .axis_tdata_o(rx1_axis_tdata_i)
-		      );   
+		      .axis_tdata_o(rx1_axis_tdata_i),
+		      // Inputs
+		      .clk(s0_axi_aclk),
+		      .rst_n(rx1_rst_n_o),	      
+		      .rate_axis_tdata_i(rx1_rate_axis_tdata_o),
+		      .rate_axis_tvalid_i(rx1_rate_axis_tvalid_o),
+
+		      .dds_iq_axis_tdata_i(rx1_dds_iq_axis_tdata_o),
+		      .dds_iq_axis_tvalid_i(rx1_dds_iq_axis_tvalid_o),
+
+		      .axis_tready_i(rx1_axis_tready_o)
+		      );
    
    flocra #(/*AUTOINSTPARAM*/
 	    // Parameters
@@ -365,18 +385,25 @@ module flocra_simple_tb;
        .fhdo_ssn_o			(fhdo_ssn_o),
        .tx_gate_o			(tx_gate_o),
        .rx_gate_o			(rx_gate_o),
-       .dds0_phase_o			(dds0_phase_o[24:0]),
-       .dds1_phase_o			(dds1_phase_o[24:0]),
-       .dds2_phase_o			(dds2_phase_o[24:0]),
+       .dds0_phase_axis_tdata_o		(dds0_phase_axis_tdata_o[23:0]),
+       .dds1_phase_axis_tdata_o		(dds1_phase_axis_tdata_o[23:0]),
+       .dds2_phase_axis_tdata_o		(dds2_phase_axis_tdata_o[23:0]),
+       .dds0_phase_axis_tvalid_o	(dds0_phase_axis_tvalid_o),
+       .dds1_phase_axis_tvalid_o	(dds1_phase_axis_tvalid_o),
+       .dds2_phase_axis_tvalid_o	(dds2_phase_axis_tvalid_o),
        .rx0_rst_n_o			(rx0_rst_n_o),
        .rx1_rst_n_o			(rx1_rst_n_o),
-       .rx0_rate_o			(rx0_rate_o[9:0]),
-       .rx1_rate_o			(rx1_rate_o[9:0]),
+       .rx0_rate_axis_tdata_o		(rx0_rate_axis_tdata_o[15:0]),
+       .rx1_rate_axis_tdata_o		(rx1_rate_axis_tdata_o[15:0]),
+       .rx0_rate_axis_tvalid_o		(rx0_rate_axis_tvalid_o),
+       .rx1_rate_axis_tvalid_o		(rx1_rate_axis_tvalid_o),
        .trig_o				(trig_o),
        .rx0_axis_tready_o		(rx0_axis_tready_o),
-       .rx0_dds_source_o		(rx0_dds_source_o[1:0]),
        .rx1_axis_tready_o		(rx1_axis_tready_o),
-       .rx1_dds_source_o		(rx1_dds_source_o[1:0]),
+       .rx0_dds_iq_axis_tdata_o		(rx0_dds_iq_axis_tdata_o[31:0]),
+       .rx1_dds_iq_axis_tdata_o		(rx1_dds_iq_axis_tdata_o[31:0]),
+       .rx0_dds_iq_axis_tvalid_o	(rx0_dds_iq_axis_tvalid_o),
+       .rx1_dds_iq_axis_tvalid_o	(rx1_dds_iq_axis_tvalid_o),
        .tx0_axis_tdata_o		(tx0_axis_tdata_o[31:0]),
        .tx0_axis_tvalid_o		(tx0_axis_tvalid_o),
        .tx1_axis_tdata_o		(tx1_axis_tdata_o[31:0]),
@@ -397,6 +424,12 @@ module flocra_simple_tb;
        .rx0_axis_tdata_i		(rx0_axis_tdata_i[31:0]),
        .rx1_axis_tvalid_i		(rx1_axis_tvalid_i),
        .rx1_axis_tdata_i		(rx1_axis_tdata_i[31:0]),
+       .dds0_iq_axis_tdata_i		(dds0_iq_axis_tdata_i[31:0]),
+       .dds1_iq_axis_tdata_i		(dds1_iq_axis_tdata_i[31:0]),
+       .dds2_iq_axis_tdata_i		(dds2_iq_axis_tdata_i[31:0]),
+       .dds0_iq_axis_tvalid_i		(dds0_iq_axis_tvalid_i),
+       .dds1_iq_axis_tvalid_i		(dds1_iq_axis_tvalid_i),
+       .dds2_iq_axis_tvalid_i		(dds2_iq_axis_tvalid_i),
        .s0_axi_aclk			(s0_axi_aclk),
        .s0_axi_aresetn			(s0_axi_aresetn),
        .s0_axi_awaddr			(s0_axi_awaddr[C_S0_AXI_ADDR_WIDTH-1:0]),

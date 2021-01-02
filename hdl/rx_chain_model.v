@@ -27,19 +27,21 @@
  `timescale 1ns/1ns
 
 module rx_chain_model(
-		      input clk,
-		      input rst_n,
-		      input [9:0] rate_i,
-		      input [17:0] dds0_i,
-		      input [17:0] dds1_i,
-		      input [17:0] dds2_i,
-		      input [1:0] dds_source_i,
+		      input 		clk,
+		      input 		rst_n,
 
-		      output reg axis_tvalid_o,
+		      input [15:0] 	rate_axis_tdata_i,
+		      input 		rate_axis_tvalid_i,
+
+		      input [31:0] 	dds_iq_axis_tdata_i,
+		      input 		dds_iq_axis_tvalid_i, 
+
+		      input 		axis_tready_i,
+		      output reg 	axis_tvalid_o,
 		      output reg [31:0] axis_tdata_o
 		      );
 
-   reg [9:0] 				cnt = 0;
+   reg [11:0] 				cnt = 0;
 
    initial axis_tdata_o = 0;
    
@@ -48,14 +50,10 @@ module rx_chain_model(
       if (!rst_n) cnt <= 0;
       else begin
 	 cnt <= cnt + 1;
-	 if (cnt == rate_i) begin
+	 if (cnt == rate_axis_tdata_i[11:0] - 1) begin
 	    axis_tvalid_o <= 1;
-	    case (dds_source_i)
-	      2'd0: axis_tdata_o <= {14'd0, dds0_i};
-	      2'd1: axis_tdata_o <= {14'd0, dds1_i};
-	      2'd2: axis_tdata_o <= {14'd0, dds2_i};
-	      default: axis_tdata_o <= 32'hffffffff;
-	    endcase // case (dds_source_i)	    
+	    axis_tdata_o <= dds_iq_axis_tdata_i;
+	    cnt <= 0;
 	 end
       end
    end

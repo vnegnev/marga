@@ -75,15 +75,17 @@ module flocra
     output 				  rx_gate_o,
 
     // TX DDS phase control
-    output reg [24:0] 			  dds0_phase_o, dds1_phase_o, dds2_phase_o,
+    output reg [23:0] 			  dds0_phase_axis_tdata_o, dds1_phase_axis_tdata_o, dds2_phase_axis_tdata_o,
+    output 				  dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o,
     // output 				  dds0_phase_en, dds1_phase_en, dds2_phase_en;
 
     // RX DDS channel multiplexing
     // TODO HERE
 
-    // RX reset, CIC decimation ratio control (from 1 to 1023)
+    // RX reset, CIC decimation ratio control
     output 				  rx0_rst_n_o, rx1_rst_n_o,
-    output [9:0] 			  rx0_rate_o, rx1_rate_o,
+    output [15:0] 			  rx0_rate_axis_tdata_o, rx1_rate_axis_tdata_o,
+    output 				  rx0_rate_axis_tvalid_o, rx1_rate_axis_tvalid_o,
 
     // External trigger output and input
     output 				  trig_o,
@@ -94,16 +96,16 @@ module flocra
     input [31:0] 			  rx0_axis_tdata_i,
     output 				  rx0_axis_tready_o,
 
-    // RX0 LO source select
-    output [1:0] 			  rx0_dds_source_o,
-
     // streaming inputs to RX1 FIFO    
     input 				  rx1_axis_tvalid_i,
     input [31:0] 			  rx1_axis_tdata_i,
     output 				  rx1_axis_tready_o,
 
-    // RX1 LO source select
-    output [1:0] 			  rx1_dds_source_o,
+    // RX LO source select
+    input [31:0] 			  dds0_iq_axis_tdata_i, dds1_iq_axis_tdata_i, dds2_iq_axis_tdata_i,
+    input 				  dds0_iq_axis_tvalid_i, dds1_iq_axis_tvalid_i, dds2_iq_axis_tvalid_i,
+    output reg [31:0] 			  rx0_dds_iq_axis_tdata_o, rx1_dds_iq_axis_tdata_o,
+    output 				  rx0_dds_iq_axis_tvalid_o, rx1_dds_iq_axis_tvalid_o,
 
     // streaming outputs to TX multipliers; I/Q 16-bit each
     output reg [31:0] 			  tx0_axis_tdata_o,
@@ -203,9 +205,10 @@ module flocra
    assign fld_status_latch = {29'd0, fhdo_err, ocra1_err, ocra1_data_lost};
 
    // RX control lines
-   assign rx0_rst_n_o = rx0_ctrl[12], rx1_rst_n_o = rx1_ctrl[12];
-   assign rx0_dds_source_o = rx0_ctrl[11:10], rx1_dds_source_o = rx1_ctrl[11:10];   
-   assign rx0_rate_o = rx0_ctrl[9:0], rx1_rate_o = rx1_ctrl[9:0];
+   wire [1:0] rx0_dds_source = rx0_ctrl[13:12], rx1_dds_source = rx1_ctrl[13:12];
+   assign rx0_rst_n_o = rx0_ctrl[15], rx1_rst_n_o = rx1_ctrl[15];
+   assign rx0_rate_axis_tdata_o = {4'd0, rx0_ctrl[11:0]}, rx1_rate_axis_tdata_o = {4'd0, rx1_ctrl[11:0]};
+   assign rx0_rate_axis_tvalid_o = 1, rx1_rate_axis_tvalid_o = 1; // TODO: could use strobes for better power savings
 
    // TX data buses
    assign tx0_axis_tvalid_o = 1, tx1_axis_tvalid_o = 1;
@@ -224,22 +227,49 @@ module flocra
 	dds2_phase_clear = lo2_phase_msb[15];
    reg 	dds0_phase_clear_r = 0, dds1_phase_clear_r = 0, dds2_phase_clear_r = 0;
    reg [30:0] dds0_phase_full = 0, dds1_phase_full = 0, dds2_phase_full = 0;
-   assign dds0_phase_o = dds0_phase_full[30:6], 
-     dds1_phase_o = dds1_phase_full[30:6], 
-     dds2_phase_o = dds2_phase_full[30:6];
+   assign dds0_phase_axis_tdata_o = dds0_phase_full[30:7],
+     dds1_phase_axis_tdata_o = dds1_phase_full[30:7],
+     dds2_phase_axis_tdata_o = dds2_phase_full[30:7];
+
+   // RX LO source control
+   reg [31:0] dds0_iq = 0, dds1_iq = 0, dds2_iq = 0, rx0_iq = 0, rx1_iq = 0;
+   assign rx0_dds_iq_axis_tvalid_o = 1, rx1_dds_iq_axis_tvalid_o = 1;
+   always @(posedge clk) begin
+      dds0_iq <= dds0_iq_axis_tdata_i;
+      dds1_iq <= dds1_iq_axis_tdata_i;
+      dds2_iq <= dds2_iq_axis_tdata_i;
+      rx0_dds_iq_axis_tdata_o <= rx0_iq;
+      rx1_dds_iq_axis_tdata_o <= rx1_iq;      
+
+      case (rx0_dds_source)
+	2'd0: rx0_iq <= dds0_iq;
+	2'd1: rx0_iq <= dds1_iq;
+	2'd2: rx0_iq <= dds2_iq;
+	default: rx0_iq <= 32'hffffffff;
+      endcase // case (rx0_dds_source)
+
+      case (rx1_dds_source)
+	2'd0: rx1_iq <= dds0_iq;
+	2'd1: rx1_iq <= dds1_iq;
+	2'd2: rx1_iq <= dds2_iq;
+	default: rx1_iq <= 32'hffffffff;
+      endcase // case (rx0_dds_source)      
+   end
+
+   assign {dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o} = 3'b111;
 
    always @(posedge clk) begin
       {dds2_phase_clear_r, dds1_phase_clear_r, dds0_phase_clear_r}
 	<= {dds2_phase_clear, dds1_phase_clear, dds0_phase_clear};
       
       if (dds0_phase_clear != dds0_phase_clear_r) dds0_phase_full <= 0;
-      else dds0_phase_full <= {lo0_phase_msb[14:0], lo0_phase_lsb};
+      else dds0_phase_full <= dds0_phase_full + {lo0_phase_msb[14:0], lo0_phase_lsb};
       
       if (dds1_phase_clear != dds1_phase_clear_r) dds1_phase_full <= 0;
-      else dds1_phase_full <= {lo1_phase_msb[14:0], lo1_phase_lsb};
+      else dds1_phase_full <= dds1_phase_full + {lo1_phase_msb[14:0], lo1_phase_lsb};
       
       if (dds2_phase_clear != dds2_phase_clear_r) dds2_phase_full <= 0;
-      else dds2_phase_full <= {lo2_phase_msb[14:0], lo2_phase_lsb};
+      else dds2_phase_full <= dds2_phase_full + {lo2_phase_msb[14:0], lo2_phase_lsb};
    end
 
    // TX and RX gates

@@ -6,6 +6,150 @@
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
     <spirit:busInterface>
+      <spirit:name>dds0_iq_axis_i</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds0_iq_axis_tdata_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds0_iq_axis_tvalid_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dds0_phase_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds0_phase_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds0_phase_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dds1_iq_axis_i</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds1_iq_axis_tdata_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds1_iq_axis_tvalid_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dds1_phase_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds1_phase_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds1_phase_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dds2_iq_axis_i</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds2_iq_axis_tdata_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds2_iq_axis_tvalid_i</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>dds2_phase_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds2_phase_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>dds2_phase_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
       <spirit:name>rx0_axis_i</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
@@ -38,6 +182,54 @@
       </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
+      <spirit:name>rx0_dds_iq_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx0_dds_iq_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx0_dds_iq_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>rx0_rate_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx0_rate_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx0_rate_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
       <spirit:name>rx1_axis_i</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
@@ -64,7 +256,55 @@
             <spirit:name>TREADY</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>rx0_axis_tready_o</spirit:name>
+            <spirit:name>rx1_axis_tready_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>rx1_dds_iq_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx1_dds_iq_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx1_dds_iq_axis_tvalid_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>rx1_rate_axis_o</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="axis_rtl" spirit:version="1.0"/>
+      <spirit:master/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TDATA</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx1_rate_axis_tdata_o</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>TVALID</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>rx1_rate_axis_tvalid_o</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
@@ -297,7 +537,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>POLARITY</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.S0_AXI_ARESETN.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S0_AXI_ARESETN.POLARITY" spirit:choiceRef="choice_list_74b5137e">ACTIVE_LOW</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
     </spirit:busInterface>
@@ -319,7 +559,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>ASSOCIATED_BUSIF</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.S0_AXI_ACLK.ASSOCIATED_BUSIF">s0_axi:rx0_axis_i:tx1_axis_o:tx0_axis_o:rx1_axis_i</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.S0_AXI_ACLK.ASSOCIATED_BUSIF">s0_axi:tx1_axis_o:tx0_axis_o:rx1_rate_axis_o:rx1_dds_iq_axis_o:rx1_axis_i:rx0_rate_axis_o:rx0_dds_iq_axis_o:rx0_axis_i:dds2_phase_axis_o:dds2_iq_axis_i:dds1_phase_axis_o:dds1_iq_axis_i:dds0_phase_axis_o:dds0_iq_axis_i</spirit:value>
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>ASSOCIATED_RESET</spirit:name>
@@ -366,7 +606,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1626dec8</spirit:value>
+            <spirit:value>a21039ed</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -381,7 +621,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>3770aa85</spirit:value>
+            <spirit:value>3770733c</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -557,11 +797,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>dds0_phase_o</spirit:name>
+        <spirit:name>dds0_phase_axis_tdata_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">24</spirit:left>
+            <spirit:left spirit:format="long">23</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -574,11 +814,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>dds1_phase_o</spirit:name>
+        <spirit:name>dds1_phase_axis_tdata_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">24</spirit:left>
+            <spirit:left spirit:format="long">23</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -591,16 +831,55 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>dds2_phase_o</spirit:name>
+        <spirit:name>dds2_phase_axis_tdata_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">24</spirit:left>
+            <spirit:left spirit:format="long">23</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds0_phase_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds1_phase_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds2_phase_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
               <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -634,11 +913,11 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>rx0_rate_o</spirit:name>
+        <spirit:name>rx0_rate_axis_tdata_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">9</spirit:left>
+            <spirit:left spirit:format="long">15</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -651,16 +930,42 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>rx1_rate_o</spirit:name>
+        <spirit:name>rx1_rate_axis_tdata_o</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">9</spirit:left>
+            <spirit:left spirit:format="long">15</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx0_rate_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx1_rate_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
               <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -740,23 +1045,6 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>rx0_dds_source_o</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long">1</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
         <spirit:name>rx1_axis_tvalid_i</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
@@ -803,16 +1091,158 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>rx1_dds_source_o</spirit:name>
+        <spirit:name>dds0_iq_axis_tdata_i</spirit:name>
         <spirit:wire>
-          <spirit:direction>out</spirit:direction>
+          <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">1</spirit:left>
+            <spirit:left spirit:format="long">31</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds1_iq_axis_tdata_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds2_iq_axis_tdata_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds0_iq_axis_tvalid_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds1_iq_axis_tvalid_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>dds2_iq_axis_tvalid_i</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx0_dds_iq_axis_tdata_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx1_dds_iq_axis_tdata_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">31</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>reg</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx0_dds_iq_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>rx1_dds_iq_axis_tvalid_o</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
               <spirit:viewNameRef>xilinx_anylanguagesynthesis</spirit:viewNameRef>
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
@@ -1254,7 +1684,7 @@
   </spirit:model>
   <spirit:choices>
     <spirit:choice>
-      <spirit:name>choice_list_9d8b0d81</spirit:name>
+      <spirit:name>choice_list_74b5137e</spirit:name>
       <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
       <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
     </spirit:choice>
@@ -1299,7 +1729,7 @@
       <spirit:file>
         <spirit:name>hdl/flocra.v</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_0a66cfa9</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_d6fd5282</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
     </spirit:fileSet>
@@ -1423,8 +1853,8 @@
         <xilinx:taxonomy>AXI_Peripheral</xilinx:taxonomy>
       </xilinx:taxonomies>
       <xilinx:displayName>flocra</xilinx:displayName>
-      <xilinx:coreRevision>13</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-01-01T16:49:23Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>15</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-01-02T06:03:11Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3a33a1d6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra/flocra_1.0</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@451a3554_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra/flocra_1.0</xilinx:tag>
@@ -1737,14 +2167,421 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@128d15e6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@531729c1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@631bf006_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11422372_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7cd3236_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9bcdc8a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1799fb87_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7defa449_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@75f3306e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7b045eaa_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7300974_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47630bb2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21aff74c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@10f4494f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4dde80b6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6c4afee2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d40616c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d282d86_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1290be14_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@58b2e080_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bf9ad44_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bad7ab2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40d3087a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56b1bcbc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27727a80_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f6dcf04_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40db7435_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6da377e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@750ccd2c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1204fdd0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56c70868_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7cb9516d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@20a8c005_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38bbfa7d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33bd2a6f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41e8b563_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4571fff4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5bbffa5e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1faad0ab_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a994a43_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d90bd97_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5101f3ff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35e5f1b8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14e19cb4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1988658c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@629b2ce1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@741e8b46_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6734f15_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@508142bc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1f57c96a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d52ecbf_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69ec94e0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d9f5413_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76207a7d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72fee760_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f0ddb6c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c49f27e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1c6534d3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a062ee0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3854413b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5144f0c8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14c6c96e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40b7eb74_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50eaa5c4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b31f533_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@500a39d3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@734a16bd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@430d7960_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a39cbd7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@23b83e34_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@125af003_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@75ef9380_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55aa90e8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25bbfced_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@81e1b3a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@306fb926_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5960c47b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61c7082d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@45e4ec03_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54e45758_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@298aacd0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e54dd2b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2420d618_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@364a5e12_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28cad4c4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@26eca6a0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3bb85dab_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@556ddbd0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6581b284_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46ea222e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@35450e01_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bb4d103_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40a2df86_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3eae3f37_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@48964990_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@513ec443_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2da5f053_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@550a76af_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8895ced_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c0f6b40_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70b8ecf3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3bb2abf9_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@388d258b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@58f412cd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@634ab1c3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@97d6576_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@114b4571_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18fb702a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39c32fc4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@583caa0d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70dff5a3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4fd3addd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b914a2c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b5c8362_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2bf6ae46_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6887da52_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@407900f7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2c963aff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@371ce007_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@716d758b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4097d5e0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a92a2c4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@549e738_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7360ec53_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5bbc69bd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@41f42924_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e5dd9aa_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b539558_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2107dc35_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d12aef3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71b245d5_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@dc1d503_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3122fb6e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1313a2a8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2691c3f0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7758134e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7444780f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b4c06a6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3425df87_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6250583e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76f7f918_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2fb18aa2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@659ed1e3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d805527_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33072d24_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60f785b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32e5cda2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d537835_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54637a32_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b649f9_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22bcf94e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7dbc342b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4b25ace3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a119bc3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1062e4c7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@d68a4d6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52c90e54_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d8ee2ee_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b19cd70_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79b8c4f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5dde3896_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ecaaefe_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@233ac619_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5f8aa696_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7d4ea09c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1ae04334_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c6b4ecf_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57bfc787_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f0f0454_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a929f56_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18072f91_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4d2a5af8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4543c69f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@446cc881_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@45e53f50_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@29ec3570_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32ec65e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@512d3b15_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@25c5e178_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e7b1615_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27535fc1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57f78394_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18750475_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@259826d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@123af569_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b8faa30_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c48cd08_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a5e19a7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40f029cf_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2719b670_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@68a72c2a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38ba4d5d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f7cc157_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b98888f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b3736eb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5147f9b0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@dbb8534_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4527e3c4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@195d3803_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@609e67b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@52bbc493_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57872927_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e9fb760_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@17a881e0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65152fc0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3d025998_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bc267b1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@55424d6b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22cf756c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27d4ed41_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21a7dcff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7287564c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@361679cb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@76c04f96_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1578ab2f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@447e4491_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@359bc3d3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e2b0ebc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@158f93a7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2dc04312_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53d6fddb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@57e99134_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6aa87d11_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ad3ec1b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@61bc4629_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e86ee7e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@21f2733_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62a1000a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@648058d1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6d8b4c1b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54522c34_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31474653_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30d60fcf_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b311605_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3403991b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7014871c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@439d239b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@146891c0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c3022d0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@70fd115_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2b2c84c6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@174087a0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2470d470_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@53e2cbdc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1950d7c4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@438c7f51_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2da09f20_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@390b06cd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@520420aa_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5867cdff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f4433d9_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ce4de3e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40bb2087_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@62350138_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@64a03547_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1a7c9a8d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@704f5993_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@e06919f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@28cbbf79_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ddb6346_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2e1d9dc7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c0c4ee4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50633c30_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@537c246c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b67387f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@bb3dd8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5c208769_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3fa199df_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54db5fc2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@227f72b6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1da41e7b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7828e258_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@39bb08f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a02a5a8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@23097a17_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4db22ddd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a0a12de_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7732918f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3fa4b03a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78e46d61_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@178945c8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6524ae02_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ab402a5_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@bc0fb0e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5596ea31_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@46e7f8cb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5a243807_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4cbebacf_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@30b1d17e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5e733ac4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e86db9a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2aa85ab0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6352f609_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5bbc9ed3_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@445dd384_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@b12e807_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4cc647f0_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bfe90a5_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@69e2abf8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@812f44a_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15582e9d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a7983f5_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7aaa93d6_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@65227f95_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4da86145_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ec7bad8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6a5dfe2c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@768cec69_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@15166561_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d449b04_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3a7a0569_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@79f1b831_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@18266805_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f09743c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e463fcb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@589c5ade_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ed6a2cd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@27070f76_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7247cd74_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19ed85fb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@24725c7d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bb3ebea_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ad175e1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4610d143_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5802289c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@619d0ecd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f41a908_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ac10263_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11fe59e1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@263aa45b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71eacd5b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@50399779_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3434e587_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b77de63_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@31656bcb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5b211ba_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b9fa8d8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40221d35_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2f068d0c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@66f136dc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4152f5ff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7bda7e46_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a0e19fb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1814658e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7761cf5d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@9abc66_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@283fccd4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@337fe7bd_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6c180486_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@357e2e39_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1d551c99_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3b6f694_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@129b8c08_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@445f22b9_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@fc8838f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43d175cc_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11072f73_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@38f40cff_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72ee077b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@56bd873_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@120b5469_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@227fe7b7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78b3663e_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6bfe1724_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2902ae3f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@16bd75e4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@681a9740_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6456fb98_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@aee6c04_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@40324140_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@438e9ab1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@629f2354_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44ab6ea8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@54a56bee_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@32838f1f_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44e3cf33_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3be4cf7d_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ced34e9_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4884edf4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7db56b54_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@750e08d7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2a0645b2_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1776acb1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36af70d8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@73b5d336_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78c8a4f1_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@594d790_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@352532d7_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@73399127_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77d004a8_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@787617fe_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2d4d60a4_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@8493c16_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3f1b9f5b_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@ae9c666_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@71478492_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@78171279_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6de33707_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7a581850_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@11647b29_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72a55dde_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72ae03aa_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@448f4590_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@a92a33c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6e7120cb_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77745922_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@597ea177_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@5ae33829_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@395cde3c_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6298ddac_ARCHIVE_LOCATION">/home/vlad/Documents/mri/flocra</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="a37a5588"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="f87609cd"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="6822ad07"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="0e985823"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="4f76aad9"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5352de80"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="87948a98"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="897470b5"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="0ff9c970"/>
     </xilinx:packagingInfo>

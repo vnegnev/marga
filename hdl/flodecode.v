@@ -372,7 +372,7 @@ module flodecode #
    reg [23:0] tmr = 0;
    reg 	      trig_r = 0, trig_r1 = 0, trig_r2 = 0, trig_r3 = 0, trig_r4 = 0;
    reg 	      trig_state_change = 0;
-   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, err_r = 0, bfull_r = 0;
+   reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, berr_r = 0, bfull_r = 0;
    reg [BUFS-1:0] buf_full_r = 0, buf_empty_r = 0, buf_err_r = 0;
    
    always @(posedge clk) begin
@@ -484,7 +484,7 @@ module flodecode #
 		    {24-OPT_MEM_ADDR_BITS{1'd0}}, flo_bram_raddr_r2};
       slv_reg5 <= status_r;
       slv_reg6 <= status_latch_r2;
-      slv_reg7 <= err_r;
+      slv_reg7 <= berr_r;
       slv_reg8 <= bfull_r;
       slv_reg9 <= {8'd0, buf_empty_r};
       slv_reg10 <= { {16-RX_FIFO_BITS{1'b0}}, fifo1_locs, {16-RX_FIFO_BITS{1'b0}}, fifo0_locs};
@@ -495,7 +495,7 @@ module flodecode #
       fifo0_read <= 0;
       fifo1_read <= 0;
       status_latch_r2 <= status_latch_r2 | status_latch_r;
-      err_r <= err_r | {8'd0, buf_err_r};
+      berr_r <= berr_r | {8'd0, buf_err_r};
       bfull_r <= bfull_r | {8'd0, buf_full_r};
       // bempty_r <= bempty_r | {8'd0, buf_empty_r};
 
@@ -503,7 +503,7 @@ module flodecode #
       if (slv_reg_rden) begin
 	 case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
 	   4'd6: status_latch_r2 <= 0;
-	   4'd7: err_r <= 0;
+	   4'd7: berr_r <= 0;
 	   4'd8: bfull_r <= 0;
 	   4'd11: fifo0_read <= 1; // pops next value from FIFO
 	   4'd12: fifo1_read <= 1; // pops next value from FIFO
