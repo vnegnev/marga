@@ -93,12 +93,12 @@ module flocra
 
     // streaming inputs to RX0 FIFO
     input 				  rx0_axis_tvalid_i,
-    input [31:0] 			  rx0_axis_tdata_i,
+    input [63:0] 			  rx0_axis_tdata_i,
     output 				  rx0_axis_tready_o,
 
     // streaming inputs to RX1 FIFO    
     input 				  rx1_axis_tvalid_i,
-    input [31:0] 			  rx1_axis_tdata_i,
+    input [63:0] 			  rx1_axis_tdata_i,
     output 				  rx1_axis_tready_o,
 
     // RX LO source select
@@ -313,7 +313,7 @@ module flocra
 
    ///////////////////////// FLODECODE ////////////////////////////
    
-   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(32768))
+   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
    fld (
 	.trig_i(trig_i),
 	.status_i(fld_status), // spare bits available for external status
@@ -321,11 +321,11 @@ module flocra
 	.data_o(fld_data),
 	.stb_o(fld_stb),
 
-	.rx0_data(rx0_axis_tdata_i[31:0]),
+	.rx0_data(rx0_axis_tdata_i[63:0]),
 	.rx0_valid(rx0_axis_tvalid_i),
 	.rx0_ready(rx0_axis_tready_o),
 
-	.rx1_data(rx1_axis_tdata_i[31:0]),
+	.rx1_data(rx1_axis_tdata_i[63:0]),
 	.rx1_valid(rx1_axis_tvalid_i),
 	.rx1_ready(rx1_axis_tready_o),
 

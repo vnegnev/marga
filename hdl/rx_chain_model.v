@@ -38,7 +38,7 @@ module rx_chain_model(
 
 		      input 		axis_tready_i,
 		      output reg 	axis_tvalid_o,
-		      output reg [31:0] axis_tdata_o
+		      output reg [63:0] axis_tdata_o
 		      );
 
    reg [11:0] 				cnt = 0;
@@ -52,7 +52,7 @@ module rx_chain_model(
 	 cnt <= cnt + 1;
 	 if (cnt == rate_axis_tdata_i[11:0] - 1) begin
 	    axis_tvalid_o <= 1;
-	    axis_tdata_o <= dds_iq_axis_tdata_i;
+	    axis_tdata_o <= {dds_iq_axis_tdata_i, dds_iq_axis_tdata_i};
 	    cnt <= 0;
 	 end
       end

@@ -46,9 +46,9 @@ module flocra_simple_tb;
    reg			dds1_iq_axis_tvalid_i;	// To UUT of flocra.v
    reg [31:0]		dds2_iq_axis_tdata_i;	// To UUT of flocra.v
    reg			dds2_iq_axis_tvalid_i;	// To UUT of flocra.v
-   reg [31:0]		rx0_axis_tdata_i;	// To UUT of flocra.v
+   reg [63:0]		rx0_axis_tdata_i;	// To UUT of flocra.v
    reg			rx0_axis_tvalid_i;	// To UUT of flocra.v
-   reg [31:0]		rx1_axis_tdata_i;	// To UUT of flocra.v
+   reg [63:0]		rx1_axis_tdata_i;	// To UUT of flocra.v
    reg			rx1_axis_tvalid_i;	// To UUT of flocra.v
    reg			s0_axi_aclk;		// To UUT of flocra.v
    reg [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_araddr;	// To UUT of flocra.v
@@ -421,9 +421,9 @@ module flocra_simple_tb;
        .fhdo_sdi_i			(fhdo_sdi_i),
        .trig_i				(trig_i),
        .rx0_axis_tvalid_i		(rx0_axis_tvalid_i),
-       .rx0_axis_tdata_i		(rx0_axis_tdata_i[31:0]),
+       .rx0_axis_tdata_i		(rx0_axis_tdata_i[63:0]),
        .rx1_axis_tvalid_i		(rx1_axis_tvalid_i),
-       .rx1_axis_tdata_i		(rx1_axis_tdata_i[31:0]),
+       .rx1_axis_tdata_i		(rx1_axis_tdata_i[63:0]),
        .dds0_iq_axis_tdata_i		(dds0_iq_axis_tdata_i[31:0]),
        .dds1_iq_axis_tdata_i		(dds1_iq_axis_tdata_i[31:0]),
        .dds2_iq_axis_tdata_i		(dds2_iq_axis_tdata_i[31:0]),

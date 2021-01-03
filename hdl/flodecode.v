@@ -48,11 +48,11 @@ module flodecode #
     output [BUFS-1:0] 			 stb_o,
 
     // stream interface, FIFOs
-    input [31:0] 			 rx0_data,
+    input [63:0] 			 rx0_data,
     input 				 rx0_valid,
     output 				 rx0_ready,
 
-    input [31:0] 			 rx1_data,
+    input [63:0] 			 rx1_data,
     input 				 rx1_valid,
     output 				 rx1_ready,
 
@@ -169,6 +169,8 @@ module flodecode #
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg10 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg11 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg12 = 0;  // read-only
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg13 = 0;  // read-only
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg14 = 0;  // read-only
    
    wire 				      slv_reg_rden;
    wire 				      slv_reg_wen;
@@ -292,14 +294,16 @@ module flodecode #
    // generate RX FIFOs
    // wire rx0_valid = s0_axis_wvalid, rx1_valid = s1_axis_wvalid;
    // wire [23:0] rx0_data = s0_axis_wdata[23:0], rx1_data = s1_axis_wdata[23:0];
-   wire [31:0] fifo0_data, fifo1_data;
+   wire [63:0] fifo0_data, fifo1_data;
+   reg [31:0] fifo0_data_i = 0, fifo0_data_q = 0;
+   reg [31:0] fifo1_data_i = 0, fifo1_data_q = 0;
    reg 	       fifo0_read = 0, fifo1_read = 0;
    wire        fifo0_full, fifo1_full;
    assign rx0_ready = !fifo0_full, rx1_ready = !fifo1_full;
    localparam RX_FIFO_BITS = $clog2(RX_FIFO_LENGTH);
    wire [RX_FIFO_BITS-1:0] fifo0_locs, fifo1_locs;
    
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(32) )
+   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
    fifo0(.clk(clk),
 	 .data_i(rx0_data),
 	 .valid_i(rx0_valid),
@@ -309,7 +313,7 @@ module flodecode #
 	 .full_o(fifo0_full)
 	 );
 
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(32) )
+   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
    fifo1(.clk(clk),
 	 .data_i(rx1_data),
 	 .valid_i(rx1_valid),
@@ -332,7 +336,7 @@ module flodecode #
    reg [31:0] 		       flo_bram_rdata = 0, flo_bram_rdata_r = 0, flo_bram_rdata_r2 = 0;
    wire [OPT_MEM_ADDR_BITS:0] axi_addr = axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS : ADDR_LSB];
    
-   /**** Grad mem and general register write logic ****/
+   /**** Flocra mem and general register write logic ****/
    always @(posedge clk) begin
       // defaults and pipelining
       flo_bram_wen <= 0;
@@ -381,7 +385,9 @@ module flodecode #
       status_latch_r <= status_latch_i;
       buf_err_r <= buf_err;
       buf_full_r <= buf_full;
-      buf_empty_r <= buf_empty;      
+      buf_empty_r <= buf_empty;
+      {fifo0_data_q, fifo0_data_i} <= fifo0_data;
+      {fifo1_data_q, fifo1_data_i} <= fifo1_data;      
 
       // triggering -- could be an external input, so need decent synch
       {trig_r4, trig_r3, trig_r2, trig_r} <= {trig_r3, trig_r2, trig_r, trig_i};
@@ -486,8 +492,10 @@ module flodecode #
       slv_reg8 <= bfull_r;
       slv_reg9 <= {8'd0, buf_empty_r};
       slv_reg10 <= { {16-RX_FIFO_BITS{1'b0}}, fifo1_locs, {16-RX_FIFO_BITS{1'b0}}, fifo0_locs};
-      slv_reg11 <= fifo0_data;
-      slv_reg12 <= fifo1_data;
+      slv_reg11 <= fifo0_data_i;
+      slv_reg12 <= fifo1_data_i;
+      slv_reg13 <= fifo0_data_q;
+      slv_reg14 <= fifo1_data_q;
 
       // default register values; modified on read
       fifo0_read <= 0;
@@ -605,6 +613,8 @@ module flodecode #
 	4'ha   : reg_data_out = slv_reg10;
 	4'hb   : reg_data_out = slv_reg11;
 	4'hc   : reg_data_out = slv_reg12;
+	4'hd   : reg_data_out = slv_reg13;
+	4'he   : reg_data_out = slv_reg14;
 	default;
       endcase
    end

@@ -107,7 +107,7 @@ module flocra_model(/*AUTOARG*/
    output [7:0]		leds_o;
    
    wire 		fhdo_sdi_i;
-   wire [31:0] 		rx0_axis_tdata_i, rx1_axis_tdata_i;
+   wire [63:0] 		rx0_axis_tdata_i, rx1_axis_tdata_i;
    wire 		rx0_axis_tvalid_i, rx1_axis_tvalid_i;
    wire [15:0]		rx0_rate_axis_tdata_o, rx1_rate_axis_tdata_o;
    wire 		rx0_rate_axis_tvalid_o, rx1_rate_axis_tvalid_o;
@@ -248,9 +248,9 @@ module flocra_model(/*AUTOARG*/
        .fhdo_sdi_i			(fhdo_sdi_i),
        .trig_i				(trig_i),
        .rx0_axis_tvalid_i		(rx0_axis_tvalid_i),
-       .rx0_axis_tdata_i		(rx0_axis_tdata_i[31:0]),
+       .rx0_axis_tdata_i		(rx0_axis_tdata_i[63:0]),
        .rx1_axis_tvalid_i		(rx1_axis_tvalid_i),
-       .rx1_axis_tdata_i		(rx1_axis_tdata_i[31:0]),
+       .rx1_axis_tdata_i		(rx1_axis_tdata_i[63:0]),
        .dds0_iq_axis_tdata_i		(dds0_iq_axis_tdata_i[31:0]),
        .dds1_iq_axis_tdata_i		(dds1_iq_axis_tdata_i[31:0]),
        .dds2_iq_axis_tdata_i		(dds2_iq_axis_tdata_i[31:0]),
