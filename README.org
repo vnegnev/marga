@@ -1,5 +1,38 @@
 #+TITLE: FLOCRA - an experimental flow-based MRI console compatible with the OCRA hardware platform
 
+** Overview
+
+   This is a centralised repo for the flocra HDL files, Icarus Verilog testbenches, Verilator simulation framework and Vivado IP core XML description.
+   Flocra is designed for the STEMlab-122.88 device, using the Xilinx Zynq ZC-7020 chip, but would be easily portable to smaller chips if the size of the main memory or FIFOs were reduced.
+   Instead of an approach to TX and gradient output timing based on a fixed raster time, each output is independently timed relative to previous events, with cycle-accurate repeatability.
+   This in principle allows more flexibility and a single general approach to event management.
+
+** Hardware introduction
+
+   Flocra supports two RX and two TX channels, the OCRA1 and GPA-FHDO gradient DAC boards, and multiple digital I/O including TX and RX blanking bits and trigger I/O.
+
+   For the TX, it contains three 24-bit phase outputs (31-bit internal accumulators) to be used with DDS sin/cos LUTs, and two pairs of 16-bit I/Q outputs.
+   Currently the modulation must be done externally, for example using Xilinx's IP.
+
+   For the RX, it has control outputs for two pairs of CIC filters, including synchronous reset and rate changes, as well as two output streams containing I/Q samples from the external DDSes that are driven by the TX phase outputs.
+   The three external DDSes can be multiplexed to any combination of these output streams.
+   For an example project using flocra, please see the block diagram [[TODO][TODO]] .
+
+   The flocra core has a single unified memory space for synchronously executing sequences.
+   There are no branch or loop instructions; flow control is accomplished by pauses.
+   The inner FSM, handling the pausing and memory reads, sends data to multiple small buffers, along with delays that specify when in the future the buffer should output the data to downstream logic.
+   Combined with the longer delays that the central FSM can run, these short buffer delays allow up to hundreds of buffers to synchronously update their outputs.
+   The buffers serve a range of purpuses, and control all the external peripherals with which flocra is used.
+   See =flodecode.v= for more information.
+
+   Although it can be operated standalone with any logic that can write to its instruction memory, flocra is designed to work with a real-time server running on the Zynq PS.
+   The server tracks flocra's read address in the memory space, and dynamically rewrites parts of the memory not yet being used.
+   The execution can thus wrap multiple times around the address space during extended sequences.
+   See the [[https://github.com/vnegnev/marcos_server][MaRCoS server]] project (flocra branch) for an example of such a server.
+
+   While flocra is executing, the server must also monitor the two RX FIFOs and continuously process the incoming data; if the data bandwidth is too large, the system can become starved of resources and overrun its valid memory bounds.
+   The server can recognise such events and notify the user that the sequence execution failed.
+
 ** Instruction set
    
 *** General thoughts
@@ -54,34 +87,11 @@
 
     - Status (no latch, just allow for read-out)
 
-** Plan
-
-   Write the output buffer core, with empty/full status outputs as well as data strobe
-
-   When the FIFO has data written to it, it should increment the input ptr and flag the data as valid.
-   Having been flagged, data should start a countdown (as short as 1 cycle).
-   Having counted down, data should increment its address and, if that's already the input ptr, return to idle. If it's not, then repeat until the addresses are equalised.
-
-   Write the main FSM and instruction BRAM: use the empty
-
-   Start by writing the main instruction BRAM, the output FSM (with PC logic)
-
-   
-** Instruction set quirks
-
-   Don't write to a buffer in two successive clock cycles if you can
-   avoid it - the FULL flag only goes high a clock cycle after a
-   buffer is written to. Still fine to record FULL events when writes
-   occurred though (for exception recording).
-
-   Error handling: any error line strobed by a buffer will be latched
-   into the error register, bits 31-16. If a FIFO is full when it is
-   written to, this will be caught, the error latched into the error
-   register bit 31, and the current buffer index saved to bits 30:24.
-
 ** Running unit tests with Verilator   
 
-   Follow the following (make sure you understand what the commands are doing):
+   These require building against the =flocra= branch of the MaRCoS server.
+   Clone this repo, and execute the following in a terminal starting in this folder.
+   Make sure you at least roughly understand what the commands are doing.
 
    #+begin_src sh
    cd ..
@@ -91,7 +101,15 @@
    cd build
    cmake ../src
    make
-   ./flocra_sim
+   ./flocra_sim &
+   cd ../..
+   git clone https://github.com/vnegnev/marcos_client.git -b flocra
+   cd marcos_client
+   # copy local_config.py.example to local_config.py, and edit to suit your setup
+   python test_server.py # all unit tests should pass
+   python test_flocra.py # all unit tests should pass [NOT YET IMPLEMENTED]
    #+end_src
 
-   Then, with the RP address set to =localhost=, run unittests or experiment scripts. You can find the resultant VCD inside the build folder, and a reasonable .sav file in the src folder.
+   You can run experiment scripts as well; the resultant trace file is generated by =flocra_sim= and called =flocra_model.fst= inside the build folder.
+   A reasonable .sav file is in the src folder; open the trace with =gtkwave flocra_model.fst ../src/flocra_model.sav= .
+   Note that the server must be gracefully closed by a network command (see the =test_exit()= testcase in =test_server.py= for an example) before the FST file is finalised.

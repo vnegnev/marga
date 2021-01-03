@@ -9,7 +9,7 @@ class flocra_model {
 public:
 	const vluint64_t MAX_TIME;
 	Vflocra_model *vfm;
-	VerilatedVcdC *tfp;
+	VerilatedFstC *tfp;
 
 	flocra_model(int argc, char *argv[]);
 	~flocra_model();

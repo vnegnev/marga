@@ -1,7 +1,7 @@
 #include "flocra_model.hpp"
 
 #include "Vflocra_model.h"
-#include "verilated_vcd_c.h"
+#include "verilated_fst_c.h"
 
 #include <iostream>
 
@@ -14,10 +14,10 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_TIME(50e6) {
 	vfm = new Vflocra_model;
 
 	Verilated::traceEverOn(true);	
-	tfp = new VerilatedVcdC;
+	tfp = new VerilatedFstC;
 
 	vfm->trace(tfp, 10);
-	tfp->open("flocra_model.vcd");
+	tfp->open("flocra_model.fst");
 
 	// Init
 	vfm->s0_axi_aclk = 1;
