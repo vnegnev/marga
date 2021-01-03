@@ -51,9 +51,9 @@ module flodecode_tb;
    reg [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA;	// To UUT of flodecode.v
    reg [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB;// To UUT of flodecode.v
    reg			S_AXI_WVALID;		// To UUT of flodecode.v
-   reg [23:0]		rx0_data;		// To UUT of flodecode.v
+   reg [31:0]		rx0_data;		// To UUT of flodecode.v
    reg			rx0_valid;		// To UUT of flodecode.v
-   reg [23:0]		rx1_data;		// To UUT of flodecode.v
+   reg [31:0]		rx1_data;		// To UUT of flodecode.v
    reg			rx1_valid;		// To UUT of flodecode.v
    reg [31:0]		status_i;		// To UUT of flodecode.v
    reg [31:0]		status_latch_i;		// To UUT of flodecode.v
@@ -399,9 +399,9 @@ module flodecode_tb;
        .trig_i				(trig_i),
        .status_i			(status_i[31:0]),
        .status_latch_i			(status_latch_i[31:0]),
-       .rx0_data			(rx0_data[23:0]),
+       .rx0_data			(rx0_data[31:0]),
        .rx0_valid			(rx0_valid),
-       .rx1_data			(rx1_data[23:0]),
+       .rx1_data			(rx1_data[31:0]),
        .rx1_valid			(rx1_valid),
        .S_AXI_ACLK			(S_AXI_ACLK),
        .S_AXI_ARESETN			(S_AXI_ARESETN),
