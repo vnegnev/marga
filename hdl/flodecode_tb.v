@@ -121,11 +121,25 @@ module flodecode_tb;
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
       
-      // Wait for 10 cycles then go idle
-      #50 wr32(19'h40000, {1'b0, UUT.INSTR_WAIT, 24'd10});
+      // Wait for 10 cycles then go idle (2 cycles extra from instruction set)
+      #50 wr32(19'h40000, {1'b0, UUT.INSTR_WAIT, 24'd8});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
+
+      // Wait for 10 total cycles in two separate instructions then go idle
+      #100 wr32(19'h40000, {1'b0, UUT.INSTR_WAIT, 24'd3});
+      wr32(19'h40004, {1'b0, UUT.INSTR_WAIT, 24'd3});
+      wr32(19'h40008, {1'b0, UUT.INSTR_FINISH, 24'd0});
+      wr32(19'h0, 32'h1);
+      wr32(19'h0, 32'h0);
+
+      // Wait for 4 total cycles in two separate instructions then go idle
+      #100 wr32(19'h40000, {1'b0, UUT.INSTR_WAIT, 24'd0});
+      wr32(19'h40004, {1'b0, UUT.INSTR_WAIT, 24'd0});
+      wr32(19'h40008, {1'b0, UUT.INSTR_FINISH, 24'd0});
+      wr32(19'h0, 32'h1);
+      wr32(19'h0, 32'h0);      
       
       // Wait for trigger with a timeout of 10 then go idle
       #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd10});
@@ -260,11 +274,23 @@ module flodecode_tb;
 
       #100 check_state("IDLE");
       #10 check_state("PREPARE");
-      #120 check_state("COUNTDOWN");      
+      #100 check_state("COUNTDOWN");      
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
       #100 check_state("IDLE");
+      #10 check_state("PREPARE");
+      #110 check_state("COUNTDOWN");      
+      #30 check_state("HALT");
+      #10 check_state("IDLE");
+
+      #90 check_state("IDLE");
+      #10 check_state("PREPARE");
+      #20 check_state("COUNTDOWN");
+      #60 check_state("HALT");
+      #10 check_state("IDLE");      
+
+      #170 check_state("IDLE");
       #10 check_state("PREPARE");
       #120 check_state("TRIG");      
       #30 check_state("HALT");

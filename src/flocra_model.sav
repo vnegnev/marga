@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
-[*] Mon Jan  4 04:10:25 2021
+[*] Tue Jan  5 01:45:36 2021
 [*]
 [dumpfile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/build/flocra_model.fst"
-[dumpfile_mtime] "Mon Jan  4 03:17:57 2021"
-[dumpfile_size] 330
+[dumpfile_mtime] "Tue Jan  5 01:42:30 2021"
+[dumpfile_size] 47904939
 [savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/src/flocra_model.sav"
-[timestart] 2010386
+[timestart] 0
 [size] 1920 992
 [pos] -1 -1
-*-7.227124 2010980 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-22.055397 5431020 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.flocra_model.
 [treeopen] TOP.flocra_model.UUT.
@@ -393,9 +393,11 @@ TOP.flocra_model.UUT.fld.flo_bram_raddr[15:0]
 TOP.flocra_model.UUT.fld.flo_bram_raddr_r2[15:0]
 @8024
 TOP.flocra_model.UUT.fld.flo_bram_raddr_r2[15:0]
+@20000
+-
+-
 @22
 TOP.flocra_model.UUT.fld.state[3:0]
-@23
 TOP.flocra_model.UUT.fld.flo_bram_rdata_r[31:0]
 @8024
 TOP.flocra_model.UUT.fld.tmr[23:0]

@@ -19,12 +19,12 @@ if (NOT verilator_FOUND)
   message(FATAL_ERROR "Verilator was not found. Either install it, or set the VERILATOR_ROOT environment variable")
 endif()
 
-# set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
-# set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
+set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
+set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
 
-# For debugging only
-set (CMAKE_C_FLAGS "-O0 -g -Wall -std=c11")
-set (CMAKE_CXX_FLAGS "-O0 -g -Wall -std=c++17")
+# # For debugging only
+# set (CMAKE_C_FLAGS "-O0 -g -Wall -std=c11")
+# set (CMAKE_CXX_FLAGS "-O0 -g -Wall -std=c++17")
 
 set(SERVER_PATH "../../marcos_server/src")
 set(SERVER_SRC	${SERVER_PATH}/hardware.cpp

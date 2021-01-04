@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
-[*] Mon Jan  4 03:56:51 2021
+[*] Mon Jan  4 12:09:31 2021
 [*]
 [dumpfile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/hdl/icarus_compile/000_flodecode_tb.lxt"
-[dumpfile_mtime] "Mon Jan  4 03:56:10 2021"
-[dumpfile_size] 29508
+[dumpfile_mtime] "Mon Jan  4 12:09:11 2021"
+[dumpfile_size] 30614
 [savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/hdl/icarus_compile/001_flodecode_tb.sav"
-[timestart] 9650
+[timestart] 0
 [size] 1920 992
 [pos] -1 -1
-*-9.302260 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-8.869644 990 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] flodecode_tb.
 [treeopen] flodecode_tb.UUT.
 [sst_width] 230
@@ -209,9 +209,7 @@ flodecode_tb.UUT.slv_reg7[31:0]
 flodecode_tb.UUT.slv_reg8[31:0]
 flodecode_tb.UUT.slv_reg9[31:0]
 flodecode_tb.UUT.slv_reg10[31:0]
-@23
 flodecode_tb.UUT.slv_reg11[31:0]
-@22
 flodecode_tb.UUT.slv_reg12[31:0]
 flodecode_tb.UUT.slv_reg13[31:0]
 flodecode_tb.UUT.slv_reg14[31:0]
@@ -221,8 +219,11 @@ flodecode_tb.UUT.slv_reg14[31:0]
 flodecode_tb.UUT.run_fsm[0]
 @22
 flodecode_tb.UUT.flo_bram_raddr[15:0]
+flodecode_tb.UUT.flo_bram_raddr_r[15:0]
+flodecode_tb.UUT.flo_bram_raddr_r2[15:0]
+flodecode_tb.UUT.flo_bram_rdata_r[31:0]
 flodecode_tb.UUT.state[3:0]
-@820
+@821
 [color] 3
 flodecode_tb.state_ascii[79:0]
 @24

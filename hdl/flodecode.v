@@ -450,7 +450,7 @@ module flodecode #
 		end
 		INSTR_TRIG_FOREVER: begin
 		   state <= TRIG_FOREVER;
-		   flo_bram_raddr <= flo_bram_raddr - 1; // backtrack due to delay		   
+		   flo_bram_raddr <= flo_bram_raddr - 1; // backtrack due to delay
 		end
 		// TODO: add an INSTR_TRIG_FOREVER as well that has no timeout
 	      endcase
@@ -464,20 +464,20 @@ module flodecode #
 	COUNTDOWN: begin
 	   if (tmr == 0) begin
 	      state <= PREPARE;
-	      // flo_bram_raddr <= flo_bram_raddr; // could be incremented etc for pipelining
+	      flo_bram_raddr <= flo_bram_raddr + 1;
 	   end else tmr <= tmr - 1;
 	end
 	TRIG: begin
 	   if (trig_state_change || (tmr == 0)) begin
 	      tmr <= 0;
 	      state <= PREPARE;
-	      // flo_bram_raddr <= flo_bram_raddr + 1; // could be incremented etc for pipelining
+	      flo_bram_raddr <= flo_bram_raddr + 1;
 	   end else tmr <= tmr - 1;
 	end
 	TRIG_FOREVER: begin
 	   if (trig_state_change || !run_fsm) begin
 	      state <= PREPARE;
-	      // flo_bram_raddr <= flo_bram_raddr + 1; // could be incremented etc for pipelining
+	      flo_bram_raddr <= flo_bram_raddr + 1;
 	   end
 	end
       endcase // case (state)

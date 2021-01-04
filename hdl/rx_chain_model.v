@@ -43,6 +43,9 @@ module rx_chain_model(
 
    reg [11:0] 				cnt = 0;
 
+   wire [15:0] 				rx_i = rx_iq_axis_tdata_i[15:0], 
+					rx_q = rx_iq_axis_tdata_i[31:16];
+   
    initial axis_tdata_o = 0;
    
    always @(posedge clk) begin
@@ -52,7 +55,7 @@ module rx_chain_model(
 	 cnt <= cnt + 1;
 	 if (cnt == rate_axis_tdata_i[11:0] - 1) begin
 	    axis_tvalid_o <= 1;
-	    axis_tdata_o <= {rx_iq_axis_tdata_i, rx_iq_axis_tdata_i};
+	    axis_tdata_o <= {rx_q, 16'd0, rx_i, 16'd0};
 	    cnt <= 0;
 	 end
       end
