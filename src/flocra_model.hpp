@@ -7,7 +7,7 @@ class Vflocra_model;
 
 class flocra_model {
 public:
-	const vluint64_t MAX_TIME;
+	vluint64_t MAX_SIM_TIME;
 	Vflocra_model *vfm;
 	VerilatedFstC *tfp;
 

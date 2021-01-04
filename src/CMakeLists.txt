@@ -19,8 +19,12 @@ if (NOT verilator_FOUND)
   message(FATAL_ERROR "Verilator was not found. Either install it, or set the VERILATOR_ROOT environment variable")
 endif()
 
-set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
-set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
+# set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
+# set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
+
+# For debugging only
+set (CMAKE_C_FLAGS "-O0 -g -Wall -std=c11")
+set (CMAKE_CXX_FLAGS "-O0 -g -Wall -std=c++17")
 
 set(SERVER_PATH "../../marcos_server/src")
 set(SERVER_SRC	${SERVER_PATH}/hardware.cpp
@@ -36,5 +40,5 @@ target_include_directories(flocra_sim PRIVATE ${SERVER_PATH} "./")
 
 verilate(flocra_sim
 	INCLUDE_DIRS "../hdl"
-	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-fst --trace-depth 3
+	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-fst --trace-depth 4
 	SOURCES ../hdl/flocra_model.v)

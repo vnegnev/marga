@@ -79,9 +79,6 @@ module flocra
     output 				  dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o,
     // output 				  dds0_phase_en, dds1_phase_en, dds2_phase_en;
 
-    // RX DDS channel multiplexing
-    // TODO HERE
-
     // RX reset, CIC decimation ratio control
     output 				  rx0_rst_n_o, rx1_rst_n_o,
     output [15:0] 			  rx0_rate_axis_tdata_o, rx1_rate_axis_tdata_o,
@@ -244,14 +241,14 @@ module flocra
 	2'd0: rx0_iq <= dds0_iq;
 	2'd1: rx0_iq <= dds1_iq;
 	2'd2: rx0_iq <= dds2_iq;
-	default: rx0_iq <= 32'h80008000; // max negative
+	default: rx0_iq <= 32'h80007fff; // max negative and positive
       endcase // case (rx0_dds_source)
 
       case (rx1_dds_source)
 	2'd0: rx1_iq <= dds0_iq;
 	2'd1: rx1_iq <= dds1_iq;
 	2'd2: rx1_iq <= dds2_iq;
-	default: rx1_iq <= 32'h80008000; // max negative
+	default: rx1_iq <= 32'h80007fff; // max negative and positive
       endcase // case (rx0_dds_source)      
    end
 

@@ -9,7 +9,7 @@ using namespace std;
 
 vluint64_t main_time = 0;
 
-flocra_model::flocra_model(int argc, char *argv[]) : MAX_TIME(50e6) {
+flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 	Verilated::commandArgs(argc, argv);
 	vfm = new Vflocra_model;
 
@@ -55,7 +55,7 @@ flocra_model::~flocra_model() {
 }
 
 int flocra_model::tick() {
-	if (main_time < MAX_TIME) {
+	if (main_time < MAX_SIM_TIME) {
 		// TODO: progress bar
 
 		tfp->dump(main_time); // NOTE: time in ns assuming 100 MHz clock
@@ -67,7 +67,9 @@ int flocra_model::tick() {
 		main_time += 5;
 
 		return 0;
-	} else return -1;
+	} else {
+		return -1;
+	}
 }
 
 uint32_t flocra_model::rd32(uint32_t addr) {

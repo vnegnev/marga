@@ -33,8 +33,8 @@ module rx_chain_model(
 		      input [15:0] 	rate_axis_tdata_i,
 		      input 		rate_axis_tvalid_i,
 
-		      input [31:0] 	dds_iq_axis_tdata_i,
-		      input 		dds_iq_axis_tvalid_i, 
+		      input [31:0] 	rx_iq_axis_tdata_i,
+		      input 		rx_iq_axis_tvalid_i, 
 
 		      input 		axis_tready_i,
 		      output reg 	axis_tvalid_o,
@@ -52,7 +52,7 @@ module rx_chain_model(
 	 cnt <= cnt + 1;
 	 if (cnt == rate_axis_tdata_i[11:0] - 1) begin
 	    axis_tvalid_o <= 1;
-	    axis_tdata_o <= {dds_iq_axis_tdata_i, dds_iq_axis_tdata_i};
+	    axis_tdata_o <= {rx_iq_axis_tdata_i, rx_iq_axis_tdata_i};
 	    cnt <= 0;
 	 end
       end

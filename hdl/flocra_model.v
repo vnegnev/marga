@@ -163,6 +163,11 @@ module flocra_model(/*AUTOARG*/
 	.csn				(fhdo_ssn_o),
 	.sdo				(fhdo_sdo_o));
 
+   // Just map the RX inputs to the TX I/Q outputs for now
+   wire [31:0]		rx0_iq_axis_tdata = tx0_axis_tdata_o;
+   wire [31:0]		rx1_iq_axis_tdata = tx1_axis_tdata_o;
+   wire 		rx0_iq_axis_tvalid = 1, rx1_iq_axis_tvalid = 1;
+
    rx_chain_model rx0(
 		      // Outputs
 		      .axis_tvalid_o(rx0_axis_tvalid_i),
@@ -173,8 +178,8 @@ module flocra_model(/*AUTOARG*/
 		      .rate_axis_tdata_i(rx0_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx0_rate_axis_tvalid_o),
 
-		      .dds_iq_axis_tdata_i(rx0_dds_iq_axis_tdata_o),
-		      .dds_iq_axis_tvalid_i(rx0_dds_iq_axis_tvalid_o),
+		      .rx_iq_axis_tdata_i(rx0_iq_axis_tdata),
+		      .rx_iq_axis_tvalid_i(rx0_iq_axis_tvalid),
 
 		      .axis_tready_i(rx0_axis_tready_o)
 		      );
@@ -188,8 +193,8 @@ module flocra_model(/*AUTOARG*/
 		      .rate_axis_tdata_i(rx1_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx1_rate_axis_tvalid_o),
 
-		      .dds_iq_axis_tdata_i(rx1_dds_iq_axis_tdata_o),
-		      .dds_iq_axis_tvalid_i(rx1_dds_iq_axis_tvalid_o),
+		      .rx_iq_axis_tdata_i(rx1_iq_axis_tdata),
+		      .rx_iq_axis_tvalid_i(rx1_iq_axis_tvalid),
 
 		      .axis_tready_i(rx1_axis_tready_o)
 		      );

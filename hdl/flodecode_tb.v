@@ -207,9 +207,9 @@ module flodecode_tb;
       // check new status, after time has passed for FIFOs to update their fullness
       #30 rd32(19'h28, {16'(RX_FIFO_LENGTH/4), 16'(RX_FIFO_LENGTH/2)});
 
-      // read out FIFOs
-      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) rd32(19'h2c, 100 + k);
-      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 2) rd32(19'h30, 201 + k);
+      // read out FIFOs (extra 10ns to take into account pipelining delay)
+      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) #10 rd32(19'h2c, 100 + k);
+      for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 2) #10 rd32(19'h30, 201 + k);
 
       // Check final status (short delay for the data to update)
       #10 rd32(19'h28, 0);
@@ -229,9 +229,9 @@ module flodecode_tb;
       // check new status, after time has passed for FIFOs to update their fullness
       #30 rd32(19'h28, {16'(RX_FIFO_LENGTH-1), 16'(RX_FIFO_LENGTH-1)});
 
-      // read out FIFOs
-      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h2c, 300 + k);
-      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) rd32(19'h30, 400 + k);
+      // read out FIFOs (extra 10ns to take into account pipelining delay)
+      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) #10 rd32(19'h2c, 300 + k);
+      for (k = 0; k < RX_FIFO_LENGTH-1; k = k + 1) #10 rd32(19'h30, 400 + k);
 
       // Check final status (short delay for the data to update)
       #10 rd32(19'h28, 0);

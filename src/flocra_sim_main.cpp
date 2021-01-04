@@ -31,10 +31,9 @@ extern "C" {
 unsigned SERVER_VERSION_UINT;
 std::string SERVER_VERSION_STR;
 
+flocra_model *fm;
 hardware *hw;
 iface *ifa;
-
-flocra_model *fm;
 
 int main(int argc, char *argv[]) {
 	std::cout << "MaRCoS server + FLOCRA sim model, " << __DATE__ << " " << __TIME__ << std::endl;
@@ -47,9 +46,9 @@ int main(int argc, char *argv[]) {
 	
 	std::cout << "Server version " << SERVER_VERSION_STR << std::endl;
 
+	fm = new flocra_model(argc, argv);
 	hw = new hardware();
 	ifa = new iface();
-	fm = new flocra_model(argc, argv);
 	ifa->run_stream();
 
 	// Cleanup
