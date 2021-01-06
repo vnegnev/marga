@@ -78,7 +78,7 @@ module ads8684_model_tb;
 
 
 		// check DAC output word is as expected before and after cs
-		#10 if (received_data[31:16] != ain_0p) begin
+		#10 if (received_data[15:0] != ain_0p) begin
 			$display("%d ns: Unexpected ADC output, expected %x, saw %x.", $time, ain_0p, received_data);
 			err <= 1;
 		end      
@@ -105,7 +105,7 @@ module ads8684_model_tb;
 		end
 		#10 csn = 1;
 
-	   		#10 if (received_data[31:16] != 16'hFFFF) begin
+	   		#10 if (received_data[15:0] != 16'hFFFF) begin
 			$display("%d ns: Unexpected ADC output, expected %x, saw %x.", $time, ain_0p, received_data);
 			err <= 1;
 		end      
