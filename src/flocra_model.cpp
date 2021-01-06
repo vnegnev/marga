@@ -4,20 +4,103 @@
 #include "verilated_fst_c.h"
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 vluint64_t main_time = 0;
 
+struct flocra_csv {
+	// TX
+	int16_t tx0_i = 0, tx0_q = 0, tx1_i = 0, tx1_q = 0;
+	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
+	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0;
+	uint8_t rx_gate = 0, tx_gate = 0, trig = 0, leds = 0;
+
+	FILE *f;
+	
+	flocra_csv(const char *filename) {
+		f = fopen(filename, "w");
+		if (f == nullptr) {
+			char errstr[1024];
+			sprintf(errstr, "Could not open %s\n", filename);
+			throw runtime_error(errstr);
+		}
+		wr_header();
+	}
+
+	~flocra_csv() {
+		fclose(f);
+	}
+	
+	void wr_header() {
+		fprintf(f, "time (ns),clock cycles,tx0 i,tx0 q,tx1 i,tx1 q,"
+		        "fhdo vx,fhdo vy, fhdo vz, fhdo vz2,ocra1 vx,ocra1 vy, ocra1 vz, ocra1 vz2,"
+		        "rx gate,tx gate,trig out,leds,\n");
+	}
+	
+	bool wr_update(Vflocra_model *fm) {
+		// Long and ugly - I'm sorry!
+		bool diff_tx = false, diff_grad = false, diff_gpio = false;
+		if (fm->tx0_i != tx0_i) { tx0_i = fm->tx0_i; diff_tx = true; }
+		if (fm->tx0_q != tx0_q) { tx0_q = fm->tx0_q; diff_tx = true; }
+		if (fm->tx1_i != tx1_i) { tx1_i = fm->tx1_i; diff_tx = true; }
+		if (fm->tx1_q != tx1_q) { tx1_q = fm->tx1_q; diff_tx = true; }
+
+		if (fm->fhdo_voutx != fhdo_voutx) { fhdo_voutx = fm->fhdo_voutx; diff_grad = true; }
+		if (fm->fhdo_vouty != fhdo_vouty) { fhdo_vouty = fm->fhdo_vouty; diff_grad = true; }
+		if (fm->fhdo_voutz != fhdo_voutz) { fhdo_voutz = fm->fhdo_voutz; diff_grad = true; }
+		if (fm->fhdo_voutz2 != fhdo_voutz2) { fhdo_voutz2 = fm->fhdo_voutz2; diff_grad = true; }
+
+		if (fm->ocra1_voutx != ocra1_voutx) { ocra1_voutx = fm->ocra1_voutx; diff_grad = true; }
+		if (fm->ocra1_vouty != ocra1_vouty) { ocra1_vouty = fm->ocra1_vouty; diff_grad = true; }
+		if (fm->ocra1_voutz != ocra1_voutz) { ocra1_voutz = fm->ocra1_voutz; diff_grad = true; }
+		if (fm->ocra1_voutz2 != ocra1_voutz2) { ocra1_voutz2 = fm->ocra1_voutz2; diff_grad = true; }
+
+		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
+		if (fm->tx_gate_o != tx_gate) { tx_gate = fm->tx_gate_o; diff_gpio = true; }
+		if (fm->trig_o != trig) { trig = fm->trig_o; diff_gpio = true; }
+		if (fm->leds_o != leds) { leds = fm->leds_o; diff_gpio = true; }
+
+		bool diff = diff_tx or diff_grad or diff_gpio;
+		if (diff) {
+			fprintf(f, "%8f, %8lu, %4u, %4u, %4u, %4u, %4u, %4u, %4u, %4u, %5d, %5d, %5d, %5d, %1d, %1d, %1d, %2u,\n",
+			        main_time * 100/122.88, main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
+			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,
+			        ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2,
+			        rx_gate, tx_gate, trig, leds);
+		}
+		return diff;
+	}
+};
+
 flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
+	if (argc > 1) {
+		string fsts("fst"), csvs("csv");
+		if (fsts.compare(argv[1])) {
+			printf("Saving trace to %s.fst\n", argv[0]);
+			_fst_output = true;
+		} else if (csvs.compare(argv[1])) {
+			printf("Dumping output to %s.csv\n", argv[0]);
+			_csv_output = true;
+		}
+	}
+	
 	Verilated::commandArgs(argc, argv);
 	vfm = new Vflocra_model;
 
-	Verilated::traceEverOn(true);	
-	tfp = new VerilatedFstC;
+	if (_fst_output) {
+		Verilated::traceEverOn(true);	
+		tfp = new VerilatedFstC;
 
-	vfm->trace(tfp, 10);
-	tfp->open("flocra_model.fst");
+		vfm->trace(tfp, 10);
+		tfp->open("flocra_model.fst");
+	}
+
+	if (_csv_output) {
+		string filepath(argv[0] + string(".csv"));
+		csv = new flocra_csv(filepath.c_str());
+	}
 
 	// Init
 	vfm->s0_axi_aclk = 1;
@@ -51,21 +134,23 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 flocra_model::~flocra_model() {
 	vfm->final();
 	delete vfm;
-	delete tfp;
+	if (_fst_output) delete tfp;
+	if (_csv_output) delete csv;
 }
 
 int flocra_model::tick() {
 	if (main_time < MAX_SIM_TIME) {
 		// TODO: progress bar
 
-		tfp->dump(main_time); // NOTE: time in ns assuming 100 MHz clock
+		if (_fst_output) tfp->dump(main_time); // NOTE: time in ns assuming 100 MHz clock
 
 		// update clock
 		vfm->s0_axi_aclk = !vfm->s0_axi_aclk;
        
 		vfm->eval();
-		main_time += 5;
 
+		if (vfm->s0_axi_aclk == 0 and _csv_output) csv->wr_update(vfm); // only update on negative edges of the clock
+		main_time += 5; // increment time after CSV was written
 		return 0;
 	} else {
 		return -1;

@@ -2,14 +2,16 @@
 #define FLOCRA_MODEL_HPP
 
 #include "verilated.h"
-
 class Vflocra_model;
+struct flocra_csv;
 
 class flocra_model {
 public:
 	vluint64_t MAX_SIM_TIME;
 	Vflocra_model *vfm;
 	VerilatedFstC *tfp;
+	flocra_csv *csv;
+	bool _fst_output = false, _csv_output = false;
 
 	flocra_model(int argc, char *argv[]);
 	~flocra_model();
