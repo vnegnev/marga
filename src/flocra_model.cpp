@@ -12,9 +12,9 @@ vluint64_t main_time = 0;
 
 struct flocra_csv {
 	// TX
-	int16_t tx0_i = 0, tx0_q = 0, tx1_i = 0, tx1_q = 0;
+	uint16_t tx0_i = 0, tx0_q = 0, tx1_i = 0, tx1_q = 0;
 	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
-	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0;
+	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0xfffff; // last is different purely so that a difference is picked up on the first row's write
 	uint8_t rx_gate = 0, tx_gate = 0, trig = 0, leds = 0;
 
 	FILE *f;
@@ -34,14 +34,19 @@ struct flocra_csv {
 	}
 	
 	void wr_header() {
-		fprintf(f, "time (ns),clock cycles,tx0 i,tx0 q,tx1 i,tx1 q,"
+		fprintf(f, "clock cycles,tx0 i,tx0 q,tx1 i,tx1 q,"
 		        "fhdo vx,fhdo vy, fhdo vz, fhdo vz2,ocra1 vx,ocra1 vy, ocra1 vz, ocra1 vz2,"
-		        "rx gate,tx gate,trig out,leds,\n");
+		        "rx gate,tx gate,trig out,leds\n");
 	}
 	
 	bool wr_update(Vflocra_model *fm) {
 		// Long and ugly - I'm sorry!
 		bool diff_tx = false, diff_grad = false, diff_gpio = false;
+
+		if (false and main_time/10 == 211845) { // debugging only: breakpoint at particular time
+			printf("x\n");
+		}		
+		
 		if (fm->tx0_i != tx0_i) { tx0_i = fm->tx0_i; diff_tx = true; }
 		if (fm->tx0_q != tx0_q) { tx0_q = fm->tx0_q; diff_tx = true; }
 		if (fm->tx1_i != tx1_i) { tx1_i = fm->tx1_i; diff_tx = true; }
@@ -55,7 +60,7 @@ struct flocra_csv {
 		if (fm->ocra1_voutx != ocra1_voutx) { ocra1_voutx = fm->ocra1_voutx; diff_grad = true; }
 		if (fm->ocra1_vouty != ocra1_vouty) { ocra1_vouty = fm->ocra1_vouty; diff_grad = true; }
 		if (fm->ocra1_voutz != ocra1_voutz) { ocra1_voutz = fm->ocra1_voutz; diff_grad = true; }
-		if (fm->ocra1_voutz2 != ocra1_voutz2) { ocra1_voutz2 = fm->ocra1_voutz2; diff_grad = true; }
+		if (fm->ocra1_voutz2 != ocra1_voutz2) { ocra1_voutz2 = fm->ocra1_voutz2; diff_grad = true; printf("SSS\n");}
 
 		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
 		if (fm->tx_gate_o != tx_gate) { tx_gate = fm->tx_gate_o; diff_gpio = true; }
@@ -64,8 +69,8 @@ struct flocra_csv {
 
 		bool diff = diff_tx or diff_grad or diff_gpio;
 		if (diff) {
-			fprintf(f, "%8f, %8lu, %4u, %4u, %4u, %4u, %4u, %4u, %4u, %4u, %5d, %5d, %5d, %5d, %1d, %1d, %1d, %2u,\n",
-			        main_time * 100/122.88, main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
+			fprintf(f, "%8lu, %4d, %4d, %4d, %4d, %4u, %4u, %4u, %4u, %5d, %5d, %5d, %5d, %1d, %1d, %1d, %3u\n",
+			        main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
 			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,
 			        ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2,
 			        rx_gate, tx_gate, trig, leds);
@@ -77,12 +82,14 @@ struct flocra_csv {
 flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 	if (argc > 1) {
 		string fsts("fst"), csvs("csv");
-		if (fsts.compare(argv[1])) {
+		if (fsts.compare(argv[1]) == 0) {
 			printf("Saving trace to %s.fst\n", argv[0]);
 			_fst_output = true;
-		} else if (csvs.compare(argv[1])) {
+		} else if (csvs.compare(argv[1]) == 0) {
 			printf("Dumping output to %s.csv\n", argv[0]);
 			_csv_output = true;
+		} else {
+			printf("Unknown argument; only accepting fst or csv for now.\n");
 		}
 	}
 	
@@ -94,7 +101,8 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 		tfp = new VerilatedFstC;
 
 		vfm->trace(tfp, 10);
-		tfp->open("flocra_model.fst");
+		string filepath(argv[0] + string(".fst"));
+		tfp->open(filepath.c_str());
 	}
 
 	if (_csv_output) {
