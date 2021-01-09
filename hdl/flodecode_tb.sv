@@ -23,7 +23,7 @@
 `ifndef _FLODECODE_TB_
  `define _FLODECODE_TB_
 
- `include "flodecode.v"
+ `include "flodecode.sv"
 
  `timescale 1ns/1ns
 

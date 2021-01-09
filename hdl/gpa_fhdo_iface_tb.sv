@@ -23,9 +23,9 @@
 `ifndef _GPA_FHDO_IFACE_TB_
 	`define _GPA_FHDO_IFACE_TB_
 
-`include "gpa_fhdo_iface.v"
-`include "dac80504_model.v"
-`include "ads8684_model.v"
+`include "gpa_fhdo_iface.sv"
+`include "dac80504_model.sv"
+`include "ads8684_model.sv"
 
  `timescale 1ns/1ns
 

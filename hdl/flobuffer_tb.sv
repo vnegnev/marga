@@ -23,7 +23,7 @@
 `ifndef _FLOBUFFER_TB_
  `define _FLOBUFFER_TB_
 
- `include "flobuffer.v"
+ `include "flobuffer.sv"
 
  `timescale 1ns/1ns
 

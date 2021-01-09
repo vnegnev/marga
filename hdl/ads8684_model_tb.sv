@@ -21,7 +21,7 @@
 `ifndef _ADS8684_MODEL_TB_
  `define _ADS8684_MODEL_TB_
 
- `include "ads8684_model.v"
+ `include "ads8684_model.sv"
 
  `timescale 1ns/1ns
 
