@@ -21,7 +21,7 @@
 `ifndef _AD5781_MODEL_TB_
  `define _AD5781_MODEL_TB_
 
- `include "ad5781_model.v"
+ `include "ad5781_model.sv"
 
  `timescale 1ns/1ns
 

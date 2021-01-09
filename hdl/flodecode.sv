@@ -26,8 +26,8 @@
 `ifndef _FLODECODE_
  `define _FLODECODE_
 
- `include "flobuffer.v"
- `include "flofifo.v"
+ `include "flobuffer.sv"
+ `include "flofifo.sv"
 
  `timescale 1ns / 1ns
 

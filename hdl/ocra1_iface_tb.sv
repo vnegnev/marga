@@ -23,8 +23,8 @@
 `ifndef _OCRA1_IFACE_TB_
  `define _OCRA1_IFACE_TB_
 
- `include "ocra1_iface.v"
- `include "ocra1_model.v"
+ `include "ocra1_iface.sv"
+ `include "ocra1_model.sv"
 
  `timescale 1ns/1ns
 

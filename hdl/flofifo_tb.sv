@@ -21,7 +21,7 @@
 `ifndef _FLOFIFO_TB_
  `define _FLOFIFO_TB_
 
- `include "flofifo.v"
+ `include "flofifo.sv"
 
  `timescale 1ns/1ns
 

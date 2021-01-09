@@ -38,10 +38,10 @@
 `ifndef _FLOCRA_
  `define _FLOCRA_
 
- `include "flodecode.v"
- `include "flobuffer.v"
- `include "ocra1_iface.v"
- `include "gpa_fhdo_iface.v"
+ `include "flodecode.sv"
+ `include "flobuffer.sv"
+ `include "ocra1_iface.sv"
+ `include "gpa_fhdo_iface.sv"
 
  `timescale 1ns / 1ns
 

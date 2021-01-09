@@ -21,7 +21,7 @@
 `ifndef _DAC80504_MODEL_TB_
  `define _DAC80504_MODEL_TB_
 
- `include "dac80504_model.v"
+ `include "dac80504_model.sv"
 
  `timescale 1ns/1ns
 
