@@ -2,7 +2,7 @@
 // Title         : flofifo
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : flofifo.v
+// File          : flofifo.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 24.12.2020
 // Last modified : 24.12.2020
@@ -20,9 +20,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 24.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLOFIFO_
  `define _FLOFIFO_

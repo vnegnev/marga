@@ -1735,32 +1735,32 @@
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
         <spirit:name>hdl/flodecode.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flofifo.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flobuffer.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/gpa_fhdo_iface.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ocra1_iface.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flocra.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>CHECKSUM_f1c1eab0</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
@@ -1769,91 +1769,91 @@
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
         <spirit:name>hdl/ad5781_model_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/dac80504_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ad5781_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ocra1_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/gpa_fhdo_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/dac80504_model_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ocra1_iface_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flocra_simple_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ads8684_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flodecode_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/rx_chain_model.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flobuffer_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/ads8684_model_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/flofifo_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/gpa_fhdo_iface_tb.sv</spirit:name>
-        <spirit:fileType>systemsystemVerilogSource</spirit:fileType>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>

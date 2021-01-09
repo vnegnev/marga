@@ -2,7 +2,7 @@
 // Title         : gpa_fhdo_iface
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : gpa_fhdo_iface.v
+// File          : gpa_fhdo_iface.sv
 // Author        :   <benjamin.menkuec@fh-dortmund.de>
 // Created       : 03.09.2020
 // Last modified : 03.09.2020
@@ -17,9 +17,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 03.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _GPA_FHDO_IFACE_
  `define _GPA_FHDO_IFACE_

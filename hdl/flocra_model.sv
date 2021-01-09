@@ -2,7 +2,7 @@
 // Title         : flocra_model
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : flocra_model.v
+// File          : flocra_model.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 25.12.2020
 // Last modified : 25.12.2020
@@ -18,17 +18,14 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 25.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLOCRA_MODEL_
  `define _FLOCRA_MODEL_
 
- `include "flocra.v"
- `include "ocra1_model.v"
- `include "gpa_fhdo_model.v"
- `include "rx_chain_model.v"
+ `include "flocra.sv"
+ `include "ocra1_model.sv"
+ `include "gpa_fhdo_model.sv"
+ `include "rx_chain_model.sv"
 
  `timescale 1ns/1ns
 

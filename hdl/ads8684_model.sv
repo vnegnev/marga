@@ -2,7 +2,7 @@
 // Title         : dac80504_model
 // Project       : OCRA
 //-----------------------------------------------------------------------------
-// File          : ads8684_model.v
+// File          : ads8684_model.sv
 // Author        : benjamin menkuec
 // Created       : 18.10.2020
 // Last modified : 18.10.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 18.10.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _ADS8684_MODEL_
  `define _ADS8684_MODEL_

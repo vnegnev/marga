@@ -2,7 +2,7 @@
 // Title         : ocra1_iface_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : ocra1_iface_tb.v
+// File          : ocra1_iface_tb.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 03.09.2020
 // Last modified : 03.09.2020
@@ -16,9 +16,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 03.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _OCRA1_IFACE_TB_
  `define _OCRA1_IFACE_TB_

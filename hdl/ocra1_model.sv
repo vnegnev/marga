@@ -2,7 +2,7 @@
 // Title         : ocra1_model
 // Project       : ocra_grad_ctrl
 //-----------------------------------------------------------------------------
-// File          : ocra1_model.v
+// File          : ocra1_model.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 31.08.2020
 // Last modified : 31.08.2020
@@ -14,14 +14,11 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 31.08.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _OCRA1_MODEL_
  `define _OCRA1_MODEL_
 
- `include "ad5781_model.v"
+ `include "ad5781_model.sv"
 
  `timescale 1ns/1ns
 

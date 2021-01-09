@@ -2,7 +2,7 @@
 // Title         : ads8684_model_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : ads8684_model_tb.v
+// File          : ads8684_model_tb.sv
 // Author        : benjamin menkuec
 // Created       : 20.10.2020
 // Last modified : 20.10.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 05.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _ADS8684_MODEL_TB_
  `define _ADS8684_MODEL_TB_

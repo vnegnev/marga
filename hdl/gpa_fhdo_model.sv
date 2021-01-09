@@ -2,7 +2,7 @@
 // Title         : gpa_fhdo_model
 // Project       : ocra_grad_ctrl
 //-----------------------------------------------------------------------------
-// File          : gpa_fhdo_model.v
+// File          : gpa_fhdo_model.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 19.11.2020
 // Last modified : 19.11.2020
@@ -14,15 +14,12 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 19.11.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _GPA_FHDO_MODEL_
  `define _GPA_FHDO_MODEL_
 
- `include "dac80504_model.v"
- `include "ads8684_model.v"
+ `include "dac80504_model.sv"
+ `include "ads8684_model.sv"
 
  `timescale 1ns/1ns
 

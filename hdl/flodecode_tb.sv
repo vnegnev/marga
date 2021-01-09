@@ -16,9 +16,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 13.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLODECODE_TB_
  `define _FLODECODE_TB_

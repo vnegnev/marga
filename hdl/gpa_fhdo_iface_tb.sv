@@ -2,7 +2,7 @@
 // Title         : gpa_fhdo_iface_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : gpa_fhdo_iface_tb.v
+// File          : gpa_fhdo_iface_tb.sv
 // Author        :   <benjamin.menkuec@fh-dortmund.de>
 // Created       : 03.09.2020
 // Last modified : 03.09.2020
@@ -16,12 +16,9 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 05.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _GPA_FHDO_IFACE_TB_
-	`define _GPA_FHDO_IFACE_TB_
+ `define _GPA_FHDO_IFACE_TB_
 
 `include "gpa_fhdo_iface.sv"
 `include "dac80504_model.sv"

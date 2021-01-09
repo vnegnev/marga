@@ -2,7 +2,7 @@
 // Title         : ad5781_model
 // Project       : OCRA
 //-----------------------------------------------------------------------------
-// File          : ad5781_model.v
+// File          : ad5781_model.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 31.08.2020
 // Last modified : 31.08.2020

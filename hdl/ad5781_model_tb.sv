@@ -2,7 +2,7 @@
 // Title         : ad5781_model_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : ad5781_model_tb.v
+// File          : ad5781_model_tb.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 02.09.2020
 // Last modified : 02.09.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 02.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _AD5781_MODEL_TB_
  `define _AD5781_MODEL_TB_

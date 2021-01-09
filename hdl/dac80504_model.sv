@@ -2,7 +2,7 @@
 // Title         : dac80504_model
 // Project       : OCRA
 //-----------------------------------------------------------------------------
-// File          : dac80504_model.v
+// File          : dac80504_model.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 31.08.2020
 // Last modified : 31.08.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 03.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _DAC80504_MODEL_
  `define _DAC80504_MODEL_

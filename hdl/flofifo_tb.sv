@@ -2,7 +2,7 @@
 // Title         : flofifo_tb
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : flofifo_tb.v
+// File          : flofifo_tb.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 25.12.2020
 // Last modified : 25.12.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 25.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLOFIFO_TB_
  `define _FLOFIFO_TB_

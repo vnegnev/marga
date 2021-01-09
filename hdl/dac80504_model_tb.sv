@@ -2,7 +2,7 @@
 // Title         : dac80504_model_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : dac80504_model_tb.v
+// File          : dac80504_model_tb.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 02.09.2020
 // Last modified : 02.09.2020
@@ -14,9 +14,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 05.09.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _DAC80504_MODEL_TB_
  `define _DAC80504_MODEL_TB_

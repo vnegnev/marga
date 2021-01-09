@@ -2,7 +2,7 @@
 // Title         : flobuffer_tb
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : flobuffer_tb.v
+// File          : flobuffer_tb.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 18.12.2020
 // Last modified : 18.12.2020
@@ -16,9 +16,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 18.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLOBUFFER_TB_
  `define _FLOBUFFER_TB_

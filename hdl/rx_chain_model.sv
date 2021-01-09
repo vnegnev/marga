@@ -2,7 +2,7 @@
 // Title         : rx_chain_model
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : rx_chain_model.v
+// File          : rx_chain_model.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 25.12.2020
 // Last modified : 25.12.2020
@@ -17,9 +17,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 25.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _RX_CHAIN_MODEL_
  `define _RX_CHAIN_MODEL_

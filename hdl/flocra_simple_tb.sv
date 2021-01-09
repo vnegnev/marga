@@ -2,7 +2,7 @@
 // Title         : flocra_simple_tb
 // Project       : flocra
 //-----------------------------------------------------------------------------
-// File          : flocra_simple_tb.v
+// File          : flocra_simple_tb.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 25.12.2020
 // Last modified : 25.12.2020
@@ -19,9 +19,6 @@
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
-// Modification history :
-// 25.12.2020 : created
-//-----------------------------------------------------------------------------
 
 `ifndef _FLOCRA_SIMPLE_TB_
  `define _FLOCRA_SIMPLE_TB_
