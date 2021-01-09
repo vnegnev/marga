@@ -26,10 +26,10 @@
 `ifndef _FLOCRA_SIMPLE_TB_
  `define _FLOCRA_SIMPLE_TB_
 
- `include "flocra.v"
- `include "ocra1_model.v"
- `include "gpa_fhdo_model.v"
- `include "rx_chain_model.v"
+ `include "flocra.sv"
+ `include "ocra1_model.sv"
+ `include "gpa_fhdo_model.sv"
+ `include "rx_chain_model.sv"
 
  `timescale 1ns/1ns
 
