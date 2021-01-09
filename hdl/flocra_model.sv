@@ -39,7 +39,8 @@ module flocra_model(/*AUTOARG*/
    dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o,
    dds2_phase_axis_tvalid_o, tx0_i, tx0_q, tx1_i, tx1_q, rx_gate_o,
    trig_o, tx0_axis_tdata_o, tx0_axis_tvalid_o, tx1_axis_tdata_o,
-   tx1_axis_tvalid_o, tx_gate_o, leds_o,
+   tx1_axis_tvalid_o, tx_gate_o, rx0_rst_n_o, rx1_rst_n_o, rx0_rate,
+   rx1_rate, rx0_rate_valid, rx1_rate_valid, leds_o,
    // Inputs
    trig_i, s0_axi_wvalid, s0_axi_wstrb, s0_axi_wdata, s0_axi_rready,
    s0_axi_bready, s0_axi_awvalid, s0_axi_awprot, s0_axi_awaddr,
@@ -101,6 +102,13 @@ module flocra_model(/*AUTOARG*/
    output 		tx1_axis_tvalid_o;
    output 		tx_gate_o;
 
+   output 		rx0_rst_n_o, rx1_rst_n_o;
+
+   output [11:0] 	rx0_rate, rx1_rate;
+   assign rx0_rate = rx0_rate_axis_tdata_o[11:0], rx1_rate = rx1_rate_axis_tdata_o[11:0];
+   output 		rx0_rate_valid, rx1_rate_valid;
+   assign rx0_rate_valid = rx0_rate_axis_tvalid_o, rx1_rate_valid = rx1_rate_axis_tvalid_o;
+
    output [7:0]		leds_o;
    
    wire 		fhdo_sdi_i;
@@ -124,11 +132,9 @@ module flocra_model(/*AUTOARG*/
    wire			rx0_axis_tready_o;	// From UUT of flocra.v
    wire [31:0]		rx0_dds_iq_axis_tdata_o;// From UUT of flocra.v
    wire			rx0_dds_iq_axis_tvalid_o;// From UUT of flocra.v
-   wire			rx0_rst_n_o;		// From UUT of flocra.v
    wire			rx1_axis_tready_o;	// From UUT of flocra.v
    wire [31:0]		rx1_dds_iq_axis_tdata_o;// From UUT of flocra.v
    wire			rx1_dds_iq_axis_tvalid_o;// From UUT of flocra.v
-   wire			rx1_rst_n_o;		// From UUT of flocra.v
    // End of automatics
    
    ocra1_model
@@ -186,7 +192,7 @@ module flocra_model(/*AUTOARG*/
 		      .axis_tdata_o(rx1_axis_tdata_i),
 		      // Inputs
 		      .clk(s0_axi_aclk),
-		      .rst_n(rx1_rst_n_o),	      
+		      .rst_n(rx1_rst_n_o),
 		      .rate_axis_tdata_i(rx1_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx1_rate_axis_tvalid_o),
 
