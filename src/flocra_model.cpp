@@ -17,7 +17,7 @@ struct flocra_csv {
 	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0xfffff; // last is different purely so that a difference is picked up on the first row's write
 	uint16_t rx0_rate = 0, rx1_rate = 0;
 	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0;
-	uint8_t rx_gate = 0, tx_gate = 0, trig = 0, leds = 0;
+	uint8_t tx_gate = 0, rx_gate = 0, trig = 0, leds = 0;
 
 	FILE *f;
 	
@@ -39,7 +39,7 @@ struct flocra_csv {
 		fprintf(f, "clock_cycles,tx0_i,tx0_q,tx1_i,tx1_q,"
 		        "fhdo_vx,fhdo_vy,fhdo_vz,fhdo_vz2,ocra1_vx,ocra1_vy,ocra1_vz,ocra1_vz2,"
 		        "rx0_rate,rx1_rate,rx0_rate_valid,rx1_rate_valid,rx0_rst_n,rx1_rst_n,"
-		        "rx_gate,tx_gate,trig_out,leds\n");
+		        "tx_gate,rx_gate,trig_out,leds\n");
 	}
 	
 	bool wr_update(Vflocra_model *fm) {
@@ -72,8 +72,8 @@ struct flocra_csv {
 		if (fm->rx0_rst_n_o != rx0_rst_n_o) { rx0_rst_n_o = fm->rx0_rst_n_o; diff_rx = true; }
 		if (fm->rx1_rst_n_o != rx1_rst_n_o) { rx1_rst_n_o = fm->rx1_rst_n_o; diff_rx = true; }		
 
-		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
 		if (fm->tx_gate_o != tx_gate) { tx_gate = fm->tx_gate_o; diff_gpio = true; }
+		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
 		if (fm->trig_o != trig) { trig = fm->trig_o; diff_gpio = true; }
 		if (fm->leds_o != leds) { leds = fm->leds_o; diff_gpio = true; }
 
@@ -88,7 +88,7 @@ struct flocra_csv {
 			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,
 			        ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2,
 			        rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n_o, rx1_rst_n_o,
-			        rx_gate, tx_gate, trig, leds);
+			        tx_gate, rx_gate, trig, leds);
 		}
 		return diff;
 	}
@@ -109,7 +109,7 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 			printf("Dumping output to %s\n", filepath.c_str());
 			_csv_output = true;
 		} else {
-			printf("Unknown argument; only accepting fst or csv for now.\n");
+			printf("Unknown argument; only accepting fst or csv for now. No data will be dumped.\n");
 		}
 	} else {
 		printf("\t Usage: %s DUMPTYPE DUMPPATH\n", argv[0]);

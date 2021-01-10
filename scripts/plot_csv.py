@@ -51,7 +51,7 @@ if __name__ == "__main__":
     rxs.legend(["rx0 rstn", "rx1 rstn"])
 
     ios.step(time_us, io, where='post')
-    ios.legend(['rx gate', 'tx gate', 'trig out', 'leds'])        
+    ios.legend(['tx gate', 'rx gate', 'trig out', 'leds'])        
     grads.set_xlabel('time (us)')
     
     fig.tight_layout()
