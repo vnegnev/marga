@@ -1,4 +1,5 @@
 #include "flocra_model.hpp"
+#include "version.hpp"
 
 #include "Vflocra_model.h"
 #include "verilated_fst_c.h"
@@ -19,7 +20,10 @@ struct flocra_csv {
 	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0;
 	uint8_t tx_gate = 0, rx_gate = 0, trig = 0, leds = 0;
 
-	FILE *f;
+	FILE *f;	
+	unsigned _line = 0;
+	const unsigned _LINE_INTERVAL = 10;
+	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,0v,1v,r0,r1,tg,rg,to,leds\n"};
 	
 	flocra_csv(const char *filename) {
 		f = fopen(filename, "w");
@@ -36,13 +40,14 @@ struct flocra_csv {
 	}
 	
 	void wr_header() {
-		fprintf(f, "clock_cycles,tx0_i,tx0_q,tx1_i,tx1_q,"
-		        "fhdo_vx,fhdo_vy,fhdo_vz,fhdo_vz2,ocra1_vx,ocra1_vy,ocra1_vz,ocra1_vz2,"
-		        "rx0_rate,rx1_rate,rx0_rate_valid,rx1_rate_valid,rx0_rst_n,rx1_rst_n,"
-		        "tx_gate,rx_gate,trig_out,leds\n");
+		// full header
+		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i,tx1_q,"
+		        " fhdo_vx, fhdo_vy, fhdo_vz, fhdo_vz2, ocra1_vx, ocra1_vy, ocra1_vz, ocra1_vz2,"
+		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n,"
+		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
 	
-	bool wr_update(Vflocra_model *fm) {
+	bool wr_update(Vflocra_model *fm) {		
 		// Long and ugly - I'm sorry!
 		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false;
 
@@ -79,9 +84,14 @@ struct flocra_csv {
 
 		bool diff = diff_tx or diff_grad or diff_rx or diff_gpio;
 		if (diff) {
-			fprintf(f, "%8lu, %4d, %4d, %4d, %4d, "
-			        "%4u, %4u, %4u, %4u, "
-			        "%5d, %5d, %5d, %5d, "
+			// occasionally print abridged column names for easy reading
+			if (_line++ % _LINE_INTERVAL == 0) {			
+				fprintf(f, _colnames.c_str());
+			}
+			
+			fprintf(f, "%8lu, %5d, %5d, %5d, %5d, "
+			        "%5u, %5u, %5u, %5u, "
+			        "%6d, %6d, %6d, %6d, "
 			        "%4u, %4u, %1d, %1d, %1d, %1d, "
 			        "%1d, %1d, %1d, %3u\n",
 			        main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
