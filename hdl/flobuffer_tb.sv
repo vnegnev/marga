@@ -74,7 +74,12 @@ module flobuffer_tb;
       #400 direct_i = 1; data_i = 1234;
       #10 direct_i = 0;
 
-      // Write into FIFO, one element every 2 clock cycles, delays of 3, until it is full
+      // Write in with the error pattern discovered 14/01/2021
+      #400 valid_i = 1; delay_i = 2; data_i = 1111;
+      #10 valid_i = 0;
+      #20 valid_i = 1; delay_i = 0; data_i = 2222;
+      #10 valid_i = 0;
+      
       #1000 if (err) begin
 	 $display("THERE WERE ERRORS");
 	 $stop; // to return a nonzero error code if the testbench is later scripted at a higher level
@@ -125,6 +130,9 @@ module flobuffer_tb;
       #40 check_outputs(155, 0, 1, 1, 0);
 
       #460 check_outputs(1234, 1, 0, 1, 0);
+
+      #440 check_outputs(1111, 0, 0, 1, 0);
+      #10 check_outputs(2222, 0, 0, 1, 0);
 
       // #20 check_outputs(7, 0, 0, 1);
       // #10 check_outputs(7, 0, 0, 0);

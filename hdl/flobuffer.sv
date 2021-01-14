@@ -112,7 +112,7 @@ module flobuffer #
 	   if (delay_cnt_almost_zero) begin
 	      data_o <= data_r;
 	      stb_o <= 1;
-	      if (fifo_has_emptied || empty_o) state <= IDLE;
+	      if ( (fifo_has_emptied || empty_o) && !valid_r) state <= IDLE;
 	      else state <= LOAD;
 	   end
 	end // case: WAIT	
