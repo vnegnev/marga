@@ -105,28 +105,41 @@ struct flocra_csv {
 };
 
 flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {	
-	auto filepath = string(argv[0]);
+	auto filepath_csv = string(argv[0]) + ".csv", filepath_fst = string(argv[0]) + ".fst";
 	if (argc > 1) {
-		string fsts("fst"), csvs("csv");
-		if (fsts.compare(argv[1]) == 0) {
-			if (argc > 2) filepath = argv[2];
-			else filepath = filepath + ".fst";
-			printf("Saving trace to %s\n", filepath.c_str());
+		string csvs("csv"), fsts("fst"), boths("both");
+
+		if (csvs.compare(argv[1]) == 0) {
+			if (argc > 2) filepath_csv = argv[2];
+			printf("Dumping event output to %s\n", filepath_csv.c_str());
+			_csv_output = true;
+		} else if (fsts.compare(argv[1]) == 0) {
+			if (argc > 2) filepath_fst = argv[2];
+			printf("Saving FST trace to %s\n", filepath_fst.c_str());
 			_fst_output = true;
-		} else if (csvs.compare(argv[1]) == 0) {
-			if (argc > 2) filepath = argv[2];
-			else filepath = filepath + ".csv";
-			printf("Dumping output to %s\n", filepath.c_str());
+		} else if (boths.compare(argv[1]) == 0) {
+			if (argc > 2) filepath_csv = argv[2];
+			if (argc > 3) filepath_fst = argv[3];
+			
+			printf("Saving FST trace to %s\n", filepath_fst.c_str());
+			printf("Dumping event output to %s\n", filepath_csv.c_str());
+			_fst_output = true;
 			_csv_output = true;
 		} else {
 			printf("Unknown argument; only accepting fst or csv for now. No data will be dumped.\n");
 		}
 	} else {
-		printf("\t Usage: %s DUMPTYPE DUMPPATH\n", argv[0]);
-		printf("\t where DUMPTYPE (optional) is csv or fst, DUMPPATH is (optional) a non-default output file path.\n");
+		printf("\n\t Usage: %s DUMPTYPE DUMPPATH(S)\n", argv[0]);
+		printf("\t where DUMPTYPE (optional) is csv, fst or 'both', DUMPPATH (optional) is (are) non-default output file paths.\n");
 		printf("\t Examples:\n");
-		printf("\t\t%s csv\n", argv[0]);
-		printf("\t\t%s csv test.csv\n", argv[0]);		
+		printf("\t\t%s # (no dump files will be produced)\n", argv[0]);
+		printf("\t\t%s csv # (will dump to %s.csv)\n", argv[0], argv[0]);
+		printf("\t\t%s csv /path/to/test.csv\n", argv[0]);
+		printf("\t\t%s fst # (will dump to %s.fst)\n", argv[0], argv[0]);
+		printf("\t\t%s fst /path/to/test.fst\n", argv[0]);
+		printf("\t\t%s both # (will dump to %s.csv and %s.fst)\n", argv[0], argv[0], argv[0]);
+		printf("\t\t%s both /path/to/test.csv /path/to/test2.fst\n", argv[0]);
+		printf("\n\t Hit ctrl-c to halt the program.\n");		
 	}
 	
 	Verilated::commandArgs(argc, argv);
@@ -137,11 +150,11 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 		tfp = new VerilatedFstC;
 
 		vfm->trace(tfp, 10);
-		tfp->open(filepath.c_str());
+		tfp->open(filepath_fst.c_str());
 	}
 
 	if (_csv_output) {
-		csv = new flocra_csv(filepath.c_str());
+		csv = new flocra_csv(filepath_csv.c_str());
 	}
 
 	// Init

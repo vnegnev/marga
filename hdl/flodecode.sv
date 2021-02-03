@@ -168,6 +168,7 @@ module flodecode #
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg12 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg13 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg14 = 0;  // read-only
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg15 = 0;  // read-only   
    
    wire 				      slv_reg_rden;
    wire 				      slv_reg_wen;
@@ -493,6 +494,7 @@ module flodecode #
       slv_reg12 <= fifo1_data_i;
       slv_reg13 <= fifo0_data_q;
       slv_reg14 <= fifo1_data_q;
+      slv_reg15 <= 0;
 
       // default register values; modified on read
       fifo0_read <= 0;
@@ -593,7 +595,7 @@ module flodecode #
    // Slave register read enable is asserted when valid address is available
    // and the slave is ready to accept the read address.
    assign slv_reg_rden = axi_arready & S_AXI_ARVALID & ~axi_rvalid;
-   always @(*) begin
+   always @( axi_araddr[ADDR_LSB+3:ADDR_LSB] ) begin
       // Address decoding for reading registers
       // case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
       case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
@@ -612,7 +614,7 @@ module flodecode #
 	4'hc   : reg_data_out = slv_reg12;
 	4'hd   : reg_data_out = slv_reg13;
 	4'he   : reg_data_out = slv_reg14;
-	default;
+	default: reg_data_out = slv_reg15;
       endcase
    end
 
