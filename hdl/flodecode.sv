@@ -595,7 +595,10 @@ module flodecode #
    // Slave register read enable is asserted when valid address is available
    // and the slave is ready to accept the read address.
    assign slv_reg_rden = axi_arready & S_AXI_ARVALID & ~axi_rvalid;
-   always @( axi_araddr[ADDR_LSB+3:ADDR_LSB] ) begin
+   always @( axi_araddr[ADDR_LSB+3:ADDR_LSB] or slv_reg0 or slv_reg1
+	     or slv_reg2 or slv_reg3 or slv_reg4 or slv_reg5 or slv_reg6 or
+	     slv_reg7 or slv_reg8 or slv_reg9 or slv_reg10 or slv_reg11 or
+	     slv_reg12 or slv_reg13 or slv_reg14 or slv_reg15) begin      
       // Address decoding for reading registers
       // case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
       case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )

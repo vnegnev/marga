@@ -1,15 +1,15 @@
 [*]
-[*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
-[*] Fri Feb  5 05:28:02 2021
+[*] GTKWave Analyzer v3.3.108 (w)1999-2020 BSI
+[*] Fri Feb  5 15:39:46 2021
 [*]
 [dumpfile] "/tmp/flocra_sim.fst"
-[dumpfile_mtime] "Fri Feb  5 05:24:10 2021"
-[dumpfile_size] 19915
-[savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/src/flocra_sim.sav"
+[dumpfile_mtime] "Fri Feb  5 15:34:39 2021"
+[dumpfile_size] 14205
+[savefile] "/home/vlad/Documents/mri/flocra/src/flocra_sim.sav"
 [timestart] 0
 [size] 1920 992
 [pos] -1 -1
-*-13.989964 36260 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-11.842837 3120 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.flocra_model.
 [treeopen] TOP.flocra_model.UUT.
@@ -386,12 +386,14 @@ TOP.flocra_model.rx1_axis_tready_o
 -rx_input
 @200
 -
-@c00200
+@800200
 -flodecode
 @24
 TOP.flocra_model.UUT.fld.flo_bram_raddr[15:0]
+[color] 2
 TOP.flocra_model.UUT.fld.flo_bram_raddr_r2[15:0]
 @8024
+[color] 2
 TOP.flocra_model.UUT.fld.flo_bram_raddr_r2[15:0]
 @20000
 -
@@ -399,23 +401,40 @@ TOP.flocra_model.UUT.fld.flo_bram_raddr_r2[15:0]
 @22
 TOP.flocra_model.UUT.fld.state[3:0]
 TOP.flocra_model.UUT.fld.flo_bram_rdata_r[31:0]
+@24
+[color] 2
+TOP.flocra_model.UUT.fld.tmr[23:0]
 @8024
+[color] 2
 TOP.flocra_model.UUT.fld.tmr[23:0]
 @20000
 -
 -
-@1401200
+@22
+TOP.flocra_model.UUT.fld.status_i[31:0]
+@23
+TOP.flocra_model.UUT.fld.status_r[31:0]
+@22
+TOP.flocra_model.UUT.fld.status_latch_i[31:0]
+TOP.flocra_model.UUT.fld.status_latch_r2[31:0]
+@1000200
 -flodecode
 @200
 -
 @800200
 -fhdo
 @28
+TOP.flocra_model.UUT.fhdo_err
 TOP.flocra_model.fhdo.clk
+TOP.flocra_model.UUT.gpa_fhdo_if.valid_i
+TOP.flocra_model.UUT.gpa_fhdo_if.busy_o
+@200
+-
+@28
 TOP.flocra_model.fhdo.csn
 TOP.flocra_model.fhdo.sdi
 TOP.flocra_model.fhdo.sdo
-@25
+@24
 [color] 2
 TOP.flocra_model.fhdo.voutx[15:0]
 @8022
@@ -425,7 +444,7 @@ TOP.flocra_model.fhdo.voutx[15:0]
 -
 -
 -
-@25
+@24
 [color] 3
 TOP.flocra_model.fhdo.vouty[15:0]
 @8022
@@ -435,7 +454,7 @@ TOP.flocra_model.fhdo.vouty[15:0]
 -
 -
 -
-@25
+@24
 TOP.flocra_model.fhdo.voutz[15:0]
 @8022
 TOP.flocra_model.fhdo.voutz[15:0]
@@ -443,7 +462,7 @@ TOP.flocra_model.fhdo.voutz[15:0]
 -
 -
 -
-@25
+@24
 [color] 7
 TOP.flocra_model.fhdo.voutz2[15:0]
 @8022

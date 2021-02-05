@@ -189,8 +189,9 @@ module flocra
    wire 				      ocra1_rst_n = grad_ctrl[8];
    wire [31:0] 				      grad_data = {grad_data_msb, grad_data_lsb};
 
-   wire 				      ocra1_data_valid = ocra1_en & fld_stb[2];
-   wire 				      fhdo_data_valid = fhdo_en & fld_stb[2];
+   wire 				      grad_data_valid = fld_stb[1] | fld_stb[2];
+   wire 				      ocra1_data_valid = ocra1_en & grad_data_valid;
+   wire 				      fhdo_data_valid = fhdo_en & grad_data_valid;
    wire [15:0] 				      fhdo_adc; // ADC data from GPA-FHDO
    wire 				      fhdo_busy;
    wire 				      ocra1_busy, ocra1_data_lost;
