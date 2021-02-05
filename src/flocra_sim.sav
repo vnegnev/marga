@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
-[*] Tue Jan  5 01:45:36 2021
+[*] Fri Feb  5 05:28:02 2021
 [*]
-[dumpfile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/build/flocra_model.fst"
-[dumpfile_mtime] "Tue Jan  5 01:42:30 2021"
-[dumpfile_size] 47904939
-[savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/src/flocra_model.sav"
+[dumpfile] "/tmp/flocra_sim.fst"
+[dumpfile_mtime] "Fri Feb  5 05:24:10 2021"
+[dumpfile_size] 19915
+[savefile] "/mnt/ubuntu/home/vlad/Documents/mri/flocra/src/flocra_sim.sav"
 [timestart] 0
 [size] 1920 992
 [pos] -1 -1
-*-22.055397 5431020 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-13.989964 36260 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.flocra_model.
 [treeopen] TOP.flocra_model.UUT.
@@ -208,7 +208,7 @@ TOP.leds_o[7:0]
 -group_end
 @200
 -
-@800200
+@c00200
 -tx_iq
 @c00420
 [color] 3
@@ -319,7 +319,7 @@ TOP.flocra_model.UUT.tx1_q[15:0]
 -
 -
 -
-@1000200
+@1401200
 -tx_iq
 @200
 -
@@ -372,7 +372,7 @@ TOP.flocra_model.dds2_phase_axis_tdata_o[23:0]
 -ddses
 @200
 -
-@800200
+@c00200
 -rx_input
 @28
 TOP.flocra_model.rx0_axis_tvalid_i
@@ -382,11 +382,11 @@ TOP.flocra_model.rx0_axis_tready_o
 @28
 TOP.flocra_model.rx1_axis_tvalid_i
 TOP.flocra_model.rx1_axis_tready_o
-@1000200
+@1401200
 -rx_input
 @200
 -
-@800200
+@c00200
 -flodecode
 @24
 TOP.flocra_model.UUT.fld.flo_bram_raddr[15:0]
@@ -404,12 +404,56 @@ TOP.flocra_model.UUT.fld.tmr[23:0]
 @20000
 -
 -
-@1000200
+@1401200
 -flodecode
 @200
 -
+@800200
+-fhdo
+@28
+TOP.flocra_model.fhdo.clk
+TOP.flocra_model.fhdo.csn
+TOP.flocra_model.fhdo.sdi
+TOP.flocra_model.fhdo.sdo
+@25
+[color] 2
+TOP.flocra_model.fhdo.voutx[15:0]
+@8022
+[color] 2
+TOP.flocra_model.fhdo.voutx[15:0]
 @20000
 -
 -
+-
+@25
+[color] 3
+TOP.flocra_model.fhdo.vouty[15:0]
+@8022
+[color] 3
+TOP.flocra_model.fhdo.vouty[15:0]
+@20000
+-
+-
+-
+@25
+TOP.flocra_model.fhdo.voutz[15:0]
+@8022
+TOP.flocra_model.fhdo.voutz[15:0]
+@20000
+-
+-
+-
+@25
+[color] 7
+TOP.flocra_model.fhdo.voutz2[15:0]
+@8022
+[color] 7
+TOP.flocra_model.fhdo.voutz2[15:0]
+@20000
+-
+-
+-
+@1000200
+-fhdo
 [pattern_trace] 1
 [pattern_trace] 0

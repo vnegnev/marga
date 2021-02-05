@@ -86,7 +86,7 @@ module gpa_fhdo_iface(
 	   // VN: div_cntr should be synced to incoming data arrival
 	   // in some way - otherwise the free-runing counter creates
 	   // jitter in the gradient output
-	  	if (div_ctr == spi_clk_div_i) begin
+	  	if ( (div_ctr == spi_clk_div_i) || valid_i ) begin // VN: reset the divider phase with each input payload
 			div_ctr <= 0;
 		end 
 		else begin
