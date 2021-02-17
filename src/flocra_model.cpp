@@ -41,7 +41,7 @@ struct flocra_csv {
 	
 	void wr_header() {
 		// full header
-		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i,tx1_q,"
+		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i, tx1_q,"
 		        " fhdo_vx, fhdo_vy, fhdo_vz, fhdo_vz2, ocra1_vx, ocra1_vy, ocra1_vz, ocra1_vz2,"
 		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n,"
 		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);

@@ -141,8 +141,8 @@ module flocra
 
    // General outputs from flodecode
    // 0: gradient control: grad SPI divisor and board selection settings
-   // 1: gradient outputs, LSB
-   // 2: gradient outputs, MSB (stb also triggers grad cores)
+   // 1: gradient outputs, LSB (stb triggers grad cores)
+   // 2: gradient outputs, MSB (stb also triggers grad cores, but only when bit 9 of gradient control is high)
    // 3: RX 0 settings: decimation and DDS source
    // 4: RX 1 settings: decimation and DDS source
    // 5: TX 0 i stream
@@ -187,9 +187,10 @@ module flocra
    wire 				      fhdo_en = grad_ctrl[1];
    wire [5:0] 				      grad_spi_clk_div = grad_ctrl[7:2];
    wire 				      ocra1_rst_n = grad_ctrl[8];
+   wire 				      grad_data_valid_msb_en = grad_ctrl[9];
    wire [31:0] 				      grad_data = {grad_data_msb, grad_data_lsb};
 
-   wire 				      grad_data_valid = fld_stb[1] | fld_stb[2];
+   wire 				      grad_data_valid = fld_stb[1] | ( fld_stb[2] & grad_data_valid_msb_en );
    wire 				      ocra1_data_valid = ocra1_en & grad_data_valid;
    wire 				      fhdo_data_valid = fhdo_en & grad_data_valid;
    wire [15:0] 				      fhdo_adc; // ADC data from GPA-FHDO
