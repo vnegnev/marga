@@ -144,8 +144,8 @@ module flocra_simple_tb;
       s0_axi_bready = 1; // TODO: make this more fine-grained if bus reads/writes don't work properly in hardware
 
       // enable ocra1, disable gpa-fhdo, set SPI clock div to 5, reset ocra1
-      #10 wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd5, 1'd0, 1'd1}});
-      wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd1, 6'd1, 1'd0, 1'd1}}); // un-reset ocra1
+      #10 wr32(19'h8, {1'b0, 7'd0, 8'd0, {4'd0, 1'd0, 1'd0, 6'd5, 1'd0, 1'd1}});
+      wr32(19'h8, {1'b0, 7'd0, 8'd0, {4'd0, 1'd0, 1'd1, 6'd1, 1'd0, 1'd1}}); // un-reset ocra1
 
       // ocra1 control words
       wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch0

@@ -52,10 +52,11 @@ module flobuffer #
    
    wire 		     fifo_ptrs_equal = fifo_ptr_diff == 0;
    wire 		     fifo_ptrs_almost_equal = fifo_ptr_diff == 1;
-   wire 		     fifo_has_emptied = fifo_ptrs_equal && fifo_ptrs_almost_equal_r;
    
    reg 			     fifo_ptrs_equal_r = 1;
    reg 			     fifo_ptrs_almost_equal_r = 0;
+
+   wire 		     fifo_has_emptied = fifo_ptrs_equal && fifo_ptrs_almost_equal_r;
    
    reg [15:0] 		     data_r = 0;
    reg [6:0] 		     delay_cnt = 0;
