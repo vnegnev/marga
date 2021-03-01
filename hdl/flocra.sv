@@ -143,8 +143,8 @@ module flocra
    // 0: gradient control: grad SPI divisor and board selection settings
    // 1: gradient outputs, LSB (stb triggers grad cores)
    // 2: gradient outputs, MSB (stb also triggers grad cores, but only when bit 9 of gradient control is high)
-   // 3: RX 0 settings: decimation and DDS source
-   // 4: RX 1 settings: decimation and DDS source
+   // 3: RX 0 rate bus
+   // 4: RX 1 rate bus
    // 5: TX 0 i stream
    // 6: TX 0 q stream
    // 7: TX 1 i stream
@@ -156,6 +156,7 @@ module flocra
    // 13: TX LO 2 phase increment, LSBs
    // 14: TX LO 2 phase increment, MSBs and clear bit   
    // 15: TX and RX gate control, trigger output, LEDs
+   // 16: RX rate settings: RX0/RX1 bus valid, decimation and DDS source
    wire [15:0] 				      fld_data[23:0];
    wire [23:0] 				      fld_stb;
    wire [31:0] 				      fld_status, fld_status_latch;
@@ -163,8 +164,8 @@ module flocra
    wire [15:0] 				      grad_ctrl = fld_data[0];
    wire [15:0] 				      grad_data_lsb = fld_data[1];
    wire [15:0] 				      grad_data_msb = fld_data[2];
-   wire [15:0] 				      rx0_ctrl = fld_data[3];
-   wire [15:0] 				      rx1_ctrl = fld_data[4];
+   wire [15:0] 				      rx0_rate = fld_data[3];
+   wire [15:0] 				      rx1_rate = fld_data[4];
    wire [15:0] 				      tx0_i = fld_data[5];
    wire [15:0] 				      tx0_q = fld_data[6];
    wire [15:0] 				      tx1_i = fld_data[7];
@@ -176,6 +177,7 @@ module flocra
    wire [15:0] 				      lo2_phase_lsb = fld_data[13];
    wire [15:0] 				      lo2_phase_msb = fld_data[14];
    wire [15:0] 				      gates_leds = fld_data[15];
+   wire [15:0] 				      rx_ctrl = fld_data[16];
 
    // Parameters of Axi Slave Bus Interface S0_AXI
    parameter integer 			      C_S0_AXI_DATA_WIDTH = 32;
@@ -202,10 +204,10 @@ module flocra
    assign fld_status_latch = {29'd0, fhdo_err, ocra1_err, ocra1_data_lost};
 
    // RX control lines
-   wire [1:0] rx0_dds_source = rx0_ctrl[13:12], rx1_dds_source = rx1_ctrl[13:12];
-   assign rx0_rst_n_o = rx0_ctrl[15], rx1_rst_n_o = rx1_ctrl[15];
-   assign rx0_rate_axis_tdata_o = {4'd0, rx0_ctrl[11:0]}, rx1_rate_axis_tdata_o = {4'd0, rx1_ctrl[11:0]};
-   assign rx0_rate_axis_tvalid_o = rx0_ctrl[14], rx1_rate_axis_tvalid_o = rx1_ctrl[14];
+   wire [1:0] rx0_dds_source = rx_ctrl[1:0], rx1_dds_source = rx_ctrl[3:2];
+   assign rx0_rate_axis_tdata_o = rx0_rate[15:0], rx1_rate_axis_tdata_o = rx1_rate[15:0];
+   assign rx0_rate_axis_tvalid_o = rx_ctrl[4], rx1_rate_axis_tvalid_o = rx_ctrl[5];
+   assign rx0_rst_n_o = rx_ctrl[6], rx1_rst_n_o = rx_ctrl[7];
 
    // TX data buses
    assign tx0_axis_tvalid_o = 1, tx1_axis_tvalid_o = 1;

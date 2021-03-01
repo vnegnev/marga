@@ -148,54 +148,54 @@ module flocra_simple_tb;
       wr32(19'h8, {1'b0, 7'd0, 8'd0, {4'd0, 1'd0, 1'd1, 6'd1, 1'd0, 1'd1}}); // un-reset ocra1
 
       // ocra1 control words
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch0
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0020}); // MSBs for SPI out, ch0
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch0
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch1
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0220}); // MSBs for SPI out, ch1
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch1
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch2
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0420}); // MSBs for SPI out, ch2
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch2
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch3
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0720}); // MSBs for SPI out, ch3
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch3
 
       check_ocra1(0, 0, 0, 0);
       check_fhdo(0, 0, 0, 0);
 
       // ocra1 DAC words
       #500;
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc}); // LSBs for SPI out, ch0
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h001f}); // MSBs for SPI out, ch0
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc}); // LSBs for SPI out, ch0
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff8}); // LSBs for SPI out, ch1
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h021f}); // MSBs for SPI out, ch1
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff8}); // LSBs for SPI out, ch1
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff4}); // LSBs for SPI out, ch2
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h041f}); // MSBs for SPI out, ch2
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff4}); // LSBs for SPI out, ch2
 
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff0}); // LSBs for SPI out, ch3
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h071f}); // MSBs for SPI out, ch3
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff0}); // LSBs for SPI out, ch3
       
       // enable GPA-FHDO
       wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd2, 1'd1, 1'd0}});
 
       // GPA-FHDO control word
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0000});
-      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0002});
+      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0002}); // MSBs
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0000}); // LSBs
 
       // GPA-FHDO DAC words
-      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffe});
-      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0008});
+      #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0008});
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffe});
 
-      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffd});
-      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0009});
+      #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0009});
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffd});
+      
+      #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000a});
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc});      
 
-      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc});
-      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000a});
-
-      #800 wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffb});
-      wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000b});
+      #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000b});
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffb});      
 
       // check gradient core outputs
       #500 check_ocra1(-1, -2, -3, -4);
@@ -343,8 +343,8 @@ module flocra_simple_tb;
 		      .rate_axis_tdata_i(rx0_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx0_rate_axis_tvalid_o),
 
-		      .dds_iq_axis_tdata_i(rx0_dds_iq_axis_tdata_o),
-		      .dds_iq_axis_tvalid_i(rx0_dds_iq_axis_tvalid_o),
+		      .rx_iq_axis_tdata_i(rx0_dds_iq_axis_tdata_o),
+		      .rx_iq_axis_tvalid_i(rx0_dds_iq_axis_tvalid_o),
 
 		      .axis_tready_i(rx0_axis_tready_o)
 		      );
@@ -358,8 +358,8 @@ module flocra_simple_tb;
 		      .rate_axis_tdata_i(rx1_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx1_rate_axis_tvalid_o),
 
-		      .dds_iq_axis_tdata_i(rx1_dds_iq_axis_tdata_o),
-		      .dds_iq_axis_tvalid_i(rx1_dds_iq_axis_tvalid_o),
+		      .rx_iq_axis_tdata_i(rx1_dds_iq_axis_tdata_o),
+		      .rx_iq_axis_tvalid_i(rx1_dds_iq_axis_tvalid_o),
 
 		      .axis_tready_i(rx1_axis_tready_o)
 		      );

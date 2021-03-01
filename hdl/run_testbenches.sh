@@ -11,4 +11,14 @@ for k in flobuffer flofifo flodecode ad5781_model ads8684_model dac80504_model g
     vvp -N icarus_compile/000_$k\_tb.compiled -none
     if [ $? -ne 0 ]; then globstat=1; fi    
 done
+
+# manual test of flocra, flocra_simple_tb
+echo "Testing flocra"
+iverilog -o icarus_compile/000_flocra.compiled flocra.sv -Wall -g2005-sv
+if [ $? -ne 0 ]; then globstat=1; fi
+iverilog -o icarus_compile/000_flocra_simple_tb.compiled flocra_simple_tb.sv -Wall  -g2005-sv
+if [ $? -ne 0 ]; then globstat=1; fi
+vvp -N icarus_compile/000_flocra_simple_tb.compiled -none
+if [ $? -ne 0 ]; then globstat=1; fi
+
 exit $globstat

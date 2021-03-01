@@ -104,8 +104,8 @@ module flocra_model(/*AUTOARG*/
 
    output 		rx0_rst_n_o, rx1_rst_n_o;
 
-   output [11:0] 	rx0_rate, rx1_rate;
-   assign rx0_rate = rx0_rate_axis_tdata_o[11:0], rx1_rate = rx1_rate_axis_tdata_o[11:0];
+   output [15:0] 	rx0_rate, rx1_rate;
+   assign rx0_rate = rx0_rate_axis_tdata_o[15:0], rx1_rate = rx1_rate_axis_tdata_o[15:0];
    output 		rx0_rate_valid, rx1_rate_valid;
    assign rx0_rate_valid = rx0_rate_axis_tvalid_o, rx1_rate_valid = rx1_rate_axis_tvalid_o;
 

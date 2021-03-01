@@ -91,8 +91,8 @@ struct flocra_csv {
 			
 			fprintf(f, "%8lu, %5d, %5d, %5d, %5d, "
 			        "%5u, %5u, %5u, %5u, "
-			        "%6d, %6d, %6d, %6d, "
-			        "%4u, %4u, %1d, %1d, %1d, %1d, "
+			        "%6d, %6d, %6d, %6d,"
+			        "%5u,%5u, %1d, %1d, %1d, %1d, "
 			        "%1d, %1d, %1d, %3u\n",
 			        main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
 			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,

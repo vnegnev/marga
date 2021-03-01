@@ -38,6 +38,7 @@ module rx_chain_model(
 		      output reg [63:0] axis_tdata_o
 		      );
 
+   // Currently still 12-bit rate, although bus is capable of 16 bits for further CIC configuration
    reg [11:0] 				cnt = 0;
 
    wire [15:0] 				rx_i = rx_iq_axis_tdata_i[15:0], 
