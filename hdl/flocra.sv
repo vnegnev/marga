@@ -143,8 +143,8 @@ module flocra
    // 0: gradient control: grad SPI divisor and board selection settings
    // 1: gradient outputs, LSB (stb triggers grad cores)
    // 2: gradient outputs, MSB (stb also triggers grad cores, but only when bit 9 of gradient control is high)
-   // 3: RX 0 rate bus
-   // 4: RX 1 rate bus
+   // 3: RX 0 CIC control: rate and auxiliary parameters for non-Xilinx CICs
+   // 4: RX 1 CIC control: rate and auxiliary parameters for non-Xilinx CICs
    // 5: TX 0 i stream
    // 6: TX 0 q stream
    // 7: TX 1 i stream
@@ -156,7 +156,7 @@ module flocra
    // 13: TX LO 2 phase increment, LSBs
    // 14: TX LO 2 phase increment, MSBs and clear bit   
    // 15: TX and RX gate control, trigger output, LEDs
-   // 16: RX rate settings: RX0/RX1 bus valid, decimation and DDS source
+   // 16: RX configuration: RX0/RX1 rate settings bus valid, CIC reset and demodulation DDS source
    wire [15:0] 				      fld_data[23:0];
    wire [23:0] 				      fld_stb;
    wire [31:0] 				      fld_status, fld_status_latch;

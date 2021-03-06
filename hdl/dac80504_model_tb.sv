@@ -78,7 +78,7 @@ module dac80504_model_tb;
       end
 
       // check DAC output word is as expected before and after cs
-      #10 if (vout0 != 0) begin
+      #10 if (vout0 != 'h8000) begin
 	 $display("%d ns: Unexpected DAC output, expected %x, saw %x.", $time, 0, vout0);
 	 err <= 1;
       end      
@@ -99,12 +99,12 @@ module dac80504_model_tb;
       end
 
       // check DAC output word is as expected before and after cs
-      #10 if (vout2 != 0) begin
+      #10 if (vout2 != 'h8000) begin
 	 $display("%d ns: Unexpected DAC output, expected %x, saw %x.", $time, 0, vout2);
 	 err <= 1;
       end      
       #10 csn = 1;
-      #10 if (vout2 != 0) begin
+      #10 if (vout2 != 'h8000) begin
 	 $display("%d ns: Unexpected DAC output, expected %x, saw %x.", $time, 0, vout2);
 	 err <= 1;
       end

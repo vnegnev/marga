@@ -111,7 +111,7 @@ module flocra_simple_tb;
    // End of automatics
 
    wire signed [17:0] 		ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2;
-   wire signed [17:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;   
+   wire [15:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;   
 
    wire 		clk = s0_axi_aclk;
    always #5 s0_axi_aclk = !s0_axi_aclk;
@@ -161,7 +161,7 @@ module flocra_simple_tb;
       wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'h0010}); // LSBs for SPI out, ch3
 
       check_ocra1(0, 0, 0, 0);
-      check_fhdo(0, 0, 0, 0);
+      check_fhdo('h8000, 'h8000, 'h8000, 'h8000);
 
       // ocra1 DAC words
       #500;
@@ -283,7 +283,7 @@ module flocra_simple_tb;
    endtask // check_ocra1
 
    task check_fhdo;
-      input signed [17:0] vx, vy, vz, vz2;
+      input signed [15:0] vx, vy, vz, vz2;
       begin
 	 if (vx != fhdo_voutx) begin
 	    $error("fhdo voutx %d, expected %d", fhdo_voutx, vx);

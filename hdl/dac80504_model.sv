@@ -42,7 +42,6 @@ module dac80504_model(
    // 				  dactri = ctrl_reg[3], bin2sc = ctrl_reg[4], sdodis = ctrl_reg[5];
    reg [23:0] 				spi_input = 0;
    wire [15:0] 				spi_payload = spi_input[15:0];
-   // reg [15:0] 			  vout0_r, vout1_r, vout2_r, vout3_r;
    wire [3:0] 				spi_addr = spi_input[19:16];
    reg [5:0] 				spi_counter = 0;
    reg 					read_mode = 0; // TODO: implement readback mode in FSM
@@ -50,10 +49,10 @@ module dac80504_model(
 
    initial begin
       sdo = 0;
-      vout0 = 0;
-      vout1 = 0;
-      vout2 = 0;
-      vout3 = 0;
+      vout0 = 16'h8000;
+      vout1 = 16'h8000;
+      vout2 = 16'h8000;
+      vout3 = 16'h8000;
    end
 
    always @(negedge sclk or posedge csn) begin
