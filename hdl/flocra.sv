@@ -77,8 +77,9 @@ module flocra
     output 				  dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o,
     // output 				  dds0_phase_en, dds1_phase_en, dds2_phase_en;
 
-    // RX reset, CIC decimation ratio control
+    // RX reset, enable, CIC decimation ratio control
     output 				  rx0_rst_n_o, rx1_rst_n_o,
+    output 				  rx0_en_o, rx1_en_o,
     output [15:0] 			  rx0_rate_axis_tdata_o, rx1_rate_axis_tdata_o,
     output 				  rx0_rate_axis_tvalid_o, rx1_rate_axis_tvalid_o,
 
@@ -208,6 +209,7 @@ module flocra
    assign rx0_rate_axis_tdata_o = rx0_rate[15:0], rx1_rate_axis_tdata_o = rx1_rate[15:0];
    assign rx0_rate_axis_tvalid_o = rx_ctrl[4], rx1_rate_axis_tvalid_o = rx_ctrl[5];
    assign rx0_rst_n_o = rx_ctrl[6], rx1_rst_n_o = rx_ctrl[7];
+   assign rx0_en_o = rx_ctrl[8], rx1_en_o = rx_ctrl[9];
 
    // TX data buses
    assign tx0_axis_tvalid_o = 1, tx1_axis_tvalid_o = 1;
@@ -231,7 +233,7 @@ module flocra
 
    // RX LO source control
    reg [31:0] dds0_iq = 0, dds1_iq = 0, dds2_iq = 0, rx0_iq = 0, rx1_iq = 0;
-   assign rx0_dds_iq_axis_tvalid_o = 1, rx1_dds_iq_axis_tvalid_o = 1;
+   assign rx0_dds_iq_axis_tvalid_o = rx0_en_o, rx1_dds_iq_axis_tvalid_o = rx1_en_o; // if RX is disabled, halt flow of IQ samples to RX
    always @(posedge clk) begin
       dds0_iq <= dds0_iq_axis_tdata_i;
       dds1_iq <= dds1_iq_axis_tdata_i;

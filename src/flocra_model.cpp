@@ -17,13 +17,13 @@ struct flocra_csv {
 	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
 	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0xfffff; // last is different purely so that a difference is picked up on the first row's write
 	uint16_t rx0_rate = 0, rx1_rate = 0;
-	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0;
+	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0, rx0_en_o = 0, rx1_en_o = 0;
 	uint8_t tx_gate = 0, rx_gate = 0, trig = 0, leds = 0;
 
 	FILE *f;	
 	unsigned _line = 0;
-	const unsigned _LINE_INTERVAL = 10;
-	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,0v,1v,r0,r1,tg,rg,to,leds\n"};
+	const unsigned _LINE_INTERVAL = 15; // how many lines between column label insertions
+	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds\n"};
 	
 	flocra_csv(const char *filename) {
 		f = fopen(filename, "w");
@@ -43,11 +43,11 @@ struct flocra_csv {
 		// full header
 		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i, tx1_q,"
 		        " fhdo_vx, fhdo_vy, fhdo_vz, fhdo_vz2, ocra1_vx, ocra1_vy, ocra1_vz, ocra1_vz2,"
-		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n,"
+		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n, rx0_en, rx1_en,"
 		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
 	
-	bool wr_update(Vflocra_model *fm) {		
+	bool wr_update(Vflocra_model *fm) {
 		// Long and ugly - I'm sorry!
 		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false;
 
@@ -75,7 +75,9 @@ struct flocra_csv {
 		if (fm->rx0_rate_valid != rx0_rate_valid) { rx0_rate_valid = fm->rx0_rate_valid; diff_rx = true; }
 		if (fm->rx1_rate_valid != rx1_rate_valid) { rx1_rate_valid = fm->rx1_rate_valid; diff_rx = true; }
 		if (fm->rx0_rst_n_o != rx0_rst_n_o) { rx0_rst_n_o = fm->rx0_rst_n_o; diff_rx = true; }
-		if (fm->rx1_rst_n_o != rx1_rst_n_o) { rx1_rst_n_o = fm->rx1_rst_n_o; diff_rx = true; }		
+		if (fm->rx1_rst_n_o != rx1_rst_n_o) { rx1_rst_n_o = fm->rx1_rst_n_o; diff_rx = true; }
+		if (fm->rx0_en_o != rx0_en_o) { rx0_en_o = fm->rx0_en_o; diff_rx = true; }
+		if (fm->rx1_en_o != rx1_en_o) { rx1_en_o = fm->rx1_en_o; diff_rx = true; }		
 
 		if (fm->tx_gate_o != tx_gate) { tx_gate = fm->tx_gate_o; diff_gpio = true; }
 		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
@@ -92,12 +94,14 @@ struct flocra_csv {
 			fprintf(f, "%8lu, %5d, %5d, %5d, %5d, "
 			        "%5u, %5u, %5u, %5u, "
 			        "%6d, %6d, %6d, %6d,"
-			        "%5u,%5u, %1d, %1d, %1d, %1d, "
+			        "%5u,%5u, %1d, %1d, "
+			        "%1d, %1d, %1d, %1d, "
 			        "%1d, %1d, %1d, %3u\n",
 			        main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
 			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,
 			        ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2,
-			        rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n_o, rx1_rst_n_o,
+			        rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid,
+			        rx0_rst_n_o, rx1_rst_n_o, rx0_en_o, rx1_en_o,
 			        tx_gate, rx_gate, trig, leds);
 		}
 		return diff;

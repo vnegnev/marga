@@ -40,18 +40,27 @@ module rx_chain_model(
 
    // Currently still 12-bit rate, although bus is capable of 16 bits for further CIC configuration
    reg [11:0] 				cnt = 0;
+   reg [11:0] 				rate = 600;
 
    wire [15:0] 				rx_i = rx_iq_axis_tdata_i[15:0], 
 					rx_q = rx_iq_axis_tdata_i[31:16];
+
+   reg [19:0] 				rst_n_shreg = 0;
    
    initial axis_tdata_o = 0;
    
    always @(posedge clk) begin
+      rst_n_shreg <= {rst_n_shreg[18:0], rst_n};
       axis_tvalid_o <= 0;
-      if (!rst_n) cnt <= 0;
-      else begin
-	 cnt <= cnt + 1;
-	 if (cnt == rate_axis_tdata_i[11:0] - 1) begin
+      if (!rst_n) begin
+	 cnt <= 0;
+	 rate <= 600;
+      end else begin
+	 if (rate_axis_tvalid_i && rst_n_shreg[19]) rate <= rate_axis_tdata_i[11:0];
+
+	 if (rx_iq_axis_tvalid_i) cnt <= cnt + 1;
+	 
+	 if (cnt >= rate - 1) begin
 	    axis_tvalid_o <= 1;
 	    axis_tdata_o <= {rx_q, 16'd0, rx_i, 16'd0};
 	    cnt <= 0;

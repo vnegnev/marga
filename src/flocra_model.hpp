@@ -4,7 +4,7 @@
 #include "verilated.h"
 class Vflocra_model;
 struct flocra_csv;
-static const unsigned CSV_VERSION_MAJOR = 0, CSV_VERSION_MINOR = 1;
+static const unsigned CSV_VERSION_MAJOR = 0, CSV_VERSION_MINOR = 2;
 
 class flocra_model {
 public:

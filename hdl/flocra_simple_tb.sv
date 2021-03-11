@@ -84,12 +84,14 @@ module flocra_simple_tb;
    wire			rx0_axis_tready_o;	// From UUT of flocra.v
    wire [31:0]		rx0_dds_iq_axis_tdata_o;// From UUT of flocra.v
    wire			rx0_dds_iq_axis_tvalid_o;// From UUT of flocra.v
+   wire			rx0_en_o;		// From UUT of flocra.v
    wire [15:0]		rx0_rate_axis_tdata_o;	// From UUT of flocra.v
    wire			rx0_rate_axis_tvalid_o;	// From UUT of flocra.v
    wire			rx0_rst_n_o;		// From UUT of flocra.v
    wire			rx1_axis_tready_o;	// From UUT of flocra.v
    wire [31:0]		rx1_dds_iq_axis_tdata_o;// From UUT of flocra.v
    wire			rx1_dds_iq_axis_tvalid_o;// From UUT of flocra.v
+   wire			rx1_en_o;		// From UUT of flocra.v
    wire [15:0]		rx1_rate_axis_tdata_o;	// From UUT of flocra.v
    wire			rx1_rate_axis_tvalid_o;	// From UUT of flocra.v
    wire			rx1_rst_n_o;		// From UUT of flocra.v
@@ -390,6 +392,8 @@ module flocra_simple_tb;
        .dds2_phase_axis_tvalid_o	(dds2_phase_axis_tvalid_o),
        .rx0_rst_n_o			(rx0_rst_n_o),
        .rx1_rst_n_o			(rx1_rst_n_o),
+       .rx0_en_o			(rx0_en_o),
+       .rx1_en_o			(rx1_en_o),
        .rx0_rate_axis_tdata_o		(rx0_rate_axis_tdata_o[15:0]),
        .rx1_rate_axis_tdata_o		(rx1_rate_axis_tdata_o[15:0]),
        .rx0_rate_axis_tvalid_o		(rx0_rate_axis_tvalid_o),
