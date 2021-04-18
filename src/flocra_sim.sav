@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.108 (w)1999-2020 BSI
-[*] Thu Mar 11 14:55:32 2021
+[*] Sun Apr 18 19:45:06 2021
 [*]
 [dumpfile] "/home/vlad/Documents/mri/flocra/build/flocra_sim.fst"
-[dumpfile_mtime] "Thu Mar 11 14:50:33 2021"
-[dumpfile_size] 13357222
+[dumpfile_mtime] "Sun Apr 18 19:42:36 2021"
+[dumpfile_size] 915449
 [savefile] "/home/vlad/Documents/mri/flocra/src/flocra_sim.sav"
 [timestart] 0
-[size] 2560 1354
-[pos] -2561 -361
-*-16.809580 470000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1920 1029
+[pos] -1 -1
+*-13.595366 12990 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.flocra_model.
 [treeopen] TOP.flocra_model.UUT.
@@ -208,7 +208,7 @@ TOP.leds_o[7:0]
 -group_end
 @200
 -
-@c00200
+@800200
 -tx_iq
 @c00420
 [color] 3
@@ -319,7 +319,7 @@ TOP.flocra_model.UUT.tx1_q[15:0]
 -
 -
 -
-@1401200
+@1000200
 -tx_iq
 @200
 -
@@ -372,7 +372,7 @@ TOP.flocra_model.dds2_phase_axis_tdata_o[23:0]
 -ddses
 @200
 -
-@800200
+@c00200
 -rx_input
 @28
 TOP.flocra_model.rx0_axis_tvalid_i
@@ -382,11 +382,11 @@ TOP.flocra_model.rx0_axis_tready_o
 @28
 TOP.flocra_model.rx1_axis_tvalid_i
 TOP.flocra_model.rx1_axis_tready_o
-@1000200
+@1401200
 -rx_input
 @200
 -
-@800200
+@c00200
 -flodecode
 @24
 TOP.flocra_model.UUT.fld.flo_bram_raddr[15:0]
@@ -415,7 +415,7 @@ TOP.flocra_model.UUT.fld.status_i[31:0]
 TOP.flocra_model.UUT.fld.status_r[31:0]
 TOP.flocra_model.UUT.fld.status_latch_i[31:0]
 TOP.flocra_model.UUT.fld.status_latch_r2[31:0]
-@1000200
+@1401200
 -flodecode
 @200
 -
@@ -472,9 +472,72 @@ TOP.flocra_model.fhdo.voutz2[15:0]
 -
 @1401200
 -fhdo
+@c00200
+-ocra1
+@24
+[color] 2
+TOP.flocra_model.ocra1.voutx[17:0]
+@8420
+[color] 2
+TOP.flocra_model.ocra1.voutx[17:0]
+@20000
+-
+-
+-
+@24
+[color] 3
+TOP.flocra_model.ocra1.vouty[17:0]
+@8420
+[color] 3
+TOP.flocra_model.ocra1.vouty[17:0]
+@20000
+-
+-
+-
+@24
+TOP.flocra_model.ocra1.voutz[17:0]
+@8420
+TOP.flocra_model.ocra1.voutz[17:0]
+@20000
+-
+-
+-
+@24
+[color] 7
+TOP.flocra_model.ocra1.voutz2[17:0]
+@8420
+[color] 7
+TOP.flocra_model.ocra1.voutz2[17:0]
+@20000
+-
+-
+-
+@1401200
+-ocra1
+@c00200
+-oc1_iface
+@28
+TOP.flocra_model.UUT.ocra1_en
+TOP.flocra_model.UUT.grad_data_valid
+TOP.flocra_model.UUT.ocra1_if.rst_n
+TOP.flocra_model.UUT.ocra1_if.busy_o
+TOP.flocra_model.UUT.ocra1_if.data_lost_o
+@22
+TOP.flocra_model.UUT.ocra1_if.data_i[31:0]
+@800022
+TOP.flocra_model.UUT.ocra1_if.data_present[3:0]
+@28
+(0)TOP.flocra_model.UUT.ocra1_if.data_present[3:0]
+(1)TOP.flocra_model.UUT.ocra1_if.data_present[3:0]
+(2)TOP.flocra_model.UUT.ocra1_if.data_present[3:0]
+(3)TOP.flocra_model.UUT.ocra1_if.data_present[3:0]
+@1001200
+-group_end
+@1401200
+-oc1_iface
 @200
 -
-@800200
+@c00200
 -rx0_model
 @22
 TOP.flocra_model.rx0.axis_tdata_o[63:0]
@@ -483,11 +546,11 @@ TOP.flocra_model.rx0.axis_tvalid_o
 TOP.flocra_model.rx0.rst_n
 @22
 TOP.flocra_model.rx0.rx_iq_axis_tdata_i[31:0]
-@29
+@28
 TOP.flocra_model.rx0.rx_iq_axis_tvalid_i
-@1000200
+@1401200
 -rx0_model
-@800200
+@c00200
 -rx1_model
 @22
 TOP.flocra_model.rx1.axis_tdata_o[63:0]
@@ -498,7 +561,7 @@ TOP.flocra_model.rx1.rst_n
 TOP.flocra_model.rx1.rx_iq_axis_tdata_i[31:0]
 @28
 TOP.flocra_model.rx1.rx_iq_axis_tvalid_i
-@1000200
+@1401200
 -rx1_model
 [pattern_trace] 1
 [pattern_trace] 0

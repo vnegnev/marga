@@ -201,7 +201,7 @@ module flocra
    wire 				      ocra1_busy, ocra1_data_lost;
    wire 				      ocra1_err = ocra1_busy & ocra1_data_valid;
    wire 				      fhdo_err = fhdo_busy & fhdo_data_valid;
-   assign fld_status = {16'd0, fhdo_adc};
+   assign fld_status = {14'd0, fhdo_busy, ocra1_busy, fhdo_adc};
    assign fld_status_latch = {29'd0, fhdo_err, ocra1_err, ocra1_data_lost};
 
    // RX control lines

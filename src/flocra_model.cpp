@@ -20,11 +20,11 @@ struct flocra_csv {
 	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0, rx0_en_o = 0, rx1_en_o = 0;
 	uint8_t tx_gate = 0, rx_gate = 0, trig = 0, leds = 0;
 
-	FILE *f;	
+	FILE *f;
 	unsigned _line = 0;
 	const unsigned _LINE_INTERVAL = 15; // how many lines between column label insertions
 	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds\n"};
-	
+
 	flocra_csv(const char *filename) {
 		f = fopen(filename, "w");
 		if (f == nullptr) {
@@ -38,7 +38,7 @@ struct flocra_csv {
 	~flocra_csv() {
 		fclose(f);
 	}
-	
+
 	void wr_header() {
 		// full header
 		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i, tx1_q,"
@@ -46,15 +46,15 @@ struct flocra_csv {
 		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n, rx0_en, rx1_en,"
 		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
-	
+
 	bool wr_update(Vflocra_model *fm) {
 		// Long and ugly - I'm sorry!
 		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false;
 
 		if (false and main_time/10 == 211845) { // debugging only: breakpoint at particular time
 			printf("x\n");
-		}		
-		
+		}
+
 		if (fm->tx0_i != tx0_i) { tx0_i = fm->tx0_i; diff_tx = true; }
 		if (fm->tx0_q != tx0_q) { tx0_q = fm->tx0_q; diff_tx = true; }
 		if (fm->tx1_i != tx1_i) { tx1_i = fm->tx1_i; diff_tx = true; }
@@ -77,7 +77,7 @@ struct flocra_csv {
 		if (fm->rx0_rst_n_o != rx0_rst_n_o) { rx0_rst_n_o = fm->rx0_rst_n_o; diff_rx = true; }
 		if (fm->rx1_rst_n_o != rx1_rst_n_o) { rx1_rst_n_o = fm->rx1_rst_n_o; diff_rx = true; }
 		if (fm->rx0_en_o != rx0_en_o) { rx0_en_o = fm->rx0_en_o; diff_rx = true; }
-		if (fm->rx1_en_o != rx1_en_o) { rx1_en_o = fm->rx1_en_o; diff_rx = true; }		
+		if (fm->rx1_en_o != rx1_en_o) { rx1_en_o = fm->rx1_en_o; diff_rx = true; }
 
 		if (fm->tx_gate_o != tx_gate) { tx_gate = fm->tx_gate_o; diff_gpio = true; }
 		if (fm->rx_gate_o != rx_gate) { rx_gate = fm->rx_gate_o; diff_gpio = true; }
@@ -87,10 +87,10 @@ struct flocra_csv {
 		bool diff = diff_tx or diff_grad or diff_rx or diff_gpio;
 		if (diff) {
 			// occasionally print abridged column names for easy reading
-			if (_line++ % _LINE_INTERVAL == 0) {			
+			if (_line++ % _LINE_INTERVAL == 0) {
 				fprintf(f, _colnames.c_str());
 			}
-			
+
 			fprintf(f, "%8lu, %5d, %5d, %5d, %5d, "
 			        "%5u, %5u, %5u, %5u, "
 			        "%6d, %6d, %6d, %6d,"
@@ -108,7 +108,7 @@ struct flocra_csv {
 	}
 };
 
-flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {	
+flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
 	auto filepath_csv = string(argv[0]) + ".csv", filepath_fst = string(argv[0]) + ".fst";
 	if (argc > 1) {
 		string csvs("csv"), fsts("fst"), boths("both");
@@ -124,7 +124,7 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 		} else if (boths.compare(argv[1]) == 0) {
 			if (argc > 2) filepath_csv = argv[2];
 			if (argc > 3) filepath_fst = argv[3];
-			
+
 			printf("Saving FST trace to %s\n", filepath_fst.c_str());
 			printf("Dumping event output to %s\n", filepath_csv.c_str());
 			_fst_output = true;
@@ -143,14 +143,14 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 		printf("\t\t%s fst /path/to/test.fst\n", argv[0]);
 		printf("\t\t%s both # (will dump to %s.csv and %s.fst)\n", argv[0], argv[0], argv[0]);
 		printf("\t\t%s both /path/to/test.csv /path/to/test2.fst\n", argv[0]);
-		printf("\n\t Hit ctrl-c to halt the program.\n");		
+		printf("\n\t Hit ctrl-c to halt the program.\n");
 	}
-	
+
 	Verilated::commandArgs(argc, argv);
 	vfm = new Vflocra_model;
 
 	if (_fst_output) {
-		Verilated::traceEverOn(true);	
+		Verilated::traceEverOn(true);
 		tfp = new VerilatedFstC;
 
 		vfm->trace(tfp, 10);
@@ -169,7 +169,7 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 	vfm->s0_axi_awaddr = 0;
 	vfm->s0_axi_wdata = 0;
 	vfm->s0_axi_araddr = 0;
-	
+
 	vfm->s0_axi_aresetn = 0;
 	vfm->s0_axi_awprot = 0;
 	vfm->s0_axi_awvalid = 0;
@@ -179,7 +179,7 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 	vfm->s0_axi_arprot = 0;
 	vfm->s0_axi_arvalid = 0;
 	vfm->s0_axi_rready = 0;
-	
+
 	// Wait 5 cycles
 	for (int k = 0; k < 10; ++k) tick();
 
@@ -187,7 +187,7 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(50e6) {
 	vfm->s0_axi_aresetn = 1;
 	vfm->s0_axi_bready = 1;
 
-	for (int k = 0; k < 10; ++k) tick();	
+	for (int k = 0; k < 10; ++k) tick();
 }
 
 flocra_model::~flocra_model() {
@@ -205,7 +205,7 @@ int flocra_model::tick() {
 
 		// update clock
 		vfm->s0_axi_aclk = !vfm->s0_axi_aclk;
-       
+
 		vfm->eval();
 
 		if (vfm->s0_axi_aclk == 0 and _csv_output) csv->wr_update(vfm); // only update on negative edges of the clock
@@ -254,7 +254,7 @@ uint32_t flocra_model::rd32(uint32_t addr) {
 	vfm->s0_axi_rready = 1;
 	tick(); tick(); // 1 full clock cycle
 	vfm->s0_axi_rready = 0;
-	
+
 	return data;
 }
 
