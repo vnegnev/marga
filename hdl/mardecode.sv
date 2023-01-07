@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
-// Title         : flodecode
-// Project       : flocra
+// Title         : mardecode
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flodecode.sv
+// File          : mardecode.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 17.12.2020
 // Last modified : 17.12.2020
@@ -20,18 +20,18 @@
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLODECODE_
- `define _FLODECODE_
+`ifndef _MARDECODE_
+ `define _MARDECODE_
 
- `include "flobuffer.sv"
- `include "flofifo.sv"
+ `include "marbuffer.sv"
+ `include "marfifo.sv"
 
  `timescale 1ns / 1ns
 
-module flodecode #
+module mardecode #
   (
    parameter integer C_S_AXI_DATA_WIDTH = 32,
-   parameter integer C_S_AXI_ADDR_WIDTH = 19,   
+   parameter integer C_S_AXI_ADDR_WIDTH = 19,
    parameter BUFS = 24, // max 128; probably needs pipelining with that many
    parameter RX_FIFO_LENGTH = 16384 // must be power of 2
    )
@@ -72,11 +72,11 @@ module flodecode #
     // Write address ready. This signal indicates that the slave is ready
     // to accept an address and associated control signals.
     output 				 S_AXI_AWREADY,
-    // Write data (issued by master, acceped by Slave) 
+    // Write data (issued by master, acceped by Slave)
     input [C_S_AXI_DATA_WIDTH-1 : 0] 	 S_AXI_WDATA,
     // Write strobes. This signal indicates which byte lanes hold
     // valid data. There is one write strobe bit for each eight
-    // bits of the write data bus.    
+    // bits of the write data bus.
     input [(C_S_AXI_DATA_WIDTH/8)-1 : 0] S_AXI_WSTRB,
     // Write valid. This signal indicates that valid write
     // data and strobes are available.
@@ -142,15 +142,15 @@ module flodecode #
    // ADDR_LSB = 3 for 64 bits (n downto 3)
    localparam integer 			      ADDR_LSB = (C_S_AXI_DATA_WIDTH/32) + 1;
 
-   // flodecode default: 19 - 2 - 1 = 16   
-   localparam integer 			      OPT_MEM_ADDR_BITS = C_S_AXI_ADDR_WIDTH - ADDR_LSB - 1; 
+   // mardecode default: 19 - 2 - 1 = 16
+   localparam integer 			      OPT_MEM_ADDR_BITS = C_S_AXI_ADDR_WIDTH - ADDR_LSB - 1;
    //----------------------------------------------
    //-- Signals for user logic register space example
    //------------------------------------------------
    //-- Number of Slave Registers: 16
-   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg0 = {32'd0}; // R/W: bit 0 = run/stop, bit 1 = immediate stop, 
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg0 = {32'd0}; // R/W: bit 0 = run/stop, bit 1 = immediate stop,
    wire 				      run_fsm = slv_reg0[0], stop_fsm = slv_reg0[1];
-   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg1 = {32'd0}; // R/W, 
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg1 = {32'd0}; // R/W,
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg2 = {32'd0}; // R/W, direct output control
    wire [6:0] 				      direct_valid = slv_reg2[22:16]; // output buffer for immediate transfers
    wire [15:0] 				      direct_data = slv_reg2[15:0];
@@ -158,7 +158,7 @@ module flodecode #
 
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg4 = 0; // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg5 = 0;
-   
+
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg6 = 0; // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg7 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg8 = 0;  // read-only
@@ -168,8 +168,8 @@ module flodecode #
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg12 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg13 = 0;  // read-only
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg14 = 0;  // read-only
-   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg15 = 0;  // read-only   
-   
+   reg [C_S_AXI_DATA_WIDTH-1:0] 	      slv_reg15 = 0;  // read-only
+
    wire 				      slv_reg_rden;
    wire 				      slv_reg_wen;
    reg [C_S_AXI_DATA_WIDTH-1:0] 	      reg_data_out = 0;
@@ -195,12 +195,12 @@ module flodecode #
       if ( !rstn ) begin
 	 axi_awready <= 1'b0;
 	 aw_en <= 1'b1;
-      end else begin    
+      end else begin
 	 if (~axi_awready && S_AXI_AWVALID && S_AXI_WVALID && aw_en) begin
-	    // slave is ready to accept write address when 
+	    // slave is ready to accept write address when
 	    // there is a valid write address and write data
-	    // on the write address and data bus. This design 
-	    // expects no outstanding transactions. 
+	    // on the write address and data bus. This design
+	    // expects no outstanding transactions.
 	    axi_awready <= 1'b1;
 	    aw_en <= 1'b0;
 	 end
@@ -210,44 +210,44 @@ module flodecode #
 	 end else begin
 	    axi_awready <= 1'b0;
 	 end
-      end 
-   end       
+      end
+   end
 
    // Implement axi_awaddr latching
-   // This process is used to latch the address when both 
-   // S_AXI_AWVALID and S_AXI_WVALID are valid. 
+   // This process is used to latch the address when both
+   // S_AXI_AWVALID and S_AXI_WVALID are valid.
 
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_awaddr <= 0;
-      end else begin    
+      end else begin
 	 if (~axi_awready && S_AXI_AWVALID && S_AXI_WVALID && aw_en) begin
-	    // Write Address latching 
+	    // Write Address latching
 	    axi_awaddr <= S_AXI_AWADDR;
 	 end
-      end 
-   end       
+      end
+   end
 
    // Implement axi_wready generation
    // axi_wready is asserted for one S_AXI_ACLK clock cycle when both
-   // S_AXI_AWVALID and S_AXI_WVALID are asserted. axi_wready is 
-   // de-asserted when reset is low. 
+   // S_AXI_AWVALID and S_AXI_WVALID are asserted. axi_wready is
+   // de-asserted when reset is low.
 
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_wready <= 1'b0;
-      end else begin    
+      end else begin
 	 if (~axi_wready && S_AXI_WVALID && S_AXI_AWVALID && aw_en ) begin
-	    // slave is ready to accept write data when 
+	    // slave is ready to accept write data when
 	    // there is a valid write address and write data
-	    // on the write address and data bus. This design 
-	    // expects no outstanding transactions. 
+	    // on the write address and data bus. This design
+	    // expects no outstanding transactions.
 	    axi_wready <= 1'b1;
 	 end else begin
 	    axi_wready <= 1'b0;
 	 end
-      end 
-   end       
+      end
+   end
 
    // Implement memory mapped register select and write logic generation
    // The write data is accepted and written to memory mapped registers when
@@ -261,25 +261,25 @@ module flodecode #
    // Output buffers
    localparam BUF_BITS = $clog2(BUFS);
 
-   // inputs to flobuffers
-   reg [15:0] 	   flo_data = 0;
-   reg [6:0] 	   flo_delay = 0;
-   reg [BUFS-1:0]  flo_valid = 0, flo_direct = 0;
+   // inputs to marbuffers
+   reg [15:0] 	   mar_data = 0;
+   reg [6:0] 	   mar_delay = 0;
+   reg [BUFS-1:0]  mar_valid = 0, mar_direct = 0;
 
-   // outputs from flobuffers
+   // outputs from marbuffers
    wire [15:0] buf_data[BUFS-1:0];
    wire [BUFS-1:0] buf_err, buf_full, buf_empty, buf_stb;
 
    genvar      k;
    generate
       for (k = 0; k < BUFS; k = k + 1) begin
-	 flobuffer #( .fifo_size(4) ) 
+	 marbuffer #( .fifo_size(4) )
 	 flb (
 	      .clk(clk),
-	      .data_i(flo_data),
-	      .delay_i(flo_delay),
-	      .valid_i(flo_valid[k]),
-	      .direct_i(flo_direct[k]),
+	      .data_i(mar_data),
+	      .delay_i(mar_delay),
+	      .valid_i(mar_valid[k]),
+	      .direct_i(mar_direct[k]),
 	      .data_o(buf_data[k]),
 	      .empty_o(buf_empty[k]),
 	      .full_o(buf_full[k]),
@@ -300,8 +300,8 @@ module flodecode #
    assign rx0_ready = !fifo0_full, rx1_ready = !fifo1_full;
    localparam RX_FIFO_BITS = $clog2(RX_FIFO_LENGTH);
    wire [RX_FIFO_BITS-1:0] fifo0_locs, fifo1_locs;
-   
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
+
+   marfifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
    fifo0(.clk(clk),
 	 .data_i(rx0_data),
 	 .valid_i(rx0_valid),
@@ -311,7 +311,7 @@ module flodecode #
 	 .full_o(fifo0_full)
 	 );
 
-   flofifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
+   marfifo #( .LENGTH(RX_FIFO_LENGTH), .WIDTH(64) )
    fifo1(.clk(clk),
 	 .data_i(rx1_data),
 	 .valid_i(rx1_valid),
@@ -325,27 +325,27 @@ module flodecode #
    assign data_o = buf_data;
    assign stb_o = buf_stb;
 
-   reg [31:0] flo_bram [2**OPT_MEM_ADDR_BITS-1:0]; // main BRAM; 65536 locations by default
-   reg [31:0] flo_bram_wdata = 0, flo_bram_wdata_r = 0; // pipelining
-   reg 	      flo_bram_wen = 0, flo_bram_wen_r = 0, flo_bram_rd = 0, flo_bram_rd_r = 0, flo_bram_rd_r2 = 0; // pipelining
+   reg [31:0] mar_bram [2**OPT_MEM_ADDR_BITS-1:0]; // main BRAM; 65536 locations by default
+   reg [31:0] mar_bram_wdata = 0, mar_bram_wdata_r = 0; // pipelining
+   reg 	      mar_bram_wen = 0, mar_bram_wen_r = 0, mar_bram_rd = 0, mar_bram_rd_r = 0, mar_bram_rd_r2 = 0; // pipelining
    reg 	      direct_wen = 0;
-   reg [OPT_MEM_ADDR_BITS-1:0] flo_bram_waddr = 0, flo_bram_waddr_r = 0;
-   reg [OPT_MEM_ADDR_BITS-1:0] flo_bram_raddr = 0, flo_bram_raddr_r = 0, flo_bram_raddr_r2 = 0;
-   reg [31:0] 		       flo_bram_rdata = 0, flo_bram_rdata_r = 0, flo_bram_rdata_r2 = 0;
+   reg [OPT_MEM_ADDR_BITS-1:0] mar_bram_waddr = 0, mar_bram_waddr_r = 0;
+   reg [OPT_MEM_ADDR_BITS-1:0] mar_bram_raddr = 0, mar_bram_raddr_r = 0, mar_bram_raddr_r2 = 0;
+   reg [31:0] 		       mar_bram_rdata = 0, mar_bram_rdata_r = 0, mar_bram_rdata_r2 = 0;
    wire [OPT_MEM_ADDR_BITS:0] axi_addr = axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS : ADDR_LSB];
-   
-   /**** Flocra mem and general register write logic ****/
+
+   /**** Marga mem and general register write logic ****/
    always @(posedge clk) begin
       // defaults and pipelining
-      flo_bram_wen <= 0;
+      mar_bram_wen <= 0;
       direct_wen <= 0;
-      if (flo_bram_wen) flo_bram[flo_bram_waddr] <= flo_bram_wdata; // can pipeline further if needed (will ultimately use DDR anyway)
-   
+      if (mar_bram_wen) mar_bram[mar_bram_waddr] <= mar_bram_wdata; // can pipeline further if needed (will ultimately use DDR anyway)
+
       if (slv_reg_wen) begin
 	 if (axi_addr[OPT_MEM_ADDR_BITS]) begin // upper range: write to BRAM
-	    flo_bram_wen <= 1;
-	    flo_bram_waddr <= axi_addr[OPT_MEM_ADDR_BITS-1:0]; // BRAM has 16-bit address space by default
-	    flo_bram_wdata <= S_AXI_WDATA;
+	    mar_bram_wen <= 1;
+	    mar_bram_waddr <= axi_addr[OPT_MEM_ADDR_BITS-1:0]; // BRAM has 16-bit address space by default
+	    mar_bram_wdata <= S_AXI_WDATA;
 	 end else begin // lower range: write to config registers
 	    case (axi_addr[3:0]) // TODO: look at more than lower 4 bits if this is ever expanded
 	      // no resets
@@ -367,88 +367,88 @@ module flodecode #
      COUNTDOWN = 4'd3, TRIG = 4'd4, TRIG_FOREVER = 4'd5,
      HALT = 4'd8;
    reg [STATE_BITS-1:0]  state = IDLE;
-   wire [BUF_BITS-1:0] buf_idx = flo_bram_rdata_r[24+BUF_BITS-1:24];
+   wire [BUF_BITS-1:0] buf_idx = mar_bram_rdata_r[24+BUF_BITS-1:24];
    wire [BUF_BITS-1:0] direct_buf_idx = slv_reg2[24+BUF_BITS-1:24];
    reg [23:0] tmr = 0;
    reg 	      trig_r = 0, trig_r1 = 0, trig_r2 = 0, trig_r3 = 0, trig_r4 = 0;
    reg 	      trig_state_change = 0;
    reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, berr_r = 0, bfull_r = 0;
    reg [BUFS-1:0] buf_full_r = 0, buf_empty_r = 0, buf_err_r = 0;
-   
+
    always @(posedge clk) begin
       // pipelining
-      {flo_bram_rd_r2, flo_bram_rd_r} <= {flo_bram_rd_r, flo_bram_rd};
-      {flo_bram_raddr_r2, flo_bram_raddr_r} <= {flo_bram_raddr_r, flo_bram_raddr};
+      {mar_bram_rd_r2, mar_bram_rd_r} <= {mar_bram_rd_r, mar_bram_rd};
+      {mar_bram_raddr_r2, mar_bram_raddr_r} <= {mar_bram_raddr_r, mar_bram_raddr};
       status_r <= status_i;
       status_latch_r <= status_latch_i;
       buf_err_r <= buf_err;
       buf_full_r <= buf_full;
       buf_empty_r <= buf_empty;
       {fifo0_data_q, fifo0_data_i} <= fifo0_data;
-      {fifo1_data_q, fifo1_data_i} <= fifo1_data;      
+      {fifo1_data_q, fifo1_data_i} <= fifo1_data;
 
       // triggering -- could be an external input, so need decent synch
       {trig_r4, trig_r3, trig_r2, trig_r} <= {trig_r3, trig_r2, trig_r, trig_i};
       trig_state_change <= trig_r3 != trig_r4; // may want to have more hysteresis
 
       // data output logic
-      // state <= IDLE; // default state      
-      flo_bram_rd <= 0; // default
-      flo_valid <= 0; // default
+      // state <= IDLE; // default state
+      mar_bram_rd <= 0; // default
+      mar_valid <= 0; // default
       // always read from BRAM
-      flo_bram_rdata <= flo_bram[flo_bram_raddr]; // can pipeline this further
-      flo_bram_rdata_r <= flo_bram_rdata; // can pipeline this further
+      mar_bram_rdata <= mar_bram[mar_bram_raddr]; // can pipeline this further
+      mar_bram_rdata_r <= mar_bram_rdata; // can pipeline this further
       case (state)
-	default: begin // IDLE state	   
+	default: begin // IDLE state
 	   if (direct_wen) begin
-	      flo_delay <= 0; // don't see a reason to ever use nonzero delay here
-	      flo_valid[direct_buf_idx] <= 1;
-	      flo_data <= slv_reg2[15:0];
+	      mar_delay <= 0; // don't see a reason to ever use nonzero delay here
+	      mar_valid[direct_buf_idx] <= 1;
+	      mar_data <= slv_reg2[15:0];
 	   end
-	   
+
 	   if (run_fsm) begin
 	      state <= PREPARE;
-	      flo_bram_raddr <= flo_bram_raddr + 1; // next address
-	   end else begin	      
-	      flo_bram_raddr <= 0; // reset PC
+	      mar_bram_raddr <= mar_bram_raddr + 1; // next address
+	   end else begin
+	      mar_bram_raddr <= 0; // reset PC
 	   end
 	end
 	// catch-all state to ensure the instruction data in the BRAM pipeline is valid
-	// (not yet used, but may be useful for branches etc in the future)	
+	// (not yet used, but may be useful for branches etc in the future)
 	PREPARE: begin
-	   flo_bram_raddr <= flo_bram_raddr + 1;
+	   mar_bram_raddr <= mar_bram_raddr + 1;
 	   if (stop_fsm) state <= HALT;
 	   else state <= RUN;
 	end
 	RUN: begin
-	   if (flo_bram_rdata_r[31]) begin // data to buffers
+	   if (mar_bram_rdata_r[31]) begin // data to buffers
 	      // TODO: pipelining here if needed
-	      flo_valid[buf_idx] <= 1;
-	      flo_delay <= flo_bram_rdata_r[22:16];
-	      flo_data <= flo_bram_rdata_r[15:0];
-	      flo_bram_raddr <= flo_bram_raddr + 1; // next address	      
+	      mar_valid[buf_idx] <= 1;
+	      mar_delay <= mar_bram_rdata_r[22:16];
+	      mar_data <= mar_bram_rdata_r[15:0];
+	      mar_bram_raddr <= mar_bram_raddr + 1; // next address
 	   end else begin // general-purpose instructions
-	      case (flo_bram_rdata_r[30:24])
+	      case (mar_bram_rdata_r[30:24])
 		default: begin
-		   flo_bram_raddr <= flo_bram_raddr + 1; // next address
+		   mar_bram_raddr <= mar_bram_raddr + 1; // next address
 		end
 		INSTR_FINISH: begin
 		   state <= HALT;
-		   // flo_bram_raddr <= flo_bram_raddr; // backtrack due to delay (not strictly necessary here)
+		   // mar_bram_raddr <= mar_bram_raddr; // backtrack due to delay (not strictly necessary here)
 		end
 		INSTR_WAIT: begin
 		   state <= COUNTDOWN;
-		   tmr <= flo_bram_rdata_r[23:0];
-		   flo_bram_raddr <= flo_bram_raddr - 1; // backtrack due to delay
+		   tmr <= mar_bram_rdata_r[23:0];
+		   mar_bram_raddr <= mar_bram_raddr - 1; // backtrack due to delay
 		end
 		INSTR_TRIG: begin
 		   state <= TRIG;
-		   tmr <= flo_bram_rdata_r[23:0]; // trigger timeout, in case it never arrives
-		   flo_bram_raddr <= flo_bram_raddr - 1; // backtrack due to delay
+		   tmr <= mar_bram_rdata_r[23:0]; // trigger timeout, in case it never arrives
+		   mar_bram_raddr <= mar_bram_raddr - 1; // backtrack due to delay
 		end
 		INSTR_TRIG_FOREVER: begin
 		   state <= TRIG_FOREVER;
-		   flo_bram_raddr <= flo_bram_raddr - 1; // backtrack due to delay
+		   mar_bram_raddr <= mar_bram_raddr - 1; // backtrack due to delay
 		end
 		// TODO: add an INSTR_TRIG_FOREVER as well that has no timeout
 	      endcase
@@ -457,33 +457,33 @@ module flodecode #
 	HALT: begin
 	   if (!run_fsm) begin
 	      state <= IDLE;
-	   end	   
+	   end
 	end
 	COUNTDOWN: begin
 	   if (tmr == 0) begin
 	      state <= PREPARE;
-	      flo_bram_raddr <= flo_bram_raddr + 1;
+	      mar_bram_raddr <= mar_bram_raddr + 1;
 	   end else tmr <= tmr - 1;
 	end
 	TRIG: begin
 	   if (trig_state_change || (tmr == 0)) begin
 	      tmr <= 0;
 	      state <= PREPARE;
-	      flo_bram_raddr <= flo_bram_raddr + 1;
+	      mar_bram_raddr <= mar_bram_raddr + 1;
 	   end else tmr <= tmr - 1;
 	end
 	TRIG_FOREVER: begin
 	   if (trig_state_change || !run_fsm) begin
 	      state <= PREPARE;
-	      flo_bram_raddr <= flo_bram_raddr + 1;
+	      mar_bram_raddr <= mar_bram_raddr + 1;
 	   end
 	end
       endcase // case (state)
-     
+
       // monitoring/error info
-      // slv_reg4 <= {{(32-OPT_MEM_ADDR_BITS-STATE_BITS){1'b0}}, flo_bram_raddr_r2, state};
-      slv_reg4 <= { {8-STATE_BITS{1'd0}}, state, 
-		    {24-OPT_MEM_ADDR_BITS{1'd0}}, flo_bram_raddr_r2};
+      // slv_reg4 <= {{(32-OPT_MEM_ADDR_BITS-STATE_BITS){1'b0}}, mar_bram_raddr_r2, state};
+      slv_reg4 <= { {8-STATE_BITS{1'd0}}, state,
+		    {24-OPT_MEM_ADDR_BITS{1'd0}}, mar_bram_raddr_r2};
       slv_reg5 <= status_r;
       slv_reg6 <= status_latch_r2;
       slv_reg7 <= berr_r;
@@ -514,46 +514,46 @@ module flodecode #
 	   4'd12: fifo1_read <= 1; // pops next value from FIFO
 	   default; // do nothing
 	 endcase // case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
-      end      
+      end
    end
-   
+
    // Implement write response logic generation
-   // The write response and response valid signals are asserted by the slave 
-   // when axi_wready, S_AXI_WVALID, axi_wready and S_AXI_WVALID are asserted.  
-   // This marks the acceptance of address and indicates the status of 
+   // The write response and response valid signals are asserted by the slave
+   // when axi_wready, S_AXI_WVALID, axi_wready and S_AXI_WVALID are asserted.
+   // This marks the acceptance of address and indicates the status of
    // write transaction.
 
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_bvalid  <= 0;
 	 axi_bresp   <= 2'b0;
-      end else begin    
+      end else begin
 	 if (axi_awready && S_AXI_AWVALID && ~axi_bvalid && axi_wready && S_AXI_WVALID) begin
 	    // indicates a valid write response is available
 	    axi_bvalid <= 1'b1;
-	    axi_bresp  <= 2'b0; // 'OKAY' response 
+	    axi_bresp  <= 2'b0; // 'OKAY' response
 	 end else begin                  // work error responses in future
 	    if (S_AXI_BREADY && axi_bvalid) begin
-	       //check if bready is asserted while bvalid is high) 
-	       //(there is a possibility that bready is always asserted high)   
-	       axi_bvalid <= 1'b0; 
-	    end  
+	       //check if bready is asserted while bvalid is high)
+	       //(there is a possibility that bready is always asserted high)
+	       axi_bvalid <= 1'b0;
+	    end
 	 end
       end
-   end   
+   end
 
    // Implement axi_arready generation
    // axi_arready is asserted for one S_AXI_ACLK clock cycle when
-   // S_AXI_ARVALID is asserted. axi_awready is 
-   // de-asserted when reset (active low) is asserted. 
-   // The read address is also latched when S_AXI_ARVALID is 
+   // S_AXI_ARVALID is asserted. axi_awready is
+   // de-asserted when reset (active low) is asserted.
+   // The read address is also latched when S_AXI_ARVALID is
    // asserted. axi_araddr is reset to zero on reset assertion.
 
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_arready <= 1'b0;
 	 axi_araddr  <= 0;
-      end else begin    
+      end else begin
 	 if (~axi_arready && S_AXI_ARVALID) begin
 	    // indicates that the slave has acceped the valid read address
 	    axi_arready <= 1'b1;
@@ -562,34 +562,34 @@ module flodecode #
 	 end else begin
 	    axi_arready <= 1'b0;
 	 end
-      end 
-   end       
+      end
+   end
 
    // Implement axi_arvalid generation
-   // axi_rvalid is asserted for one S_AXI_ACLK clock cycle when both 
-   // S_AXI_ARVALID and axi_arready are asserted. The slave registers 
-   // data are available on the axi_rdata bus at this instance. The 
-   // assertion of axi_rvalid marks the validity of read data on the 
-   // bus and axi_rresp indicates the status of read transaction.axi_rvalid 
-   // is deasserted on reset (active low). axi_rresp and axi_rdata are 
-   // cleared to zero on reset (active low).  
+   // axi_rvalid is asserted for one S_AXI_ACLK clock cycle when both
+   // S_AXI_ARVALID and axi_arready are asserted. The slave registers
+   // data are available on the axi_rdata bus at this instance. The
+   // assertion of axi_rvalid marks the validity of read data on the
+   // bus and axi_rresp indicates the status of read transaction.axi_rvalid
+   // is deasserted on reset (active low). axi_rresp and axi_rdata are
+   // cleared to zero on reset (active low).
    always @( posedge clk ) begin
       if ( !rstn ) begin
 	 axi_rvalid <= 0;
 	 axi_rresp  <= 0;
-      end else begin    
+      end else begin
 	 if (axi_arready && S_AXI_ARVALID && ~axi_rvalid) begin
 	    // Valid read data is available at the read data bus
 	    axi_rvalid <= 1'b1;
 	    axi_rresp  <= 2'b0; // 'OKAY' response
-	 end   
+	 end
 	 else if (axi_rvalid && S_AXI_RREADY)
 	   begin
 	      // Read data is accepted by the master
 	      axi_rvalid <= 1'b0;
-	   end                
+	   end
       end
-   end    
+   end
 
    // Implement memory mapped register select and read logic generation
    // Slave register read enable is asserted when valid address is available
@@ -598,7 +598,7 @@ module flodecode #
    always @( axi_araddr[ADDR_LSB+3:ADDR_LSB] or slv_reg0 or slv_reg1
 	     or slv_reg2 or slv_reg3 or slv_reg4 or slv_reg5 or slv_reg6 or
 	     slv_reg7 or slv_reg8 or slv_reg9 or slv_reg10 or slv_reg11 or
-	     slv_reg12 or slv_reg13 or slv_reg14 or slv_reg15) begin      
+	     slv_reg12 or slv_reg13 or slv_reg14 or slv_reg15) begin
       // Address decoding for reading registers
       // case ( axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] )
       case ( axi_araddr[ADDR_LSB+3:ADDR_LSB] )
@@ -623,11 +623,11 @@ module flodecode #
 
    // Output register or memory read data, and error bits
    always @( posedge clk ) begin
-      // When there is a valid read address (S_AXI_ARVALID) with 
-      // acceptance of read address by the slave (axi_arready), 
-      // output the read data 
+      // When there is a valid read address (S_AXI_ARVALID) with
+      // acceptance of read address by the slave (axi_arready),
+      // output the read data
       if (slv_reg_rden) axi_rdata <= reg_data_out;     // register read data
    end
 
-endmodule // flodecode
-`endif //  `ifndef _FLODECODE_
+endmodule // mardecode
+`endif //  `ifndef _MARDECODE_

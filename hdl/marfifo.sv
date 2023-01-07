@@ -1,14 +1,14 @@
 //-----------------------------------------------------------------------------
-// Title         : flofifo
-// Project       : flocra
+// Title         : marfifo
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flofifo.sv
+// File          : marfifo.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 24.12.2020
 // Last modified : 24.12.2020
 //-----------------------------------------------------------------------------
 // Description :
-// RX FIFO to be used as part of flocra
+// RX FIFO to be used as part of marga
 //
 // NOTE: This FIFO relies on external logic to avoid reading out too
 // much data, or it will fail. External logic should closely monitor
@@ -21,12 +21,12 @@
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLOFIFO_
- `define _FLOFIFO_
+`ifndef _MARFIFO_
+ `define _MARFIFO_
 
  `timescale 1ns/1ns
 
-module flofifo #
+module marfifo #
   (
    parameter LENGTH = 16384,
    parameter WIDTH = 24
@@ -68,12 +68,12 @@ module flofifo #
       // out_ptr_r <= out_ptr;
       ptr_diff <= in_ptr - out_ptr;
       {locs_o, ptr_diff_r} <= {ptr_diff_r, ptr_diff};
-      
+
       read_r <= read_i;
       empty_o <= ptr_diff_r == 0;
       /* verilator lint_off WIDTH*/
       full_o <= ptr_diff_r >= LENGTH-4; // a bit of overhead
-      /* verilator lint_on WIDTH*/      
+      /* verilator lint_on WIDTH*/
 
       valid_r <= valid_i && !full_o;
 
@@ -85,7 +85,7 @@ module flofifo #
       // TODO: pipeline the output memory so that there are always 3-4
       // samples ready to read out, and the memory only goes dry when
       // the FIFO goes empty! Must work cycle-to-cycle.
-      
+
       // always read out memory from current address
       out_data_r <= fifo_mem[out_ptr];
       data_o <= out_data_r;
@@ -100,5 +100,5 @@ module flofifo #
       // end
    end
 
-endmodule // flofifo
-`endif //  `ifndef _FLOFIFO_
+endmodule // marfifo
+`endif //  `ifndef _MARFIFO_

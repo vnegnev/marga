@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // Title         : rx_chain_model
-// Project       : flocra
+// Project       : marga
 //-----------------------------------------------------------------------------
 // File          : rx_chain_model.sv
 // Author        :   <vlad@vlad-laptop>
@@ -31,7 +31,7 @@ module rx_chain_model(
 		      input 		rate_axis_tvalid_i,
 
 		      input [31:0] 	rx_iq_axis_tdata_i,
-		      input 		rx_iq_axis_tvalid_i, 
+		      input 		rx_iq_axis_tvalid_i,
 
 		      input 		axis_tready_i,
 		      output reg 	axis_tvalid_o,
@@ -42,13 +42,13 @@ module rx_chain_model(
    reg [11:0] 				cnt = 0;
    reg [11:0] 				rate = 600;
 
-   wire [15:0] 				rx_i = rx_iq_axis_tdata_i[15:0], 
+   wire [15:0] 				rx_i = rx_iq_axis_tdata_i[15:0],
 					rx_q = rx_iq_axis_tdata_i[31:16];
 
    reg [19:0] 				rst_n_shreg = 0;
-   
+
    initial axis_tdata_o = 0;
-   
+
    always @(posedge clk) begin
       rst_n_shreg <= {rst_n_shreg[18:0], rst_n};
       axis_tvalid_o <= 0;
@@ -59,7 +59,7 @@ module rx_chain_model(
 	 if (rate_axis_tvalid_i && rst_n_shreg[19]) rate <= rate_axis_tdata_i[11:0];
 
 	 if (rx_iq_axis_tvalid_i) cnt <= cnt + 1;
-	 
+
 	 if (cnt >= rate - 1) begin
 	    axis_tvalid_o <= 1;
 	    axis_tdata_o <= {rx_q, 16'd0, rx_i, 16'd0};

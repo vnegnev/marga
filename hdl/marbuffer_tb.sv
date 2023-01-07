@@ -1,15 +1,15 @@
 //-----------------------------------------------------------------------------
-// Title         : flobuffer_tb
-// Project       : flocra
+// Title         : marbuffer_tb
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flobuffer_tb.sv
+// File          : marbuffer_tb.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 18.12.2020
 // Last modified : 18.12.2020
 //-----------------------------------------------------------------------------
 // Description :
 //
-// Simple testbench for flobuffer
+// Simple testbench for marbuffer
 //
 //-----------------------------------------------------------------------------
 // Copyright (c) 2020 by OCRA developers This model is the confidential and
@@ -17,38 +17,38 @@
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLOBUFFER_TB_
- `define _FLOBUFFER_TB_
+`ifndef _MARBUFFER_TB_
+ `define _MARBUFFER_TB_
 
- `include "flobuffer.sv"
+ `include "marbuffer.sv"
 
  `timescale 1ns/1ns
 
-module flobuffer_tb;
+module marbuffer_tb;
    parameter fifo_size = 4;
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
-   reg			clk;			// To UUT of flobuffer.v
-   reg [15:0]		data_i;			// To UUT of flobuffer.v
-   reg [6:0]		delay_i;		// To UUT of flobuffer.v
-   reg			direct_i;		// To UUT of flobuffer.v
-   reg			valid_i;		// To UUT of flobuffer.v
+   reg			clk;			// To UUT of marbuffer.v
+   reg [15:0]		data_i;			// To UUT of marbuffer.v
+   reg [6:0]		delay_i;		// To UUT of marbuffer.v
+   reg			direct_i;		// To UUT of marbuffer.v
+   reg			valid_i;		// To UUT of marbuffer.v
    // End of automatics
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire [15:0]		data_o;			// From UUT of flobuffer.v
-   wire			empty_o;		// From UUT of flobuffer.v
-   wire			err_o;			// From UUT of flobuffer.v
-   wire			full_o;			// From UUT of flobuffer.v
-   wire			stb_o;			// From UUT of flobuffer.v
+   wire [15:0]		data_o;			// From UUT of marbuffer.v
+   wire			empty_o;		// From UUT of marbuffer.v
+   wire			err_o;			// From UUT of marbuffer.v
+   wire			full_o;			// From UUT of marbuffer.v
+   wire			stb_o;			// From UUT of marbuffer.v
    // End of automatics
 
    reg err = 0;
    always #5 clk = !clk;
    integer i;
    initial begin
-      $dumpfile("icarus_compile/000_flobuffer_tb.lxt");
-      $dumpvars(0, flobuffer_tb);
+      $dumpfile("icarus_compile/000_marbuffer_tb.lxt");
+      $dumpvars(0, marbuffer_tb);
 
       clk = 1;
       data_i = 0;
@@ -79,7 +79,7 @@ module flobuffer_tb;
       #10 valid_i = 0;
       #20 valid_i = 1; delay_i = 0; data_i = 2222;
       #10 valid_i = 0;
-      
+
       #1000 if (err) begin
 	 $display("THERE WERE ERRORS");
 	 $stop; // to return a nonzero error code if the testbench is later scripted at a higher level
@@ -137,11 +137,11 @@ module flobuffer_tb;
       // #20 check_outputs(7, 0, 0, 1);
       // #10 check_outputs(7, 0, 0, 0);
       // #10 check_outputs(8, 0, 0, 1);
-      // #10 check_outputs(8, 0, 1, 0);      
+      // #10 check_outputs(8, 0, 1, 0);
 
       // // check full flag
       // #10 check_outputs(9, 0, 1, 1);
-      // #10 check_outputs(9, 0, 1, 0);      
+      // #10 check_outputs(9, 0, 1, 0);
       // #10 check_outputs(10, 0, 0, 1);
       // #10 check_outputs(10, 0, 1, 0);
 
@@ -199,11 +199,11 @@ module flobuffer_tb;
 	    err <= 1;
 	 end
       end
-   endtask // check_outputs   	  
-   
-   flobuffer #(/*AUTOINSTPARAM*/
+   endtask // check_outputs
+
+   marbuffer #(/*AUTOINSTPARAM*/
 	       // Parameters
-	       .fifo_size		(fifo_size)) 
+	       .fifo_size		(fifo_size))
    UUT(/*AUTOINST*/
        // Outputs
        .data_o				(data_o[15:0]),
@@ -217,6 +217,6 @@ module flobuffer_tb;
        .delay_i				(delay_i[6:0]),
        .valid_i				(valid_i),
        .direct_i			(direct_i));
-   
-endmodule // flobuffer_tb
-`endif //  `ifndef _FLOBUFFER_TB_
+
+endmodule // marbuffer_tb
+`endif //  `ifndef _MARBUFFER_TB_

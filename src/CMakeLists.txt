@@ -1,18 +1,18 @@
 # Verilator CMake for building a unified binary for simulating the
-# Flocra server and Zynq PS/PL system.
+# Marga server and Zynq PS/PL system.
 #
 # Mostly borrowed from the Verilator CMake example file.
 #
 # Use it as follows:
-# cd /path/to/flocra
+# cd /path/to/marga
 # rm -rf build && mkdir build && cd build
 # cmake ../src
 # make -j4
 #
-# This will build the flocra_sim binary.
+# This will build the marga_sim binary.
 
 cmake_minimum_required(VERSION 3.12)
-project(flocra_sim)
+project(marga_sim)
 
 find_package(verilator HINTS $ENV{VERILATOR_ROOT} ${VERILATOR_ROOT})
 if (NOT verilator_FOUND)
@@ -33,12 +33,12 @@ set(SERVER_SRC	${SERVER_PATH}/hardware.cpp
 
 add_compile_definitions(VERILATOR_BUILD)
 
-add_executable(flocra_sim flocra_sim_main.cpp flocra_model.cpp ${SERVER_SRC})
-target_include_directories(flocra_sim PRIVATE ${SERVER_PATH} "./")
+add_executable(marga_sim marga_sim_main.cpp marga_model.cpp ${SERVER_SRC})
+target_include_directories(marga_sim PRIVATE ${SERVER_PATH} "./")
 
 # TODO Verilator CFLAGS
 
-verilate(flocra_sim
+verilate(marga_sim
 	INCLUDE_DIRS "../hdl"
 	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-fst --trace-depth 4
-	SOURCES ../hdl/flocra_model.sv)
+	SOURCES ../hdl/marga_model.sv)

@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
-// Title         : flobuffer
-// Project       : flocra
+// Title         : marbuffer
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flobuffer.sv
+// File          : marbuffer.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 17.12.2020
 // Last modified : 17.12.2020
@@ -19,12 +19,12 @@
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLOBUFFER_
- `define _FLOBUFFER_
+`ifndef _MARBUFFER_
+ `define _MARBUFFER_
 
  `timescale 1ns / 1ns
 
-module flobuffer #
+module marbuffer #
   (parameter fifo_size = 2)
    (
     input 	      clk,
@@ -38,7 +38,7 @@ module flobuffer #
     output reg 	      err_o, // strobe when data is rejected
     output reg 	      stb_o // single-cycle strobe output
     );
-   
+
    localparam fifo_addr_bits = $clog2(fifo_size);
 
    reg 		      valid_r = 0;
@@ -49,15 +49,15 @@ module flobuffer #
 
    wire signed [fifo_addr_bits-1:0] fifo_ptr_diff = fifo_in_ptr - fifo_out_ptr;
    reg signed [fifo_addr_bits-1:0]  fifo_ptr_diff_r = 0;
-   
+
    wire 		     fifo_ptrs_equal = fifo_ptr_diff == 0;
    wire 		     fifo_ptrs_almost_equal = fifo_ptr_diff == 1;
-   
+
    reg 			     fifo_ptrs_equal_r = 1;
    reg 			     fifo_ptrs_almost_equal_r = 0;
 
    wire 		     fifo_has_emptied = fifo_ptrs_equal && fifo_ptrs_almost_equal_r;
-   
+
    reg [15:0] 		     data_r = 0;
    reg [6:0] 		     delay_cnt = 0;
    wire 		     delay_cnt_almost_zero = delay_cnt == 1;
@@ -78,7 +78,7 @@ module flobuffer #
 
    localparam IDLE = 0, LOAD = 1, WAIT = 2;
    reg [1:0] state = IDLE;
-   
+
    always @(posedge clk) begin
       valid_r <= valid_i;
       fifo_in_ptr_r <= fifo_in_ptr;
@@ -96,7 +96,7 @@ module flobuffer #
 	end
 	LOAD: begin
 	   // Read current output, increment
-	   fifo_out_ptr <= fifo_out_ptr + 1; 
+	   fifo_out_ptr <= fifo_out_ptr + 1;
 	   if (fifo_out[22:16] == 0) begin
 	      data_o <= fifo_out[15:0]; // direct output, don't use counter
 	      stb_o <= 1;
@@ -116,7 +116,7 @@ module flobuffer #
 	      if ( (fifo_has_emptied || empty_o) && !valid_r) state <= IDLE;
 	      else state <= LOAD;
 	   end
-	end // case: WAIT	
+	end // case: WAIT
       endcase // case (state)
 
       // Pipelined write-side logic
@@ -146,5 +146,5 @@ module flobuffer #
       end
    end
 
-endmodule // flobuffer
-`endif //  `ifndef _FLOBUFFER_
+endmodule // marbuffer
+`endif //  `ifndef _MARBUFFER_

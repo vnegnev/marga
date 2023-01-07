@@ -31,13 +31,13 @@ module ad5781_model(
 		    input 	      ldacn,
 		    input 	      clrn,
 		    input 	      resetn,
-		    
+
 		    output reg 	      sdo = 0,
 		    output reg [17:0] vout = 0
 		    );
 
    reg [23:0] 			  dac_reg = 0, ctrl_reg = 0, clearcode_reg = 0, soft_ctrl_reg = 0;
-   wire 			  rbuf = ctrl_reg[1], opgnd = ctrl_reg[2], 
+   wire 			  rbuf = ctrl_reg[1], opgnd = ctrl_reg[2],
 				  dactri = ctrl_reg[3], bin2sc = ctrl_reg[4], sdodis = ctrl_reg[5];
    reg [23:0] 			  spi_input = 0;
    reg [17:0] 			  vout_r;
@@ -66,12 +66,12 @@ module ad5781_model(
 		 3'b100: soft_ctrl_reg <= spi_input;
 		 default;
 	       endcase // case (spi_addr)
-	    end	    
+	    end
 	 end else begin
 	    spi_counter <= spi_counter + 1;
 	    if (spi_counter == 0) read_mode <= sdin; // MSB of transfer
 	    spi_input <= {spi_input[22:0], sdin}; // clock in data only when syncn low
-	 end // else: !if(spi_transfer_done && !read_mode)	    
+	 end // else: !if(spi_transfer_done && !read_mode)
       end
    end
 
@@ -80,8 +80,8 @@ module ad5781_model(
    // steady-state values are used (e.g. if the table says 'falling
    // edge, 0, 1', I have interpreted the final state to be 0, 0,
    // 1). resetn behaviour is implemented by the sequential always
-   // block above. 
-   // 
+   // block above.
+   //
    // WARNING: ldacn behaviour when clrn is low doesn't match
    // datasheet; e.g. if ldacn is kept high then clrn still has a
    // premature effect of updating the DAC output. This isn't the mode
@@ -90,13 +90,13 @@ module ad5781_model(
    wire [2:0] ctrl = {ldacn, clrn, resetn};
    always @(ctrl or dac_reg) begin
       case (ctrl)
-	3'b001: vout_r = clearcode_reg[19:2];
-	3'b011: vout_r = dac_reg[19:2];
-	3'b101: vout_r = clearcode_reg[19:2];
-	3'b111: vout_r = dac_reg[19:2];
-	default: vout_r = 0; // catch unhandled cases
+	3'b001: vout_r <= clearcode_reg[19:2];
+	3'b011: vout_r <= dac_reg[19:2];
+	3'b101: vout_r <= clearcode_reg[19:2];
+	3'b111: vout_r <= dac_reg[19:2];
+	default: vout_r <= 0; // catch unhandled cases
 	//3'b111 will output clearcode_reg if clrn has a rising edge - this behaviour is un-implemented here
-      endcase // case ({ldacn, clrn, resetn})      
+      endcase // case ({ldacn, clrn, resetn})
    end
 
    // final vout ground/tristate (represented by 'z')

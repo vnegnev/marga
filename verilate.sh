@@ -6,8 +6,8 @@ verilator -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING \
 	  -Ihdl \
 	  --cc --trace \
 	  --trace-depth 1 \
-	  flocra.sv \
-	  --exe ../src/flocra_sim.cpp ../src/flocra_sim_main.cpp
+	  marga.sv \
+	  --exe ../src/marga_sim.cpp ../src/marga_sim_main.cpp
 
 	  # +define+__ICARUS__=1 \
 

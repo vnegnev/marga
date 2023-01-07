@@ -32,7 +32,7 @@ module ocra1_iface(
 		   input [31:0] data_i, // bits 26:25: target channel, bit 24: broadcast/transmit,
 		   /*lint_on*/
 
-		   // data valid flag, should be held high for 1 cycle to initiate a transfer		   
+		   // data valid flag, should be held high for 1 cycle to initiate a transfer
 		   input 	valid_i,
 
 		   // SPI clock divider
@@ -56,7 +56,7 @@ module ocra1_iface(
    reg [4:0] 			spi_clk_edge_div = 0; // spi_clk_div_r divided by 2
 
    localparam IDLE = 25, START = 24, END = 0;
-   
+
    reg [5:0] 			state = IDLE;
    reg [5:0] 			div_ctr = 0;
    reg 				valid_r = 0;
@@ -66,7 +66,7 @@ module ocra1_iface(
    reg [23:0] 			datax_r = 0, datay_r = 0, dataz_r = 0, dataz2_r = 0; // used for SPI output
    reg [23:0] 			datax_r2 = 0, datay_r2 = 0, dataz_r2 = 0, dataz2_r2 = 0; // used for temp storage
    reg [3:0] 			data_present = 0;
-   
+
    always @(posedge clk) begin
       // default assignments, which will take place unless overridden by other assignments in the FSM
 //       oc1_clk_o <= 1;
@@ -91,7 +91,7 @@ module ocra1_iface(
 	 // that hadn't yet been sent out, flag a data-lost error.
 	 data_present[channel_r] <= 1'd1;
 	 data_lost_o <= data_present[channel_r];
-	 
+
 	 case (channel_r)
 	   2'b00: datax_r2 <= payload_r;
 	   2'b01: datay_r2 <= payload_r;
@@ -105,10 +105,10 @@ module ocra1_iface(
       end
 
       if (!rst_n) data_present <= 4'd0; // assume that there's no valid data present after a reset
-      
+
       // could use a wire, but deliberately adding a clocked register stage to help with timing
       {oc1_sdox_o, oc1_sdoy_o, oc1_sdoz_o, oc1_sdoz2_o} <= {datax_r[23], datay_r[23], dataz_r[23], dataz2_r[23]};
-      
+
       case (state)
 	IDLE: begin
 	   oc1_syncn_o <= 1;
@@ -125,9 +125,9 @@ module ocra1_iface(
 	   // all the data has been clocked out; just go back to IDLE
 	   state <= IDLE;
 	end
-	default: begin // covers the START state and all the states down to 0	   
+	default: begin // covers the START state and all the states down to 0
 	   oc1_clk_o <= div_ctr <= {1'b0, spi_clk_edge_div};
-	   // divisor logic	  
+	   // divisor logic
 	   if (div_ctr == spi_clk_div_i) begin
 	      div_ctr <= 0;
 	      {datax_r, datay_r, dataz_r, dataz2_r} <= {datax_r << 1, datay_r << 1, dataz_r << 1, dataz2_r << 1};
@@ -138,7 +138,7 @@ module ocra1_iface(
 	end // case: default
 
       endcase // case (state)
-   end // always @ (posedge clk)   
+   end // always @ (posedge clk)
 
 endmodule // ocra1_iface
 `endif //  `ifndef _OCRA1_IFACE_

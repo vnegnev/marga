@@ -1,15 +1,15 @@
 //-----------------------------------------------------------------------------
-// Title         : flocra_simple_tb
-// Project       : flocra
+// Title         : marga_simple_tb
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flocra_simple_tb.sv
+// File          : marga_simple_tb.sv
 // Author        :   <vlad@vlad-laptop>
 // Created       : 25.12.2020
 // Last modified : 25.12.2020
 //-----------------------------------------------------------------------------
 // Description :
 //
-// Low-level testbench for flocra, mainly to help with HDL design
+// Low-level testbench for marga, mainly to help with HDL design
 // rather to exercise all possible functionality. Only uses 'immediate
 // output' functionality to test the system features; see more
 // advanced testbenches for streaming tests.
@@ -20,108 +20,108 @@
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLOCRA_SIMPLE_TB_
- `define _FLOCRA_SIMPLE_TB_
+`ifndef _MARGA_SIMPLE_TB_
+ `define _MARGA_SIMPLE_TB_
 
- `include "flocra.sv"
+ `include "marga.sv"
  `include "ocra1_model.sv"
  `include "gpa_fhdo_model.sv"
  `include "rx_chain_model.sv"
 
  `timescale 1ns/1ns
 
-module flocra_simple_tb;
+module marga_simple_tb;
    localparam C_S0_AXI_ADDR_WIDTH = 19, C_S0_AXI_DATA_WIDTH = 32;
 
    reg err = 0;
    wire fhdo_sdi_i;
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
-   reg [31:0]		dds0_iq_axis_tdata_i;	// To UUT of flocra.v
-   reg			dds0_iq_axis_tvalid_i;	// To UUT of flocra.v
-   reg [31:0]		dds1_iq_axis_tdata_i;	// To UUT of flocra.v
-   reg			dds1_iq_axis_tvalid_i;	// To UUT of flocra.v
-   reg [31:0]		dds2_iq_axis_tdata_i;	// To UUT of flocra.v
-   reg			dds2_iq_axis_tvalid_i;	// To UUT of flocra.v
-   reg [63:0]		rx0_axis_tdata_i;	// To UUT of flocra.v
-   reg			rx0_axis_tvalid_i;	// To UUT of flocra.v
-   reg [63:0]		rx1_axis_tdata_i;	// To UUT of flocra.v
-   reg			rx1_axis_tvalid_i;	// To UUT of flocra.v
-   reg			s0_axi_aclk;		// To UUT of flocra.v
-   reg [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_araddr;	// To UUT of flocra.v
-   reg			s0_axi_aresetn;		// To UUT of flocra.v
-   reg [2:0]		s0_axi_arprot;		// To UUT of flocra.v
-   reg			s0_axi_arvalid;		// To UUT of flocra.v
-   reg [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_awaddr;	// To UUT of flocra.v
-   reg [2:0]		s0_axi_awprot;		// To UUT of flocra.v
-   reg			s0_axi_awvalid;		// To UUT of flocra.v
-   reg			s0_axi_bready;		// To UUT of flocra.v
-   reg			s0_axi_rready;		// To UUT of flocra.v
-   reg [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_wdata;	// To UUT of flocra.v
-   reg [(C_S0_AXI_DATA_WIDTH/8)-1:0] s0_axi_wstrb;// To UUT of flocra.v
-   reg			s0_axi_wvalid;		// To UUT of flocra.v
-   reg			trig_i;			// To UUT of flocra.v
+   reg [31:0]		dds0_iq_axis_tdata_i;	// To UUT of marga.v
+   reg			dds0_iq_axis_tvalid_i;	// To UUT of marga.v
+   reg [31:0]		dds1_iq_axis_tdata_i;	// To UUT of marga.v
+   reg			dds1_iq_axis_tvalid_i;	// To UUT of marga.v
+   reg [31:0]		dds2_iq_axis_tdata_i;	// To UUT of marga.v
+   reg			dds2_iq_axis_tvalid_i;	// To UUT of marga.v
+   reg [63:0]		rx0_axis_tdata_i;	// To UUT of marga.v
+   reg			rx0_axis_tvalid_i;	// To UUT of marga.v
+   reg [63:0]		rx1_axis_tdata_i;	// To UUT of marga.v
+   reg			rx1_axis_tvalid_i;	// To UUT of marga.v
+   reg			s0_axi_aclk;		// To UUT of marga.v
+   reg [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_araddr;	// To UUT of marga.v
+   reg			s0_axi_aresetn;		// To UUT of marga.v
+   reg [2:0]		s0_axi_arprot;		// To UUT of marga.v
+   reg			s0_axi_arvalid;		// To UUT of marga.v
+   reg [C_S0_AXI_ADDR_WIDTH-1:0] s0_axi_awaddr;	// To UUT of marga.v
+   reg [2:0]		s0_axi_awprot;		// To UUT of marga.v
+   reg			s0_axi_awvalid;		// To UUT of marga.v
+   reg			s0_axi_bready;		// To UUT of marga.v
+   reg			s0_axi_rready;		// To UUT of marga.v
+   reg [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_wdata;	// To UUT of marga.v
+   reg [(C_S0_AXI_DATA_WIDTH/8)-1:0] s0_axi_wstrb;// To UUT of marga.v
+   reg			s0_axi_wvalid;		// To UUT of marga.v
+   reg			trig_i;			// To UUT of marga.v
    // End of automatics
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire [23:0]		dds0_phase_axis_tdata_o;// From UUT of flocra.v
-   wire			dds0_phase_axis_tvalid_o;// From UUT of flocra.v
-   wire [23:0]		dds1_phase_axis_tdata_o;// From UUT of flocra.v
-   wire			dds1_phase_axis_tvalid_o;// From UUT of flocra.v
-   wire [23:0]		dds2_phase_axis_tdata_o;// From UUT of flocra.v
-   wire			dds2_phase_axis_tvalid_o;// From UUT of flocra.v
-   wire			fhdo_clk_o;		// From UUT of flocra.v
-   wire			fhdo_sdo_o;		// From UUT of flocra.v
-   wire			fhdo_ssn_o;		// From UUT of flocra.v
-   wire [7:0]		leds_o;			// From UUT of flocra.v
-   wire			ocra1_clk_o;		// From UUT of flocra.v
-   wire			ocra1_ldacn_o;		// From UUT of flocra.v
-   wire			ocra1_sdox_o;		// From UUT of flocra.v
-   wire			ocra1_sdoy_o;		// From UUT of flocra.v
-   wire			ocra1_sdoz2_o;		// From UUT of flocra.v
-   wire			ocra1_sdoz_o;		// From UUT of flocra.v
-   wire			ocra1_syncn_o;		// From UUT of flocra.v
-   wire			rx0_axis_tready_o;	// From UUT of flocra.v
-   wire [31:0]		rx0_dds_iq_axis_tdata_o;// From UUT of flocra.v
-   wire			rx0_dds_iq_axis_tvalid_o;// From UUT of flocra.v
-   wire			rx0_en_o;		// From UUT of flocra.v
-   wire [15:0]		rx0_rate_axis_tdata_o;	// From UUT of flocra.v
-   wire			rx0_rate_axis_tvalid_o;	// From UUT of flocra.v
-   wire			rx0_rst_n_o;		// From UUT of flocra.v
-   wire			rx1_axis_tready_o;	// From UUT of flocra.v
-   wire [31:0]		rx1_dds_iq_axis_tdata_o;// From UUT of flocra.v
-   wire			rx1_dds_iq_axis_tvalid_o;// From UUT of flocra.v
-   wire			rx1_en_o;		// From UUT of flocra.v
-   wire [15:0]		rx1_rate_axis_tdata_o;	// From UUT of flocra.v
-   wire			rx1_rate_axis_tvalid_o;	// From UUT of flocra.v
-   wire			rx1_rst_n_o;		// From UUT of flocra.v
-   wire			rx_gate_o;		// From UUT of flocra.v
-   wire			s0_axi_arready;		// From UUT of flocra.v
-   wire			s0_axi_awready;		// From UUT of flocra.v
-   wire [1:0]		s0_axi_bresp;		// From UUT of flocra.v
-   wire			s0_axi_bvalid;		// From UUT of flocra.v
-   wire [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_rdata;	// From UUT of flocra.v
-   wire [1:0]		s0_axi_rresp;		// From UUT of flocra.v
-   wire			s0_axi_rvalid;		// From UUT of flocra.v
-   wire			s0_axi_wready;		// From UUT of flocra.v
-   wire			trig_o;			// From UUT of flocra.v
-   wire [31:0]		tx0_axis_tdata_o;	// From UUT of flocra.v
-   wire			tx0_axis_tvalid_o;	// From UUT of flocra.v
-   wire [31:0]		tx1_axis_tdata_o;	// From UUT of flocra.v
-   wire			tx1_axis_tvalid_o;	// From UUT of flocra.v
-   wire			tx_gate_o;		// From UUT of flocra.v
+   wire [23:0]		dds0_phase_axis_tdata_o;// From UUT of marga.v
+   wire			dds0_phase_axis_tvalid_o;// From UUT of marga.v
+   wire [23:0]		dds1_phase_axis_tdata_o;// From UUT of marga.v
+   wire			dds1_phase_axis_tvalid_o;// From UUT of marga.v
+   wire [23:0]		dds2_phase_axis_tdata_o;// From UUT of marga.v
+   wire			dds2_phase_axis_tvalid_o;// From UUT of marga.v
+   wire			fhdo_clk_o;		// From UUT of marga.v
+   wire			fhdo_sdo_o;		// From UUT of marga.v
+   wire			fhdo_ssn_o;		// From UUT of marga.v
+   wire [7:0]		leds_o;			// From UUT of marga.v
+   wire			ocra1_clk_o;		// From UUT of marga.v
+   wire			ocra1_ldacn_o;		// From UUT of marga.v
+   wire			ocra1_sdox_o;		// From UUT of marga.v
+   wire			ocra1_sdoy_o;		// From UUT of marga.v
+   wire			ocra1_sdoz2_o;		// From UUT of marga.v
+   wire			ocra1_sdoz_o;		// From UUT of marga.v
+   wire			ocra1_syncn_o;		// From UUT of marga.v
+   wire			rx0_axis_tready_o;	// From UUT of marga.v
+   wire [31:0]		rx0_dds_iq_axis_tdata_o;// From UUT of marga.v
+   wire			rx0_dds_iq_axis_tvalid_o;// From UUT of marga.v
+   wire			rx0_en_o;		// From UUT of marga.v
+   wire [15:0]		rx0_rate_axis_tdata_o;	// From UUT of marga.v
+   wire			rx0_rate_axis_tvalid_o;	// From UUT of marga.v
+   wire			rx0_rst_n_o;		// From UUT of marga.v
+   wire			rx1_axis_tready_o;	// From UUT of marga.v
+   wire [31:0]		rx1_dds_iq_axis_tdata_o;// From UUT of marga.v
+   wire			rx1_dds_iq_axis_tvalid_o;// From UUT of marga.v
+   wire			rx1_en_o;		// From UUT of marga.v
+   wire [15:0]		rx1_rate_axis_tdata_o;	// From UUT of marga.v
+   wire			rx1_rate_axis_tvalid_o;	// From UUT of marga.v
+   wire			rx1_rst_n_o;		// From UUT of marga.v
+   wire			rx_gate_o;		// From UUT of marga.v
+   wire			s0_axi_arready;		// From UUT of marga.v
+   wire			s0_axi_awready;		// From UUT of marga.v
+   wire [1:0]		s0_axi_bresp;		// From UUT of marga.v
+   wire			s0_axi_bvalid;		// From UUT of marga.v
+   wire [C_S0_AXI_DATA_WIDTH-1:0] s0_axi_rdata;	// From UUT of marga.v
+   wire [1:0]		s0_axi_rresp;		// From UUT of marga.v
+   wire			s0_axi_rvalid;		// From UUT of marga.v
+   wire			s0_axi_wready;		// From UUT of marga.v
+   wire			trig_o;			// From UUT of marga.v
+   wire [31:0]		tx0_axis_tdata_o;	// From UUT of marga.v
+   wire			tx0_axis_tvalid_o;	// From UUT of marga.v
+   wire [31:0]		tx1_axis_tdata_o;	// From UUT of marga.v
+   wire			tx1_axis_tvalid_o;	// From UUT of marga.v
+   wire			tx_gate_o;		// From UUT of marga.v
    // End of automatics
 
    wire signed [17:0] 		ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2;
-   wire [15:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;   
+   wire [15:0] 		fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2;
 
    wire 		clk = s0_axi_aclk;
    always #5 s0_axi_aclk = !s0_axi_aclk;
    integer k;
-   
+
    initial begin
-      $dumpfile("icarus_compile/000_flocra_simple_tb.lxt");
-      $dumpvars(0, flocra_simple_tb);
+      $dumpfile("icarus_compile/000_marga_simple_tb.lxt");
+      $dumpvars(0, marga_simple_tb);
 
       // rx0_axis_tdata_i = 0;
       // rx0_axis_tvalid_i = 0;
@@ -178,7 +178,7 @@ module flocra_simple_tb;
 
       wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h071f}); // MSBs for SPI out, ch3
       wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfff0}); // LSBs for SPI out, ch3
-      
+
       // enable GPA-FHDO
       wr32(19'h8, {1'b0, 7'd0, 8'd0, {14'd0, 1'd0, 6'd2, 1'd1, 1'd0}});
 
@@ -192,12 +192,12 @@ module flocra_simple_tb;
 
       #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h0009});
       wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffd});
-      
+
       #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000a});
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc});      
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffc});
 
       #800 wr32(19'h8, {1'b0, 7'd2, 8'd0, 16'h000b});
-      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffb});      
+      wr32(19'h8, {1'b0, 7'd1, 8'd0, 16'hfffb});
 
       // check gradient core outputs
       #500 check_ocra1(-1, -2, -3, -4);
@@ -217,7 +217,7 @@ module flocra_simple_tb;
    // Timed checks
    initial begin
    end
-   
+
    // Tasks for AXI bus reads and writes
    task wr32; //write to bus
       input [31:0] addr, data;
@@ -341,7 +341,7 @@ module flocra_simple_tb;
 		      .axis_tdata_o(rx0_axis_tdata_i),
 		      // Inputs
 		      .clk(s0_axi_aclk),
-		      .rst_n(rx0_rst_n_o),	      
+		      .rst_n(rx0_rst_n_o),
 		      .rate_axis_tdata_i(rx0_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx0_rate_axis_tvalid_o),
 
@@ -356,7 +356,7 @@ module flocra_simple_tb;
 		      .axis_tdata_o(rx1_axis_tdata_i),
 		      // Inputs
 		      .clk(s0_axi_aclk),
-		      .rst_n(rx1_rst_n_o),	      
+		      .rst_n(rx1_rst_n_o),
 		      .rate_axis_tdata_i(rx1_rate_axis_tdata_o),
 		      .rate_axis_tvalid_i(rx1_rate_axis_tvalid_o),
 
@@ -365,8 +365,8 @@ module flocra_simple_tb;
 
 		      .axis_tready_i(rx1_axis_tready_o)
 		      );
-   
-   flocra #(/*AUTOINSTPARAM*/
+
+   marga #(/*AUTOINSTPARAM*/
 	    // Parameters
 	    .C_S0_AXI_DATA_WIDTH	(C_S0_AXI_DATA_WIDTH),
 	    .C_S0_AXI_ADDR_WIDTH	(C_S0_AXI_ADDR_WIDTH))
@@ -444,5 +444,5 @@ module flocra_simple_tb;
        .s0_axi_arprot			(s0_axi_arprot[2:0]),
        .s0_axi_arvalid			(s0_axi_arvalid),
        .s0_axi_rready			(s0_axi_rready));
-endmodule // flocra_simple_tb
-`endif //  `ifndef _FLOCRA_SIMPLE_TB_
+endmodule // marga_simple_tb
+`endif //  `ifndef _MARGA_SIMPLE_TB_

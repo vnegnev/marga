@@ -1,17 +1,17 @@
 //-----------------------------------------------------------------------------
-// Title         : flocra
-// Project       : flocra
+// Title         : marga
+// Project       : marga
 //-----------------------------------------------------------------------------
-// File          : flocra.sv
+// File          : marga.sv
 // Author        :   <vlad@arch-ssd>
 // Created       : 17.12.2020
 // Last modified : 17.12.2020
 //-----------------------------------------------------------------------------
 // Description :
 //
-// Top-level flocra core file.
+// Top-level marga core file.
 //
-// Outputs: 
+// Outputs:
 // - direct SPI lines to the gradient boards
 // - direct SPI/I2C? lines to the attenuator core [TODO]
 // - external trigger output
@@ -23,27 +23,27 @@
 // - 2x 32-bit downconverted data streams
 // - ADC line from GPA-FHDO
 // - external trigger input
-// 
+//
 // Internal structure:
-// - flodecode core, responsible for outputs and their timing, and RX FIFOs
+// - mardecode core, responsible for outputs and their timing, and RX FIFOs
 // - resetting and phase offsetting/incrementing is handled here for
 // the TX DDSes and their routing
-// 
+//
 // -----------------------------------------------------------------------------
 // See LICENSE for GPL licensing information
 // ------------------------------------------------------------------------------
 
-`ifndef _FLOCRA_
- `define _FLOCRA_
+`ifndef _MARGA_
+ `define _MARGA_
 
- `include "flodecode.sv"
- `include "flobuffer.sv"
+ `include "mardecode.sv"
+ `include "marbuffer.sv"
  `include "ocra1_iface.sv"
  `include "gpa_fhdo_iface.sv"
 
  `timescale 1ns / 1ns
 
-module flocra
+module marga
   // #(
   //  // Users to add parameters here
   //  // User parameters ends
@@ -92,7 +92,7 @@ module flocra
     input [63:0] 			  rx0_axis_tdata_i,
     output 				  rx0_axis_tready_o,
 
-    // streaming inputs to RX1 FIFO    
+    // streaming inputs to RX1 FIFO
     input 				  rx1_axis_tvalid_i,
     input [63:0] 			  rx1_axis_tdata_i,
     output 				  rx1_axis_tready_o,
@@ -112,7 +112,7 @@ module flocra
 
     // LEDs for monitoring/diagnostics
     output [7:0] 			  leds_o,
-   
+
     // User ports ends
     // Do not modify the ports beyond this line
 
@@ -140,7 +140,7 @@ module flocra
     input 				  s0_axi_rready
     );
 
-   // General outputs from flodecode
+   // General outputs from mardecode
    // 0: gradient control: grad SPI divisor and board selection settings
    // 1: gradient outputs, LSB (stb triggers grad cores)
    // 2: gradient outputs, MSB (stb also triggers grad cores, but only when bit 9 of gradient control is high)
@@ -155,7 +155,7 @@ module flocra
    // 11: TX LO 1 phase increment, LSBs
    // 12: TX LO 1 phase increment, MSBs and clear bit
    // 13: TX LO 2 phase increment, LSBs
-   // 14: TX LO 2 phase increment, MSBs and clear bit   
+   // 14: TX LO 2 phase increment, MSBs and clear bit
    // 15: TX and RX gate control, trigger output, LEDs
    // 16: RX configuration: RX0/RX1 rate settings bus valid, CIC reset and demodulation DDS source
    wire [15:0] 				      fld_data[23:0];
@@ -239,7 +239,7 @@ module flocra
       dds1_iq <= dds1_iq_axis_tdata_i;
       dds2_iq <= dds2_iq_axis_tdata_i;
       rx0_dds_iq_axis_tdata_o <= rx0_iq;
-      rx1_dds_iq_axis_tdata_o <= rx1_iq;      
+      rx1_dds_iq_axis_tdata_o <= rx1_iq;
 
       case (rx0_dds_source)
 	2'd0: rx0_iq <= dds0_iq;
@@ -253,32 +253,32 @@ module flocra
 	2'd1: rx1_iq <= dds1_iq;
 	2'd2: rx1_iq <= dds2_iq;
 	default: rx1_iq <= 32'h80007fff; // max negative and positive
-      endcase // case (rx0_dds_source)      
+      endcase // case (rx0_dds_source)
    end
 
    assign {dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o} = 3'b111;
 
-   always @(posedge clk) begin      
+   always @(posedge clk) begin
       if (dds0_phase_clear) dds0_phase_full <= 0;
       else dds0_phase_full <= dds0_phase_full + {lo0_phase_msb[14:0], lo0_phase_lsb};
-      
+
       if (dds1_phase_clear) dds1_phase_full <= 0;
       else dds1_phase_full <= dds1_phase_full + {lo1_phase_msb[14:0], lo1_phase_lsb};
-      
+
       if (dds2_phase_clear) dds2_phase_full <= 0;
       else dds2_phase_full <= dds2_phase_full + {lo2_phase_msb[14:0], lo2_phase_lsb};
    end
 
    // TX and RX gates
    assign tx_gate_o = gates_leds[0], rx_gate_o = gates_leds[1], trig_o = gates_leds[2], leds_o = gates_leds[15:8];
-   
-   // wire [15:0] 				      
+
+   // wire [15:0]
 
    // for the ocra1, data can be written even while it's outputting to
    // SPI - for the fhd, this isn't the case. So don't use the
    // oc1_busy line in grad_bram, since it would mean that false
    // errors would get flagged - just fhd_busy for now.
-   
+
    ocra1_iface ocra1_if (
 			 // Outputs
 			 .oc1_clk_o	(ocra1_clk_o),
@@ -296,7 +296,7 @@ module flocra
 			 .data_i       	(grad_data),
 			 .valid_i      	(ocra1_data_valid),
 			 .spi_clk_div_i	(grad_spi_clk_div));
-   
+
    gpa_fhdo_iface gpa_fhdo_if (
 			       // Outputs
 			       .fhd_clk_o	(fhdo_clk_o),
@@ -312,9 +312,9 @@ module flocra
 			       .fhd_sdi_i	(fhdo_sdi_i));
 
 
-   ///////////////////////// FLODECODE ////////////////////////////
-   
-   flodecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
+   ///////////////////////// MARDECODE ////////////////////////////
+
+   mardecode #(.BUFS(24), .RX_FIFO_LENGTH(16384))
    fld (
 	.trig_i(trig_i),
 	.status_i(fld_status), // spare bits available for external status
@@ -354,7 +354,7 @@ module flocra
 	.S_AXI_RDATA			(s0_axi_rdata[C_S0_AXI_DATA_WIDTH-1:0]),
 	.S_AXI_RRESP			(s0_axi_rresp[1:0]),
 	.S_AXI_RVALID			(s0_axi_rvalid)
-	);	
+	);
 
-endmodule // flocra
-`endif //  `ifndef _FLOCRA_
+endmodule // marga
+`endif //  `ifndef _MARGA_

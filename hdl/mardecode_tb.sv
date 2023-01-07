@@ -1,30 +1,30 @@
 //-----------------------------------------------------------------------------
-// Title         : flodecode_tb
+// Title         : mardecode_tb
 // Project       : ocra
 //-----------------------------------------------------------------------------
-// File          : flodecode_tb.v
+// File          : mardecode_tb.v
 // Author        :   <vlad@arch-ssd>
 // Created       : 13.09.2020
 // Last modified : 13.09.2020
 //-----------------------------------------------------------------------------
 // Description :
-// 
-// Testbench for flodecode, testing out the various features of the core
-// 
+//
+// Testbench for mardecode, testing out the various features of the core
+//
 //-----------------------------------------------------------------------------
 // Copyright (c) 2020 by OCRA developers This model is the confidential and
 // proprietary property of OCRA developers and the possession or use of this
 // file requires a written license from OCRA developers.
 //------------------------------------------------------------------------------
 
-`ifndef _FLODECODE_TB_
- `define _FLODECODE_TB_
+`ifndef _MARDECODE_TB_
+ `define _MARDECODE_TB_
 
- `include "flodecode.sv"
+ `include "mardecode.sv"
 
  `timescale 1ns/1ns
 
-module flodecode_tb;
+module mardecode_tb;
    // Width of S_AXI data bus
    parameter integer C_S_AXI_DATA_WIDTH = 32;
    // Width of S_AXI address bus
@@ -32,56 +32,56 @@ module flodecode_tb;
    parameter BUFS = 24;
    parameter RX_FIFO_LENGTH = 16; // power of 2
    reg 		     err = 0;
-		     
+
    /*AUTOREGINPUT*/
    // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
-   reg			S_AXI_ACLK;		// To UUT of flodecode.v
-   reg [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_ARADDR;	// To UUT of flodecode.v
-   reg			S_AXI_ARESETN;		// To UUT of flodecode.v
-   reg [2:0]		S_AXI_ARPROT;		// To UUT of flodecode.v
-   reg			S_AXI_ARVALID;		// To UUT of flodecode.v
-   reg [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_AWADDR;	// To UUT of flodecode.v
-   reg [2:0]		S_AXI_AWPROT;		// To UUT of flodecode.v
-   reg			S_AXI_AWVALID;		// To UUT of flodecode.v
-   reg			S_AXI_BREADY;		// To UUT of flodecode.v
-   reg			S_AXI_RREADY;		// To UUT of flodecode.v
-   reg [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA;	// To UUT of flodecode.v
-   reg [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB;// To UUT of flodecode.v
-   reg			S_AXI_WVALID;		// To UUT of flodecode.v
-   reg [63:0]		rx0_data;		// To UUT of flodecode.v
-   reg			rx0_valid;		// To UUT of flodecode.v
-   reg [63:0]		rx1_data;		// To UUT of flodecode.v
-   reg			rx1_valid;		// To UUT of flodecode.v
-   reg [31:0]		status_i;		// To UUT of flodecode.v
-   reg [31:0]		status_latch_i;		// To UUT of flodecode.v
-   reg			trig_i;			// To UUT of flodecode.v
+   reg			S_AXI_ACLK;		// To UUT of mardecode.v
+   reg [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_ARADDR;	// To UUT of mardecode.v
+   reg			S_AXI_ARESETN;		// To UUT of mardecode.v
+   reg [2:0]		S_AXI_ARPROT;		// To UUT of mardecode.v
+   reg			S_AXI_ARVALID;		// To UUT of mardecode.v
+   reg [C_S_AXI_ADDR_WIDTH-1:0] S_AXI_AWADDR;	// To UUT of mardecode.v
+   reg [2:0]		S_AXI_AWPROT;		// To UUT of mardecode.v
+   reg			S_AXI_AWVALID;		// To UUT of mardecode.v
+   reg			S_AXI_BREADY;		// To UUT of mardecode.v
+   reg			S_AXI_RREADY;		// To UUT of mardecode.v
+   reg [C_S_AXI_DATA_WIDTH-1:0] S_AXI_WDATA;	// To UUT of mardecode.v
+   reg [(C_S_AXI_DATA_WIDTH/8)-1:0] S_AXI_WSTRB;// To UUT of mardecode.v
+   reg			S_AXI_WVALID;		// To UUT of mardecode.v
+   reg [63:0]		rx0_data;		// To UUT of mardecode.v
+   reg			rx0_valid;		// To UUT of mardecode.v
+   reg [63:0]		rx1_data;		// To UUT of mardecode.v
+   reg			rx1_valid;		// To UUT of mardecode.v
+   reg [31:0]		status_i;		// To UUT of mardecode.v
+   reg [31:0]		status_latch_i;		// To UUT of mardecode.v
+   reg			trig_i;			// To UUT of mardecode.v
    // End of automatics
 
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire			S_AXI_ARREADY;		// From UUT of flodecode.v
-   wire			S_AXI_AWREADY;		// From UUT of flodecode.v
-   wire [1:0]		S_AXI_BRESP;		// From UUT of flodecode.v
-   wire			S_AXI_BVALID;		// From UUT of flodecode.v
-   wire [C_S_AXI_DATA_WIDTH-1:0] S_AXI_RDATA;	// From UUT of flodecode.v
-   wire [1:0]		S_AXI_RRESP;		// From UUT of flodecode.v
-   wire			S_AXI_RVALID;		// From UUT of flodecode.v
-   wire			S_AXI_WREADY;		// From UUT of flodecode.v
-   wire [15:0]		data_o [BUFS-1:0];	// From UUT of flodecode.v
-   wire			rx0_ready;		// From UUT of flodecode.v
-   wire			rx1_ready;		// From UUT of flodecode.v
-   wire [BUFS-1:0]	stb_o;			// From UUT of flodecode.v
+   wire			S_AXI_ARREADY;		// From UUT of mardecode.v
+   wire			S_AXI_AWREADY;		// From UUT of mardecode.v
+   wire [1:0]		S_AXI_BRESP;		// From UUT of mardecode.v
+   wire			S_AXI_BVALID;		// From UUT of mardecode.v
+   wire [C_S_AXI_DATA_WIDTH-1:0] S_AXI_RDATA;	// From UUT of mardecode.v
+   wire [1:0]		S_AXI_RRESP;		// From UUT of mardecode.v
+   wire			S_AXI_RVALID;		// From UUT of mardecode.v
+   wire			S_AXI_WREADY;		// From UUT of mardecode.v
+   wire [15:0]		data_o [BUFS-1:0];	// From UUT of mardecode.v
+   wire			rx0_ready;		// From UUT of mardecode.v
+   wire			rx1_ready;		// From UUT of mardecode.v
+   wire [BUFS-1:0]	stb_o;			// From UUT of mardecode.v
    // End of automatics
-   
-   // Clock generation: assuming 100 MHz for convenience (in real design it'll be 122.88, 125 or 144 MHz depending on what's chosen)   
+
+   // Clock generation: assuming 100 MHz for convenience (in real design it'll be 122.88, 125 or 144 MHz depending on what's chosen)
    always #5 S_AXI_ACLK = !S_AXI_ACLK;
 
    integer 		k;
 
    // Stimuli and read/write checks
    initial begin
-      $dumpfile("icarus_compile/000_flodecode_tb.lxt");
-      $dumpvars(0, flodecode_tb);
+      $dumpfile("icarus_compile/000_mardecode_tb.lxt");
+      $dumpvars(0, mardecode_tb);
 
       S_AXI_ACLK = 1;
       S_AXI_ARADDR = 0;
@@ -117,7 +117,7 @@ module flodecode_tb;
       // just toggle briefly; doesn't matter if no readout occurs
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
-      
+
       // Wait for 10 cycles then go idle (2 cycles extra from instruction set)
       #50 wr32(19'h40000, {1'b0, UUT.INSTR_WAIT, 24'd8});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
@@ -136,8 +136,8 @@ module flodecode_tb;
       wr32(19'h40004, {1'b0, UUT.INSTR_WAIT, 24'd0});
       wr32(19'h40008, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
-      wr32(19'h0, 32'h0);      
-      
+      wr32(19'h0, 32'h0);
+
       // Wait for trigger with a timeout of 10 then go idle
       #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd10});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
@@ -177,10 +177,10 @@ module flodecode_tb;
       #1110 rd32(19'h14, 0); // check error register is initially cleared
       for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + k*4, {1'b1, 7'd0, 8'd9, 16'haaa0 + 16'(k)});
       for (k = 0; k < 5; k = k + 1) wr32(19'h40000 + (5+k)*4, {1'b1, 7'd23, 8'd9, 16'hbbb0 + 16'(k)});
-      wr32(19'h40000 + 4*10, {1'b0, UUT.INSTR_FINISH, 24'd0});      
+      wr32(19'h40000 + 4*10, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1); // start FSM
       wr32(19'h0, 32'h0); // flag the FSM to stop later
-      // read full register, make sure the full condition gets flagged, then cleared      
+      // read full register, make sure the full condition gets flagged, then cleared
       #200 rd32(19'h20, 'h800001);
       rd32(19'h14, 0);
 
@@ -193,7 +193,7 @@ module flodecode_tb;
       #200 rd32(19'h1c, 'h2);
       rd32(19'h14, 0);
 
-      // Direct writes to buffers 
+      // Direct writes to buffers
       #200 wr32(19'h8, {1'd0, 7'd0, 8'd0, 16'hdead});
       wr32(19'h8, {1'd0, 7'd12, 8'd0, 16'hbeef});
       wr32(19'h8, {1'd0, 7'd23, 8'd0, 16'hcafe});
@@ -204,7 +204,7 @@ module flodecode_tb;
       rd32(19'h28, 0);
 
       // FIRST TEST: pump a bunch of data into the FIFOs
-      // 
+      //
       for (k = 0; k < RX_FIFO_LENGTH/2; k = k + 1) begin
 	 rx0_valid = 1;
 	 rx1_valid = k % 2; // half the data rate
@@ -271,13 +271,13 @@ module flodecode_tb;
 
       #100 check_state("IDLE");
       #10 check_state("PREPARE");
-      #100 check_state("COUNTDOWN");      
+      #100 check_state("COUNTDOWN");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
       #100 check_state("IDLE");
       #10 check_state("PREPARE");
-      #110 check_state("COUNTDOWN");      
+      #110 check_state("COUNTDOWN");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
@@ -285,23 +285,23 @@ module flodecode_tb;
       #10 check_state("PREPARE");
       #20 check_state("COUNTDOWN");
       #60 check_state("HALT");
-      #10 check_state("IDLE");      
+      #10 check_state("IDLE");
 
       #170 check_state("IDLE");
       #10 check_state("PREPARE");
-      #120 check_state("TRIG");      
+      #120 check_state("TRIG");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
       #100 check_state("IDLE");
       #10 check_state("PREPARE");
-      #120 check_state("TRIG");      
+      #120 check_state("TRIG");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
       #160 check_state("IDLE");
       #10 check_state("PREPARE");
-      #120 check_state("TRIG_FOREV");      
+      #120 check_state("TRIG_FOREV");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
@@ -321,7 +321,7 @@ module flodecode_tb;
 
       // Check FIFO-overflown outputs
       #1220 check_output(1, 'hccc0);
-      #100 check_output(1, 'hccc5);      
+      #100 check_output(1, 'hccc5);
 
       // check direct writes
       #350 check_output(0, 16'hdead);
@@ -397,8 +397,8 @@ module flodecode_tb;
 	 end
       end
    endtask
-   
-   flodecode #(/*AUTOINSTPARAM*/
+
+   mardecode #(/*AUTOINSTPARAM*/
 	       // Parameters
 	       .C_S_AXI_DATA_WIDTH	(C_S_AXI_DATA_WIDTH),
 	       .C_S_AXI_ADDR_WIDTH	(C_S_AXI_ADDR_WIDTH),
@@ -441,17 +441,17 @@ module flodecode_tb;
        .S_AXI_RREADY			(S_AXI_RREADY));
 
    // Wires purely for debugging (since GTKwave can't access a single RAM word directly)
-   wire [31:0] bram_a0 = UUT.flo_bram[0], 
-	       bram_a1 = UUT.flo_bram[1], 
-	       bram_a1024 = UUT.flo_bram[1024], 
-	       bram_a8000 = UUT.flo_bram[8000], 
-	       bram_amax = UUT.flo_bram[65535];
+   wire [31:0] bram_a0 = UUT.mar_bram[0],
+	       bram_a1 = UUT.mar_bram[1],
+	       bram_a1024 = UUT.mar_bram[1024],
+	       bram_a8000 = UUT.mar_bram[8000],
+	       bram_amax = UUT.mar_bram[65535];
 
-   wire [15:0] data0_o = data_o[0], data1_o = data_o[1], data2_o = data_o[2], data3_o = data_o[3], 
-	       data4_o = data_o[4], data5_o = data_o[5], data6_o = data_o[6], data7_o = data_o[7], 
-	       data8_o = data_o[8], data9_o = data_o[9], data10_o = data_o[10], data11_o = data_o[11], 
-	       data12_o = data_o[12], data13_o = data_o[13], data14_o = data_o[14], data15_o = data_o[15], 
-	       data16_o = data_o[16], data17_o = data_o[17], data18_o = data_o[18], data19_o = data_o[19], 
+   wire [15:0] data0_o = data_o[0], data1_o = data_o[1], data2_o = data_o[2], data3_o = data_o[3],
+	       data4_o = data_o[4], data5_o = data_o[5], data6_o = data_o[6], data7_o = data_o[7],
+	       data8_o = data_o[8], data9_o = data_o[9], data10_o = data_o[10], data11_o = data_o[11],
+	       data12_o = data_o[12], data13_o = data_o[13], data14_o = data_o[14], data15_o = data_o[15],
+	       data16_o = data_o[16], data17_o = data_o[17], data18_o = data_o[18], data19_o = data_o[19],
 	       data20_o = data_o[20], data21_o = data_o[21], data22_o = data_o[22], data23_o = data_o[23];
 
    reg [79:0]  state_ascii = 0;
@@ -465,8 +465,7 @@ module flodecode_tb;
 	UUT.TRIG_FOREVER: state_ascii = "TRIG_FOREV";
 	UUT.HALT: state_ascii="HALT";
 	default: state_ascii="UNKNOWN?";
-      endcase // case (UUT.state)      
+      endcase // case (UUT.state)
    end
-endmodule // flodecode_tb
-`endif //  `ifndef _FLODECODE_TB_
-
+endmodule // mardecode_tb
+`endif //  `ifndef _MARDECODE_TB_

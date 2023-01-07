@@ -1,7 +1,7 @@
-#include "flocra_model.hpp"
+#include "marga_model.hpp"
 #include "version.hpp"
 
-#include "Vflocra_model.h"
+#include "Vmarga_model.h"
 #include "verilated_fst_c.h"
 
 #include <iostream>
@@ -11,7 +11,7 @@ using namespace std;
 
 vluint64_t main_time = 0;
 
-struct flocra_csv {
+struct marga_csv {
 	// TX
 	uint16_t tx0_i = 0, tx0_q = 0, tx1_i = 0, tx1_q = 0;
 	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
@@ -25,7 +25,7 @@ struct flocra_csv {
 	const unsigned _LINE_INTERVAL = 15; // how many lines between column label insertions
 	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds\n"};
 
-	flocra_csv(const char *filename) {
+	marga_csv(const char *filename) {
 		f = fopen(filename, "w");
 		if (f == nullptr) {
 			char errstr[1024];
@@ -35,7 +35,7 @@ struct flocra_csv {
 		wr_header();
 	}
 
-	~flocra_csv() {
+	~marga_csv() {
 		fclose(f);
 	}
 
@@ -47,7 +47,7 @@ struct flocra_csv {
 		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
 
-	bool wr_update(Vflocra_model *fm) {
+	bool wr_update(Vmarga_model *fm) {
 		// Long and ugly - I'm sorry!
 		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false;
 
@@ -108,7 +108,7 @@ struct flocra_csv {
 	}
 };
 
-flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
+marga_model::marga_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
 	auto filepath_csv = string(argv[0]) + ".csv", filepath_fst = string(argv[0]) + ".fst";
 	if (argc > 1) {
 		string csvs("csv"), fsts("fst"), boths("both");
@@ -147,68 +147,68 @@ flocra_model::flocra_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
 	}
 
 	Verilated::commandArgs(argc, argv);
-	vfm = new Vflocra_model;
+	vmm = new Vmarga_model;
 
 	if (_fst_output) {
 		Verilated::traceEverOn(true);
 		tfp = new VerilatedFstC;
 
-		vfm->trace(tfp, 10);
+		vmm->trace(tfp, 10);
 		tfp->open(filepath_fst.c_str());
 	}
 
 	if (_csv_output) {
-		csv = new flocra_csv(filepath_csv.c_str());
+		csv = new marga_csv(filepath_csv.c_str());
 	}
 
 	// Init
-	vfm->s0_axi_aclk = 1;
-	vfm->trig_i = 0;
+	vmm->s0_axi_aclk = 1;
+	vmm->trig_i = 0;
 
 	// AXI slave bus
-	vfm->s0_axi_awaddr = 0;
-	vfm->s0_axi_wdata = 0;
-	vfm->s0_axi_araddr = 0;
+	vmm->s0_axi_awaddr = 0;
+	vmm->s0_axi_wdata = 0;
+	vmm->s0_axi_araddr = 0;
 
-	vfm->s0_axi_aresetn = 0;
-	vfm->s0_axi_awprot = 0;
-	vfm->s0_axi_awvalid = 0;
-	vfm->s0_axi_wstrb = 0;
-	vfm->s0_axi_wvalid = 0;
-	vfm->s0_axi_bready = 0;
-	vfm->s0_axi_arprot = 0;
-	vfm->s0_axi_arvalid = 0;
-	vfm->s0_axi_rready = 0;
+	vmm->s0_axi_aresetn = 0;
+	vmm->s0_axi_awprot = 0;
+	vmm->s0_axi_awvalid = 0;
+	vmm->s0_axi_wstrb = 0;
+	vmm->s0_axi_wvalid = 0;
+	vmm->s0_axi_bready = 0;
+	vmm->s0_axi_arprot = 0;
+	vmm->s0_axi_arvalid = 0;
+	vmm->s0_axi_rready = 0;
 
 	// Wait 5 cycles
 	for (int k = 0; k < 10; ++k) tick();
 
 	// End reset, followed by 5 more cycles
-	vfm->s0_axi_aresetn = 1;
-	vfm->s0_axi_bready = 1;
+	vmm->s0_axi_aresetn = 1;
+	vmm->s0_axi_bready = 1;
 
 	for (int k = 0; k < 10; ++k) tick();
 }
 
-flocra_model::~flocra_model() {
-	vfm->final();
-	delete vfm;
+marga_model::~marga_model() {
+	vmm->final();
+	delete vmm;
 	if (_fst_output) delete tfp;
 	if (_csv_output) delete csv;
 }
 
-int flocra_model::tick() {
+int marga_model::tick() {
 	if (main_time < MAX_SIM_TIME) {
 		// TODO: progress bar
 
 		if (_fst_output) tfp->dump(main_time); // NOTE: time in ns assuming 100 MHz clock
 
 		// update clock
-		vfm->s0_axi_aclk = !vfm->s0_axi_aclk;
+		vmm->s0_axi_aclk = !vmm->s0_axi_aclk;
 
-		vfm->eval();
+		vmm->eval();
 
-		if (vfm->s0_axi_aclk == 0 and _csv_output) csv->wr_update(vfm); // only update on negative edges of the clock
+		if (vmm->s0_axi_aclk == 0 and _csv_output) csv->wr_update(vmm); // only update on negative edges of the clock
 		main_time += 5; // increment time after CSV was written
 		return 0;
 	} else {
@@ -216,17 +216,17 @@ int flocra_model::tick() {
 	}
 }
 
-uint32_t flocra_model::rd32(uint32_t addr) {
+uint32_t marga_model::rd32(uint32_t addr) {
 	static const unsigned READ_TICKS_SLOW = 10000;
 
 	tick();
 
-	vfm->s0_axi_arvalid = 1;
-	vfm->s0_axi_araddr = addr;
+	vmm->s0_axi_arvalid = 1;
+	vmm->s0_axi_araddr = addr;
 
 	// wait for address to be accepted
 	unsigned read_ticks = 0;
-	while (!vfm->s0_axi_arready) {
+	while (!vmm->s0_axi_arready) {
 		tick();
 		read_ticks++;
 		if (read_ticks > READ_TICKS_SLOW) {
@@ -238,7 +238,7 @@ uint32_t flocra_model::rd32(uint32_t addr) {
 
 	read_ticks = 0;
 
-	while (!vfm->s0_axi_rvalid) {
+	while (!vmm->s0_axi_rvalid) {
 		tick();
 		read_ticks++;
 		if (read_ticks > READ_TICKS_SLOW) {
@@ -248,29 +248,29 @@ uint32_t flocra_model::rd32(uint32_t addr) {
 		}
 	}
 	tick();
-	uint32_t data = vfm->s0_axi_rdata; // save data from bus
+	uint32_t data = vmm->s0_axi_rdata; // save data from bus
 
-	vfm->s0_axi_arvalid = 0;
-	vfm->s0_axi_rready = 1;
+	vmm->s0_axi_arvalid = 0;
+	vmm->s0_axi_rready = 1;
 	tick(); tick(); // 1 full clock cycle
-	vfm->s0_axi_rready = 0;
+	vmm->s0_axi_rready = 0;
 
 	return data;
 }
 
-void flocra_model::wr32(uint32_t addr, uint32_t data) {
+void marga_model::wr32(uint32_t addr, uint32_t data) {
 	static const unsigned WRITE_TICKS_SLOW = 10000;
 
 	tick();
 
-	vfm->s0_axi_wdata = data;
-	vfm->s0_axi_awaddr = addr;
-	vfm->s0_axi_awvalid = 1;
-	vfm->s0_axi_wvalid = 1;
+	vmm->s0_axi_wdata = data;
+	vmm->s0_axi_awaddr = addr;
+	vmm->s0_axi_awvalid = 1;
+	vmm->s0_axi_wvalid = 1;
 
-	// wait for flocra to be ready
+	// wait for marga to be ready
 	unsigned write_ticks = 0;
-	while (! (vfm->s0_axi_awready and vfm->s0_axi_wready) ) {
+	while (! (vmm->s0_axi_awready and vmm->s0_axi_wready) ) {
 		tick();
 		write_ticks++;
 		if (write_ticks > WRITE_TICKS_SLOW) {
@@ -282,8 +282,8 @@ void flocra_model::wr32(uint32_t addr, uint32_t data) {
 
 	// end bus transaction
 	tick();tick();
-	vfm->s0_axi_awvalid = 0;
-	vfm->s0_axi_wvalid = 0;
+	vmm->s0_axi_awvalid = 0;
+	vmm->s0_axi_wvalid = 0;
 
 	tick();
 }
