@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>ocra</spirit:vendor>
-  <spirit:library>ocra</spirit:library>
+  <spirit:vendor>marcos</spirit:vendor>
+  <spirit:library>marcos</spirit:library>
   <spirit:name>marga</spirit:name>
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
@@ -1885,7 +1885,7 @@
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>OCRA gradient control subsystem</spirit:description>
+  <spirit:description>MaRCoS real-time FPGA control subsystem</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>

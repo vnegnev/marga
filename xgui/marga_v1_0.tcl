@@ -4,8 +4,6 @@ proc init_gui { IPINST } {
   #Adding Page
   ipgui::add_page $IPINST -name "Page 0"
 
-  ipgui::add_param $IPINST -name "C_S0_AXI_DATA_WIDTH"
-  ipgui::add_param $IPINST -name "C_S0_AXI_ADDR_WIDTH"
 
 }
 
