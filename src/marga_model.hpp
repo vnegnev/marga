@@ -4,7 +4,7 @@
 #include "verilated.h"
 class Vmarga_model;
 struct marga_csv;
-static const unsigned CSV_VERSION_MAJOR = 0, CSV_VERSION_MINOR = 2;
+static const unsigned CSV_VERSION_MAJOR = 0, CSV_VERSION_MINOR = 3;
 
 class marga_model {
 public:

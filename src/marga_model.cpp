@@ -16,6 +16,10 @@ struct marga_csv {
 	uint16_t tx0_i = 0, tx0_q = 0, tx1_i = 0, tx1_q = 0;
 	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
 	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0xfffff; // last is different purely so that a difference is picked up on the first row's write
+
+	uint32_t dds0_phase_step = 0, dds1_phase_step = 0, dds2_phase_step = 0;
+	uint8_t dds0_phase_clear = 0, dds1_phase_clear = 0, dds2_phase_clear = 0;
+
 	uint16_t rx0_rate = 0, rx1_rate = 0;
 	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0, rx0_en_o = 0, rx1_en_o = 0;
 	uint8_t tx_gate = 0, rx_gate = 0, trig = 0, leds = 0;
@@ -23,7 +27,9 @@ struct marga_csv {
 	FILE *f;
 	unsigned _line = 0;
 	const unsigned _LINE_INTERVAL = 15; // how many lines between column label insertions
-	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds\n"};
+    	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds,  dds0_freq,  dds1_freq,  dds2_freq, d0c,d1c,d2c\n"};
+
+
 
 	marga_csv(const char *filename) {
 		f = fopen(filename, "w");
@@ -44,12 +50,14 @@ struct marga_csv {
 		fprintf(f, "# clock cycles, tx0_i, tx0_q, tx1_i, tx1_q,"
 		        " fhdo_vx, fhdo_vy, fhdo_vz, fhdo_vz2, ocra1_vx, ocra1_vy, ocra1_vz, ocra1_vz2,"
 		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n, rx0_en, rx1_en,"
-		        " tx_gate, rx_gate, trig_out, leds, csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
+		        " tx_gate, rx_gate, trig_out, leds,"
+			" dds0_freq, dds1_freq, dds2_freq, dds0_clear, dds1_clear, dds2_clear,"
+			" csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
 
 	bool wr_update(Vmarga_model *fm) {
 		// Long and ugly - I'm sorry!
-		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false;
+		bool diff_tx = false, diff_grad = false, diff_rx = false, diff_gpio = false, diff_lo = false;
 
 		if (false and main_time/10 == 211845) { // debugging only: breakpoint at particular time
 			printf("x\n");
@@ -84,7 +92,14 @@ struct marga_csv {
 		if (fm->trig_o != trig) { trig = fm->trig_o; diff_gpio = true; }
 		if (fm->leds_o != leds) { leds = fm->leds_o; diff_gpio = true; }
 
-		bool diff = diff_tx or diff_grad or diff_rx or diff_gpio;
+		if (fm->dds0_phase_step != dds0_phase_step) { dds0_phase_step = fm->dds0_phase_step; diff_lo = true; }
+		if (fm->dds1_phase_step != dds1_phase_step) { dds1_phase_step = fm->dds1_phase_step; diff_lo = true; }
+		if (fm->dds2_phase_step != dds2_phase_step) { dds2_phase_step = fm->dds2_phase_step; diff_lo = true; }
+		if (fm->dds0_phase_clear != dds0_phase_clear) { dds0_phase_clear = fm->dds0_phase_clear; diff_lo = true; }
+		if (fm->dds1_phase_clear != dds1_phase_clear) { dds1_phase_clear = fm->dds1_phase_clear; diff_lo = true; }
+		if (fm->dds2_phase_clear != dds2_phase_clear) { dds2_phase_clear = fm->dds2_phase_clear; diff_lo = true; }
+
+		bool diff = diff_tx or diff_grad or diff_rx or diff_gpio or diff_lo;
 		if (diff) {
 			// occasionally print abridged column names for easy reading
 			if (_line++ % _LINE_INTERVAL == 0) {
@@ -96,13 +111,18 @@ struct marga_csv {
 			        "%6d, %6d, %6d, %6d,"
 			        "%5u,%5u, %1d, %1d, "
 			        "%1d, %1d, %1d, %1d, "
-			        "%1d, %1d, %1d, %3u\n",
+			        "%1d, %1d, %1d, %3u, "
+				"%10d, %10d, %10d, "
+				"  %1d,  %1d,  %1d"
+				"\n",
 			        main_time/10, tx0_i, tx0_q, tx1_i, tx1_q,
 			        fhdo_voutx, fhdo_vouty, fhdo_voutz, fhdo_voutz2,
 			        ocra1_voutx, ocra1_vouty, ocra1_voutz, ocra1_voutz2,
 			        rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid,
 			        rx0_rst_n_o, rx1_rst_n_o, rx0_en_o, rx1_en_o,
-			        tx_gate, rx_gate, trig, leds);
+			        tx_gate, rx_gate, trig, leds,
+				dds0_phase_step, dds1_phase_step, dds2_phase_step,
+				dds0_phase_clear, dds1_phase_clear, dds2_phase_clear);
 		}
 		return diff;
 	}

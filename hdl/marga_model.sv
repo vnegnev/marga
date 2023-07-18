@@ -37,8 +37,10 @@ module marga_model(/*AUTOARG*/
    fhdo_vouty, fhdo_voutz, fhdo_voutz2, dds0_phase_axis_tdata_o,
    dds1_phase_axis_tdata_o, dds2_phase_axis_tdata_o,
    dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o,
-   dds2_phase_axis_tvalid_o, tx0_i, tx0_q, tx1_i, tx1_q, rx_gate_o,
-   trig_o, tx0_axis_tdata_o, tx0_axis_tvalid_o, tx1_axis_tdata_o,
+   dds2_phase_axis_tvalid_o, dds0_phase_step, dds1_phase_step,
+   dds2_phase_step, dds0_phase_clear, dds1_phase_clear,
+   dds2_phase_clear, tx0_i, tx0_q, tx1_i, tx1_q, rx_gate_o, trig_o,
+   tx0_axis_tdata_o, tx0_axis_tvalid_o, tx1_axis_tdata_o,
    tx1_axis_tvalid_o, tx_gate_o, rx0_rst_n_o, rx1_rst_n_o, rx0_en_o,
    rx1_en_o, rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid,
    leds_o,
@@ -90,6 +92,11 @@ module marga_model(/*AUTOARG*/
 
    output [23:0] 	dds0_phase_axis_tdata_o, dds1_phase_axis_tdata_o, dds2_phase_axis_tdata_o;
    output 		dds0_phase_axis_tvalid_o, dds1_phase_axis_tvalid_o, dds2_phase_axis_tvalid_o;
+
+   output [30:0]	dds0_phase_step, dds1_phase_step, dds2_phase_step;
+   assign {dds0_phase_step, dds1_phase_step, dds2_phase_step} = {UUT.dds0_phase_step, UUT.dds1_phase_step, UUT.dds2_phase_step};
+   output		dds0_phase_clear, dds1_phase_clear, dds2_phase_clear;
+   assign {dds0_phase_clear, dds1_phase_clear, dds2_phase_clear} = {UUT.dds0_phase_clear, UUT.dds1_phase_clear, UUT.dds2_phase_clear};
 
    output [15:0] 	tx0_i, tx0_q, tx1_i, tx1_q;
    assign {tx0_q, tx0_i, tx1_q, tx1_i} = {tx0_axis_tdata_o, tx1_axis_tdata_o};
@@ -205,9 +212,9 @@ module marga_model(/*AUTOARG*/
 		      );
 
    marga #(/*AUTOINSTPARAM*/
-	    // Parameters
-	    .C_S0_AXI_DATA_WIDTH	(C_S0_AXI_DATA_WIDTH),
-	    .C_S0_AXI_ADDR_WIDTH	(C_S0_AXI_ADDR_WIDTH))
+	   // Parameters
+	   .C_S0_AXI_DATA_WIDTH		(C_S0_AXI_DATA_WIDTH),
+	   .C_S0_AXI_ADDR_WIDTH		(C_S0_AXI_ADDR_WIDTH))
    UUT(/*AUTOINST*/
        // Outputs
        .ocra1_clk_o			(ocra1_clk_o),
