@@ -27,7 +27,7 @@ struct marga_csv {
 	FILE *f;
 	unsigned _line = 0;
 	const unsigned _LINE_INTERVAL = 15; // how many lines between column label insertions
-    	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds,  dds0_freq,  dds1_freq,  dds2_freq, d0c,d1c,d2c\n"};
+    	string _colnames{"#  ticks, tx0_i, tx0_q, tx1_i, tx1_q, fhd_x, fhd_y, fhd_z,fhd_z2,  oc1_x,  oc1_y,  oc1_z, oc1_z2, rx0r, rx1r,v0,v1,r0,r1,e0,e1,tg,rg,to,leds,   lo0_freq,   lo1_freq,   lo2_freq, l0r,l1r,l2r\n"};
 
 
 
@@ -51,7 +51,7 @@ struct marga_csv {
 		        " fhdo_vx, fhdo_vy, fhdo_vz, fhdo_vz2, ocra1_vx, ocra1_vy, ocra1_vz, ocra1_vz2,"
 		        " rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid, rx0_rst_n, rx1_rst_n, rx0_en, rx1_en,"
 		        " tx_gate, rx_gate, trig_out, leds,"
-			" dds0_freq, dds1_freq, dds2_freq, dds0_clear, dds1_clear, dds2_clear,"
+			"  lo0_freq,  lo1_freq,  lo2_freq,  lo0_rst,  lo1_rst,  lo2_rst,"
 			" csv_version_%d.%d\n", CSV_VERSION_MAJOR, CSV_VERSION_MINOR);
 	}
 
