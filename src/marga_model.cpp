@@ -17,8 +17,8 @@ struct marga_csv {
 	uint16_t fhdo_voutx = 0, fhdo_vouty = 0, fhdo_voutz = 0, fhdo_voutz2 = 0;
 	uint32_t ocra1_voutx = 0, ocra1_vouty = 0, ocra1_voutz = 0, ocra1_voutz2 = 0xfffff; // last is different purely so that a difference is picked up on the first row's write
 
-	uint32_t dds0_phase_step = 0, dds1_phase_step = 0, dds2_phase_step = 0;
-	uint8_t dds0_phase_clear = 0, dds1_phase_clear = 0, dds2_phase_clear = 0;
+	uint32_t lo0_phase_step = 0, lo1_phase_step = 0, lo2_phase_step = 0;
+	uint8_t lo0_phase_rst = 0, lo1_phase_rst = 0, lo2_phase_rst = 0;
 
 	uint16_t rx0_rate = 0, rx1_rate = 0;
 	uint8_t rx0_rate_valid = 0, rx1_rate_valid = 0, rx0_rst_n_o = 0, rx1_rst_n_o = 0, rx0_en_o = 0, rx1_en_o = 0;
@@ -92,12 +92,12 @@ struct marga_csv {
 		if (fm->trig_o != trig) { trig = fm->trig_o; diff_gpio = true; }
 		if (fm->leds_o != leds) { leds = fm->leds_o; diff_gpio = true; }
 
-		if (fm->dds0_phase_step != dds0_phase_step) { dds0_phase_step = fm->dds0_phase_step; diff_lo = true; }
-		if (fm->dds1_phase_step != dds1_phase_step) { dds1_phase_step = fm->dds1_phase_step; diff_lo = true; }
-		if (fm->dds2_phase_step != dds2_phase_step) { dds2_phase_step = fm->dds2_phase_step; diff_lo = true; }
-		if (fm->dds0_phase_clear != dds0_phase_clear) { dds0_phase_clear = fm->dds0_phase_clear; diff_lo = true; }
-		if (fm->dds1_phase_clear != dds1_phase_clear) { dds1_phase_clear = fm->dds1_phase_clear; diff_lo = true; }
-		if (fm->dds2_phase_clear != dds2_phase_clear) { dds2_phase_clear = fm->dds2_phase_clear; diff_lo = true; }
+		if (fm->dds0_phase_step != lo0_phase_step) { lo0_phase_step = fm->dds0_phase_step; diff_lo = true; }
+		if (fm->dds1_phase_step != lo1_phase_step) { lo1_phase_step = fm->dds1_phase_step; diff_lo = true; }
+		if (fm->dds2_phase_step != lo2_phase_step) { lo2_phase_step = fm->dds2_phase_step; diff_lo = true; }
+		if (fm->dds0_phase_clear != lo0_phase_rst) { lo0_phase_rst = fm->dds0_phase_clear; diff_lo = true; }
+		if (fm->dds1_phase_clear != lo1_phase_rst) { lo1_phase_rst = fm->dds1_phase_clear; diff_lo = true; }
+		if (fm->dds2_phase_clear != lo2_phase_rst) { lo2_phase_rst = fm->dds2_phase_clear; diff_lo = true; }
 
 		bool diff = diff_tx or diff_grad or diff_rx or diff_gpio or diff_lo;
 		if (diff) {
@@ -121,8 +121,8 @@ struct marga_csv {
 			        rx0_rate, rx1_rate, rx0_rate_valid, rx1_rate_valid,
 			        rx0_rst_n_o, rx1_rst_n_o, rx0_en_o, rx1_en_o,
 			        tx_gate, rx_gate, trig, leds,
-				dds0_phase_step, dds1_phase_step, dds2_phase_step,
-				dds0_phase_clear, dds1_phase_clear, dds2_phase_clear);
+				lo0_phase_step, lo1_phase_step, lo2_phase_step,
+				lo0_phase_rst, lo1_phase_rst, lo2_phase_rst);
 		}
 		return diff;
 	}
