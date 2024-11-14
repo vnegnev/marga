@@ -130,8 +130,8 @@ marga_model::marga_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
     auto argv0 = string(argv[0]);
     auto filepath_csv = argv0 + ".csv", filepath_fst = argv0 + ".fst";
 
-    auto usage = string("\n\t Usage: ") + argv0 + string(" [csv_path] [fst_path] [trig_time]\n")
-	+ string("\t where csv_path (optional) is csv or csv=PATH, fst_path (optional) is fst or fst=PATH, and trig_time (optional) is trig or trig=12345678 is the time in clock cycles when to create a trigger event (by default 1000 cycles).\n")
+    auto usage = string("\n\t Usage: ") + argv0 + string(" [csv_path] [fst_path] [trig_time] [port]\n")
+	+ string("\t where csv_path (optional) is csv or csv=PATH, fst_path (optional) is fst or fst=PATH, trig_time (optional) is trig or trig=12345678 is the time in clock cycles when to create a trigger event (by default 1000 cycles), and port (optional) is port=11111 is the port to listen on (by default 11111 if port argument not supplied).\n")
 	+ string("Examples:\n\t")
 	+ argv0 + string(" # (no dump files will be produced)\n\t")
 	+ argv0 + string(" csv # (will dump to ") + argv0 + string(".csv)\n\t")
@@ -140,17 +140,18 @@ marga_model::marga_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
 	+ argv0 + string(" fst=/path/to/test.fst\n\t")
 	+ argv0 + string(" csv fst # (will dump to ") + argv0 + string(".csv and ") + argv0 + string(".fst)\n\t")
 	+ argv0 + string(" csv=/path/to/test.csv fst=/path/to/test2.fst\n\t")
-	+ argv0 + string(" csv=/path/to/test.csv trig # FST dump + trigger event at 1000 cycles\n\n")
-	+ argv0 + string(" fst=/path/to/test2.fst trig=12345 # FST dump + trigger event at 12345 cycles\n\n")
-	+ string("Hit ctrl-c to halt the program.\n");
+	+ argv0 + string(" csv=/path/to/test.csv trig # FST dump + trigger event at 1000 cycles\n\t")
+	+ argv0 + string(" fst=/path/to/test2.fst trig=12345 # FST dump + trigger event at 12345 cycles\n\t")
+	+ argv0 + string(" fst=/path/to/test2.fst port=10000 # FST dump + use port 10000 \n\t")
+	+ string("\nHit ctrl-c to halt the program.\n");
 
     if (argc == 1) {
 	cout << usage << endl;
 	exit(0);
     }
 
-    string csvstr("csv"), fststr("fst"), trigstr("trig");
-    auto csvl = csvstr.length(), fstl = fststr.length(), trigl = trigstr.length();
+    string csvstr("csv"), fststr("fst"), trigstr("trig"), portstr("port");
+    auto csvl = csvstr.length(), fstl = fststr.length(), trigl = trigstr.length(), portl = portstr.length();
 
     for (int arg = 1; arg < argc; ++arg) {
 	auto current_arg = string(argv[arg]);
@@ -173,6 +174,15 @@ marga_model::marga_model(int argc, char *argv[]) : MAX_SIM_TIME(200e6) {
 		_trig_time = stoul(current_arg.substr(trigl + 1));
 	    }
 	    printf("Ext. trigger will occur at cycle %d\n", _trig_time);
+	} else if ( current_arg.substr(0, portl).compare(portstr) == 0) {
+	    if (current_arg.length() > portl && current_arg[portl] == '=') {
+		_port = stoul(current_arg.substr(portl + 1));
+	    } else {
+		printf("Port not supplied correctly; argument must be in the format 'port=X'\n\n");
+		printf(usage.c_str());
+		exit(1);
+	    }
+	    printf("Port will be %d\n", _port);
 	} else {
 	    printf("Unknown argument; only accepting fst, csv, trig for now.\n\n");
 	    printf(usage.c_str());

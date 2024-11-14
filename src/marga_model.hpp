@@ -15,6 +15,7 @@ public:
     bool _fst_output = false, _csv_output = false;
     bool _trig = false;
     unsigned _trig_time = 1000;
+    unsigned _port = 11111; // strictly shouldn't be in this class, but the other arguments are parsed here
 
     marga_model(int argc, char *argv[]);
     ~marga_model();

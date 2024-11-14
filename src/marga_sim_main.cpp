@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
 	mm = new marga_model(argc, argv);
 	hw = new hardware();
-	ifa = new iface();
+	ifa = new iface(mm->_port);
 	ifa->run_stream();
 
 	// Cleanup
