@@ -1,21 +1,21 @@
 [*]
-[*] GTKWave Analyzer v3.3.107 (w)1999-2020 BSI
-[*] Mon Jan  4 12:09:31 2021
+[*] GTKWave Analyzer v3.3.120 (w)1999-2024 BSI
+[*] Sat Nov 16 17:44:13 2024
 [*]
-[dumpfile] "/mnt/ubuntu/home/vlad/Documents/mri/marga/hdl/icarus_compile/000_mardecode_tb.lxt"
-[dumpfile_mtime] "Mon Jan  4 12:09:11 2021"
-[dumpfile_size] 30614
-[savefile] "/mnt/ubuntu/home/vlad/Documents/mri/marga/hdl/icarus_compile/001_mardecode_tb.sav"
-[timestart] 0
-[size] 1920 992
+[dumpfile] "/mnt/arch_ssd/home/vlad/Documents/mri/marga/hdl/icarus_compile/000_mardecode_tb.lxt"
+[dumpfile_mtime] "Sat Nov 16 17:43:50 2024"
+[dumpfile_size] 32161
+[savefile] "/mnt/arch_ssd/home/vlad/Documents/mri/marga/hdl/icarus_compile/001_mardecode_tb.sav"
+[timestart] 3930
+[size] 1920 1033
 [pos] -1 -1
-*-8.869644 990 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-6.231376 4215 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] mardecode_tb.
 [treeopen] mardecode_tb.UUT.
-[sst_width] 230
+[sst_width] 276
 [signals_width] 301
 [sst_expanded] 1
-[sst_vpaned_height] 292
+[sst_vpaned_height] 306
 @28
 mardecode_tb.S_AXI_ACLK[0]
 mardecode_tb.S_AXI_ARESETN[0]
@@ -222,11 +222,13 @@ mardecode_tb.UUT.mar_bram_raddr[15:0]
 mardecode_tb.UUT.mar_bram_raddr_r[15:0]
 mardecode_tb.UUT.mar_bram_raddr_r2[15:0]
 mardecode_tb.UUT.mar_bram_rdata_r[31:0]
+@23
 mardecode_tb.UUT.state[3:0]
-@821
+@820
 [color] 3
 mardecode_tb.state_ascii[79:0]
 @24
+mardecode_tb.UUT.tmr[31:0]
 mardecode_tb.UUT.buf_idx[4:0]
 [pattern_trace] 1
 [pattern_trace] 0

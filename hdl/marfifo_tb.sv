@@ -76,6 +76,7 @@ module marfifo_tb;
       valid_i = 0;
 
       // TODO: CONTINUE HERE, ADD CHECKS ETC
+      // (RIGHT NOW ALWAYS GIVES AN ERROR)
       err = 1;
 
       #5000 if (err) begin

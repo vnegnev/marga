@@ -138,14 +138,14 @@ module mardecode_tb;
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
 
-      // Wait for trigger with a timeout of 10 then go idle
-      #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd10});
+      // Wait for trigger with a timeout of 256 (the minimum) then go idle
+      #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd1});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
 
-      // Wait for trigger as before, long delay, but have a trigger occur this time
-      #150 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd20});
+      // Wait for trigger as before, longer delay, but have a trigger occur this time
+      #2700 wr32(19'h40000, {1'b0, UUT.INSTR_TRIG, 24'd2});
       wr32(19'h40004, {1'b0, UUT.INSTR_FINISH, 24'd0});
       wr32(19'h0, 32'h1);
       wr32(19'h0, 32'h0);
@@ -290,10 +290,11 @@ module mardecode_tb;
       #170 check_state("IDLE");
       #10 check_state("PREPARE");
       #120 check_state("TRIG");
+      #2460 check_state("TRIG");
       #30 check_state("HALT");
       #10 check_state("IDLE");
 
-      #100 check_state("IDLE");
+      #190 check_state("IDLE");
       #10 check_state("PREPARE");
       #120 check_state("TRIG");
       #30 check_state("HALT");

@@ -369,7 +369,7 @@ module mardecode #
    reg [STATE_BITS-1:0]  state = IDLE;
    wire [BUF_BITS-1:0] buf_idx = mar_bram_rdata_r[24+BUF_BITS-1:24];
    wire [BUF_BITS-1:0] direct_buf_idx = slv_reg2[24+BUF_BITS-1:24];
-   reg [23:0] tmr = 0;
+   reg [31:0] tmr = 0;
    reg 	      trig_r = 0, trig_r1 = 0, trig_r2 = 0, trig_r3 = 0, trig_r4 = 0;
    reg 	      trig_state_change = 0;
    reg [31:0] status_r = 0, status_latch_r = 0, status_latch_r2 = 0, berr_r = 0, bfull_r = 0;
@@ -438,12 +438,12 @@ module mardecode #
 		end
 		INSTR_WAIT: begin
 		   state <= COUNTDOWN;
-		   tmr <= mar_bram_rdata_r[23:0];
+		   tmr <= {8'd0, mar_bram_rdata_r[23:0]};
 		   mar_bram_raddr <= mar_bram_raddr - 1; // backtrack due to delay
 		end
 		INSTR_TRIG: begin
 		   state <= TRIG;
-		   tmr <= mar_bram_rdata_r[23:0]; // trigger timeout, in case it never arrives
+		   tmr <= {mar_bram_rdata_r[23:0], 8'd0}; // trigger timeout, in case it never arrives
 		   mar_bram_raddr <= mar_bram_raddr - 1; // backtrack due to delay
 		end
 		INSTR_TRIG_FOREVER: begin
