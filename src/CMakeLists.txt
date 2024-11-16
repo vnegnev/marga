@@ -11,7 +11,7 @@
 #
 # This will build the marga_sim binary.
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.27)
 project(marga_sim)
 
 find_package(verilator HINTS $ENV{VERILATOR_ROOT} ${VERILATOR_ROOT})
@@ -19,8 +19,10 @@ if (NOT verilator_FOUND)
   message(FATAL_ERROR "Verilator was not found. Either install it, or set the VERILATOR_ROOT environment variable")
 endif()
 
-set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
-set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
+# set (CMAKE_C_FLAGS "-O3 -g -Wall -std=c11")
+# set (CMAKE_CXX_FLAGS "-O3 -g -Wall -std=c++17")
+set (CMAKE_C_FLAGS "-O3 -g -Wall")
+set (CMAKE_CXX_FLAGS "-O3 -g -Wall")
 
 # # For debugging only
 # set (CMAKE_C_FLAGS "-O0 -g -Wall -std=c11")
@@ -40,5 +42,5 @@ target_include_directories(marga_sim PRIVATE ${SERVER_PATH} "./")
 
 verilate(marga_sim
 	INCLUDE_DIRS "../hdl"
-	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-fst --trace-depth 4
+	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-threads 4 --trace-fst --trace-depth 4
 	SOURCES ../hdl/marga_model.sv)
