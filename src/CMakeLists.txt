@@ -42,5 +42,6 @@ target_include_directories(marga_sim PRIVATE ${SERVER_PATH} "./")
 
 verilate(marga_sim
 	INCLUDE_DIRS "../hdl"
-	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING --cc -O3 --threads 4 --trace-threads 4 --trace-fst --trace-depth 4
+	# VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING -Wno-COMBDLY --cc -O3 --threads 4 --trace-threads 4 --trace-fst --trace-depth 4
+	VERILATOR_ARGS -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-PINMISSING -Wno-COMBDLY --cc -O3
 	SOURCES ../hdl/marga_model.sv)
